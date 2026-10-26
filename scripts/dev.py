@@ -13,9 +13,9 @@ from urllib.request import urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
 BACKEND = ROOT / "backend"
-FRONTEND = ROOT / "frontend"
+FRONTEND = ROOT / "static-website"
 BACKEND_URL = "http://127.0.0.1:8000/api/health"
-FRONTEND_URL = "http://127.0.0.1:5173/"
+FRONTEND_URL = "http://127.0.0.1:4173/"
 
 
 def _http_ready(url: str) -> bool:
@@ -74,7 +74,7 @@ def main() -> int:
             if backend.poll() is not None or frontend.poll() is not None:
                 raise RuntimeError("A development server exited during startup")
             if _http_ready(BACKEND_URL) and _http_ready(FRONTEND_URL):
-                print("Backend at http://localhost:8000; frontend at http://localhost:5173")
+                print("Backend API at http://localhost:8000; PhysiGuard live interface at http://localhost:4173")
                 while backend.poll() is None and frontend.poll() is None:
                     time.sleep(0.25)
                 raise RuntimeError("A development server stopped unexpectedly")
