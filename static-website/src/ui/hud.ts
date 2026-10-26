@@ -1,4 +1,3 @@
-import { SIMULATION } from "../config";
 import type { Classification } from "../sim/classifier";
 import type { TimelineSample } from "../sim/timeline";
 import { classificationLabel, formatSimTime, percent, signed } from "./format";
@@ -48,13 +47,13 @@ export class Hud {
     this.lastT = sample.t;
 
     this.clock.textContent = formatSimTime(sample.t);
-    this.speed.textContent = `${Math.round(sample.speedKmh)} km/h`;
+    this.speed.textContent = `${sample.currentA.toFixed(1)} A`;
     this.channel.textContent = this.channelFor(sample);
 
     this.setChip(this.stateChip, sample.classification);
     this.setChip(this.classification, sample.classification);
 
-    this.windowNote.textContent = `window ${sample.evidence.windowSize} / 20`;
+    this.windowNote.textContent = sample.attackActive ? "backend attack signal active" : "backend telemetry stream";
     this.residualFlag.textContent =
       sample.classification === "confirmed"
         ? "strong residual in window"
@@ -75,23 +74,25 @@ export class Hud {
       sample.classification === "confirmed" ? "#C23A22" : "#A86A12";
     this.evidenceValue.textContent = `${evidence} %`;
 
-    this.chartTime.textContent = `${formatSimTime(sample.t)} / 12:00`;
+    this.chartTime.textContent = `${formatSimTime(sample.t)} / ${formatSimTime(sample.duration_s ?? 3600)}`;
 
     this.twinPanel.dataset.engaged = String(sample.twinActive);
     if (sample.twinActive) {
-      this.twinState.textContent = sample.twinResponding ? "Engaged" : "Engaged, silent";
+      this.twinState.textContent = sample.twinResponding ? "Safe mode" : "Confirmed";
       this.twinTemp.textContent = `${sample.twinTempC.toFixed(1)} °C`;
       this.twinSoc.textContent = `${(sample.twinSoc * 100).toFixed(1)} %`;
-      this.fakePackets.textContent = `${sample.fakePackets} / ${SIMULATION.maxFakePackets}`;
-      this.twinUplink.textContent = sample.twinResponding ? "Open" : "Closed";
+      this.fakePackets.textContent = sample.twinResponding ? "Guard active" : "Monitoring";
+      this.twinUplink.textContent = sample.controlMode ?? "Normal";
     } else {
       this.twinState.textContent = "Not engaged";
       this.twinTemp.textContent = "—";
       this.twinSoc.textContent = "—";
-      this.fakePackets.textContent = `0 / ${SIMULATION.maxFakePackets}`;
-      this.twinUplink.textContent = "Idle";
+      this.fakePackets.textContent = "Monitoring";
+      this.twinUplink.textContent = sample.controlMode ?? "Normal";
     }
   }
+
+  reset(): void { this.lastT = -1; this.chart.reset(); }
 
   private setChip(element: HTMLElement, classification: Classification): void {
     element.classList.remove("chip--nominal", "chip--suspect", "chip--confirmed");
@@ -100,10 +101,6 @@ export class Hud {
   }
 
   private channelFor(sample: TimelineSample): string {
-    if (sample.t < 120) return "Nominal";
-    if (sample.t >= SIMULATION.restAt_s) return "Isolated";
-    if (sample.twinActive) return sample.twinResponding ? "Decoy" : "Silent";
-    if (sample.t < 240) return "Compromised";
-    return "Spoofed";
+    return sample.channel ?? (sample.attackActive ? "Under investigation" : "Nominal");
   }
 }
