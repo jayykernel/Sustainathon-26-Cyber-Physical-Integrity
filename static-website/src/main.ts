@@ -13,7 +13,6 @@ import { TemperatureChart } from "./ui/chart";
 import { classificationLabel } from "./ui/format";
 import { AttackerTerminal } from "./ui/hacker";
 import { Hud } from "./ui/hud";
-import { StageNav } from "./ui/narrative";
 
 function requireElement<T extends HTMLElement>(id: string): T {
   const element = document.getElementById(id);
@@ -55,7 +54,6 @@ function start(): void {
   const restart = requireElement<HTMLButtonElement>("restart");
   const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
   let reducedMotion = motionQuery.matches;
-  const nav = new StageNav(requireElement<HTMLOListElement>("rail-list"), () => reducedMotion);
 
   motionQuery.addEventListener("change", (event) => {
     reducedMotion = event.matches;
@@ -138,7 +136,6 @@ function start(): void {
     });
     hud.update(sample);
     terminal.update(sample);
-    nav.update(sample.stageIndex);
     announce(sample.stageIndex, sample.classification);
 
     alarmWash.classList.toggle("is-active", sample.alarm);
