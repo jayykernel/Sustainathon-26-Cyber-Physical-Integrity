@@ -3,18 +3,18 @@
 Living log. Update after each task and phase so the current implementation state and evidence stay visible.
 
 ## Current status
-- Current phase: P2 (P1 complete)
+- Current phase: P3 (P2 complete)
 - Event clock at last update: 2026-10-26 (start time = 2026-10-26 00:00 local)
 - Last green `make check`: 2026-10-26
 - Tags: none
-- Continuation session: P0 was reverified from the committed tree. P1 implementation, acceptance tests, measured scenarios, fitted twin parameters, and user review of the plausibility figure are complete.
+- Continuation session: P0 and P1 are complete and pushed. P2 detector implementation, validation-only calibration, one-time held-out measurement, and diagnostic exports are complete.
 
 ## Phase log
 | Phase | Status | Budget | Used | Gate evidence | Notes |
 |---|---|---|---|---|---|
 | P0 Bootstrap | complete | 0.75 h | | `make setup && make check`; `make dev`; fresh source-copy setup/check; committed-tree `make check` | 14 backend tests and 1 frontend test passed at P0 completion; P0 reverified after push. |
 | P1 Plant/twin | complete | 3 h | | `make check`; `make fit-twin`; `make plot-nominal`; user reviewed figure | 22 backend tests and 1 frontend test pass; all MUST criteria met. NASA P1b unavailable and unsupported. |
-| P2 Passive detection | todo | 3.5 h | | | |
+| P2 Passive detection | complete | 3.5 h | | `make check`; `make calibrate`; `make eval-passive` | Validation 0.1200 FA/h meets target; held-out test 0.2101 FA/h is reported above target without retuning. |
 | P3 Attack engine | todo | 3 h | | | |
 | P4 Localization | todo | 2 h | | | |
 | P5 Active verification | todo | 3.5 h | | | |
@@ -31,7 +31,7 @@ Living log. Update after each task and phase so the current implementation state
 - `make dev` started Uvicorn and Vite; `/api/health` returned HTTP 200 JSON, startup logged config hash `87950a9351118e47`, and Ctrl+C stopped the services cleanly.
 - Later-phase Make targets are present and fail loudly with `not implemented in this phase`; confirmed with `make calibrate`.
 - IBM Plex font assets are bundled with the frontend build; no font CDN is required.
-- The workspace initially had only the README tracked. P0 was later split into ten commits and pushed to `origin/main`; P1 changes remain uncommitted pending phase review.
+- The workspace initially had only the README tracked. P0 was later split into ten commits and P1 into eight commits, both pushed to `origin/main`.
 
 ## P0 re-verification after push
 - Re-ran `make check` from the committed tree after the ten P0 commits were pushed: Ruff, strict mypy, backend pytest (14 passed), frontend Vitest (1 passed), ESLint, TypeScript, and Vite production build all passed.
@@ -52,13 +52,21 @@ Living log. Update after each task and phase so the current implementation state
 - P1 gate `make check`: backend pytest 22 passed; frontend Vitest 1 passed; Ruff, strict mypy, ESLint, TypeScript, and production build passed. Scripts also pass Ruff.
 - `data/raw/nasa/` is absent. No NASA file was scraped or available for optional P1b; public-dataset validation claim is marked unsupported in `CLAIMS_EVIDENCE.md`.
 
+## P2 implementation and evidence
+- Added a 30-sample sliding NIS sum detector, two-sided per-channel CUSUM with deadband and reset-on-alarm, and static/rate-based range checks. EKF results expose innovation standard deviations for residual standardization.
+- Corrected the EKF to use the configured twin OCV curve consistently in voltage prediction, SOC slope, and current residual calculation. A synthetic linear-Gaussian test reports mean NIS 1.998 (2 degrees of freedom) and mean NEES 2.883 (3 degrees of freedom), both inside 99% chi-square bounds; singular innovation covariance still raises `NumericalError`.
+- `make calibrate` used only validation seeds 0–99 and wrote `configs/detection.yaml` with config hash `6d079b3bd6bc4947`, date `2026-10-26`, NIS window-sum threshold 93.1451, and CUSUM threshold 3.46747. Each tunable detector family used six false-alarm episodes of calibration budget; range checks had none.
+- Validation result: 12 combined episodes / 99.97 hours = 0.1200 false alarms/hour, below the 0.20/hour target. `data/results/nis_qq.json` contains validation observed quantiles and chi-square df=2 comparison data.
+- Measured held-out test seeds 100–199 once with frozen thresholds. Result: 21 combined episodes / 99.97 hours = 0.2101/hour, slightly above target. No test-driven threshold changes were made; the claim is softened and the result recorded under Claims at risk.
+- P2 `make check`: backend pytest 29 passed; frontend Vitest 1 passed; Ruff, strict mypy, ESLint, TypeScript, and frontend production build passed. Calibration code rejects duplicate or held-out seeds.
+
 ## Deviations, risks, and cuts
 - The P0 clean-room verification used a fresh source copy with generated environments/dependencies/build outputs excluded, not a Git clone, because project implementation files are untracked user work.
 - `npm ci` advisory counts are unchanged; dependency remediation remains parked for a compatibility-focused update.
 
 ## Exact continuation point
-- Next: begin P2 passive detection.
-- P0 was pushed in ten commits as requested. P1 is being committed in eight focused commits; no tag is created.
+- Next: begin P3 attack engine.
+- P0 was pushed in ten commits and P1 in eight focused commits. P2 work is uncommitted; no new tag was created.
 
 ## Measured numbers log
 `P0 | make check | backend tests | 14 passed | — | 87950a9351118e47`
@@ -68,9 +76,12 @@ Living log. Update after each task and phase so the current implementation state
 `P1 | make plot-nominal | under-reported thermal hazard time | 23.10 min | 11 | —`
 `P1 | make plot-nominal | 150 A CV hijack to voltage hazard | 141 s after attack onset | 11 | —`
 `P1 | make fit-twin | R1_n / tau1_n / polarization RMSE | 0.001083371522 Ω / 55.23743011 s / 0.00228423 V | 10000 | —`
+`P2 | make calibrate | validation combined FA/hour | 0.1200/h (12 episodes / 99.97 h) | 0–99 | 6d079b3bd6bc4947`
+`P2 | make eval-passive | held-out test combined FA/hour | 0.2101/h (21 episodes / 99.97 h) | 100–199 | 6d079b3bd6bc4947`
+`P2 | synthetic linear EKF | mean NIS / mean NEES | 1.998 / 2.883 (99% chi-square bounds) | 20261026 | —`
 
 ## Ideas parked
 - Remediate npm audit advisories in a dedicated dependency update with compatibility checks.
 
 ## Blockers / needs from user
-- No active blockers. NASA P1b was skipped because the dataset is unavailable; the associated public-validation claim is unsupported.
+- No active blockers. P2 test false alarms are slightly above target and are documented without retuning; NASA P1b remains unavailable and unsupported.

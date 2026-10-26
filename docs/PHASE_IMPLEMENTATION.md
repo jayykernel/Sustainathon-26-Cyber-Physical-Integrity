@@ -53,7 +53,7 @@ Gate: SPEC 2 plausibility targets 1–3 verified and printed; `make check` green
 
 ---
 
-## P2 — Passive detection (budget 3.5 h, MUST)
+## P2 — Passive detection (budget 3.5 h, MUST) — **COMPLETE; held-out FA exceeds target slightly and is reported without retuning**
 
 Tasks:
 - `ekf.py` with Joseph update; `detectors/nis.py`, `detectors/cusum.py`, `detectors/range_check.py`.

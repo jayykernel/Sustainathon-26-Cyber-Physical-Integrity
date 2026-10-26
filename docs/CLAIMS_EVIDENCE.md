@@ -11,7 +11,7 @@ Rule: if evidence does not exist at P11, the claim is softened or removed. Do no
 | 3 | EKF with innovation-based chi-square testing | `ekf.py`, `detectors/nis.py`, NIS QQ diagnostic | unverified | Thresholds are empirical; chi-square is a diagnostic. Word it that way. |
 | 4 | CUSUM catches gradual drift | `results.json` AT2 B1 vs B2 rows | unverified | |
 | 5 | Residual signatures localize the suspected channel | confusion matrix in `results.json` | unverified | State accuracy and ambiguous cases. |
-| 6 | Thresholds calibrated on attack-free validation data; false alarms measured on separate test data | `configs/detection.yaml` meta, `results.json` FA rows, seed-separation assertion | unverified | |
+| 6 | Thresholds calibrated on attack-free validation data; false alarms measured on separate test data | `configs/detection.yaml`, `data/results/passive_fa_validation.json`, `data/results/passive_fa_test.json` | softened | Thresholds were calibrated on seeds 0–99. Held-out seeds 100–199 produced 0.2101 false alarms/hour, slightly above the 0.20/hour target; do not claim the test target was met. |
 | 7 | Active random probe exposes replay and model-aware attacks that passive monitoring misses | AT3/AT4 rows for B2 vs B3; probe-amplitude curve | unverified | Only keep if B3 detection exceeds B2 with CI that does not overlap, or soften to the measured result. |
 | 8 | We test against model-aware attackers | AT4 definition in `configs/attacks.yaml`; stealth report | unverified | |
 | 9 | Virtual sensor estimates and conservative charging reduce simulated hazard | defended vs undefended rows in `results.json` | unverified | State per-scenario reduction, including scenarios with none. |
@@ -25,7 +25,7 @@ Rule: if evidence does not exist at P11, the claim is softened or removed. Do no
 | 17 | Learned/ML component (if mentioned anywhere) | S1 ablation in `results.json` | unverified | Remove ML wording if S1 not shipped. |
 
 ## Claims at risk (Claude adds items here during the build)
-- (empty)
+- Combined passive false alarms measured 0.2101/hour on held-out attack-free seeds, slightly above the 0.20/hour target. This is reported without retuning on test data.
 
 ## Tech stack text must match
 - Remove `filterpy` (EKF is in-repo).

@@ -23,13 +23,13 @@ Unticked items at a phase gate block the phase unless a cut is logged in PROGRES
 - [x] (COULD) P1b NASA validation script ran, with RMSE on held-out cycles, or "dataset unavailable" logged — evidence: `data/raw/nasa/` absent → dataset unavailable; claim marked unsupported, no dataset scraped
 
 ## P2 Passive detection
-- [ ] EKF NIS/NEES test on a synthetic linear system passes
-- [ ] Singular covariance raises `NumericalError` (test)
-- [ ] CUSUM and NIS window unit tests (known inputs, known alarm times)
-- [ ] `make calibrate` writes `configs/detection.yaml` with metadata from validation seeds only
-- [ ] Combined passive FA/hour on validation recorded
-- [ ] FA/hour on test attack-free seeds measured once; value logged in PROGRESS.md
-- [ ] NIS QQ diagnostic data exported
+- [x] EKF NIS/NEES test on a synthetic linear system passes — evidence: `test_ekf_nis_and_nees_are_consistent_on_a_synthetic_linear_system` → means 1.998 (2 dof) and 2.883 (3 dof), both within 99% chi-square bounds
+- [x] Singular covariance raises `NumericalError` (test) — evidence: `test_ekf_singular_innovation_covariance_raises_typed_error` passes
+- [x] CUSUM and NIS window unit tests (known inputs, known alarm times) — evidence: `test_detectors.py` → NIS alarms on sample 3; two-sided CUSUM alarms on sample 2 and resets
+- [x] `make calibrate` writes `configs/detection.yaml` with metadata from validation seeds only — evidence: seeds 0–99, config hash `6d079b3bd6bc4947`, date `2026-10-26`
+- [x] Combined passive FA/hour on validation recorded — evidence: `data/results/passive_fa_validation.json` → 12 episodes / 99.97 h = 0.1200/h (target 0.20/h)
+- [x] FA/hour on test attack-free seeds measured once; value logged in PROGRESS.md — evidence: `data/results/passive_fa_test.json`, frozen thresholds, seeds 100–199 → 21 episodes / 99.97 h = 0.2101/h
+- [x] NIS QQ diagnostic data exported — evidence: `data/results/nis_qq.json` → observed validation quantiles and chi-square df=2 comparison
 
 ## P3 Attack engine
 - [ ] AT1–AT6 implemented with documented knowledge level
