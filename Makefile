@@ -1,4 +1,4 @@
-.PHONY: all setup dev test test-quick lint typecheck fit-twin plot-nominal calibrate eval-passive stealth-report localization-report probe-report eval build serve demo-data check clean
+.PHONY: all setup dev test test-quick lint typecheck fit-twin plot-nominal calibrate eval-passive stealth-report localization-report probe-report guard-report eval build serve demo-data check clean
 
 PYTHON ?= python
 ifeq ($(OS),Windows_NT)
@@ -53,6 +53,9 @@ localization-report:
 
 probe-report:
 	$(VENV_PYTHON) scripts/probe_report.py
+
+guard-report:
+	$(VENV_PYTHON) scripts/p6_guard_report.py
 
 eval serve demo-data:
 	$(VENV_PYTHON) -c "import sys; print('not implemented in this phase: $@', file=sys.stderr); sys.exit(2)"

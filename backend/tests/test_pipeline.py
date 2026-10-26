@@ -3,7 +3,7 @@
 import numpy as np
 
 from physiguard.config import Config
-from physiguard.pipeline import run_pipeline
+from physiguard.pipeline import run_paired_pipeline, run_pipeline
 from physiguard.plant import plant_advance, vary_unit_config
 
 
@@ -14,6 +14,20 @@ def test_pipeline_is_deterministic_for_a_seed() -> None:
     assert first.keys() == second.keys()
     for key in first:
         np.testing.assert_array_equal(first[key], second[key])
+
+
+def test_paired_attack_pipeline_reuses_seed_and_returns_guard_evidence() -> None:
+    undefended, defended = run_paired_pipeline("AT4", seed=17, duration_s=90)
+
+    assert undefended["t"].shape == defended["t"].shape == (90,)
+    np.testing.assert_array_equal(undefended["t"], defended["t"])
+    assert not undefended["defended"]
+    assert defended["defended"]
+    assert defended["response_state"].shape == (90,)
+    assert defended["command_unsafe"].shape == (90,)
+    assert defended["probe_active"].shape == (90,)
+    assert np.any(np.abs(defended["probe_delta"]) > 0.0)
+    assert isinstance(defended["events"], list)
 
 
 def test_honest_one_hour_run_stays_within_operating_limits() -> None:

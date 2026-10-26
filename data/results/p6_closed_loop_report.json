@@ -1,0 +1,1746 @@
+{
+  "validation_seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "duration_s": 3600,
+  "attacks": {
+    "AT2": {
+      "runs": 10,
+      "undefended": {
+        "mean_peak_temperature_c": 52.12826624520842,
+        "mean_peak_voltage_v": 4.187916284339326,
+        "hazard_event_rate": 0.0
+      },
+      "defended": {
+        "mean_peak_temperature_c": 43.75841256230227,
+        "mean_peak_voltage_v": 3.8335057865338613,
+        "hazard_event_rate": 0.0,
+        "mean_command_unsafe_steps": 3114.5,
+        "mean_safe_mode_steps": 3105.9
+      },
+      "paired_reduction": {
+        "peak_temperature_c": 8.369853682906161,
+        "peak_voltage_v": 0.35441049780546496,
+        "hazard_event_rate": 0.0
+      },
+      "per_seed": [
+        {
+          "seed": 0,
+          "undefended": {
+            "peak_temperature_c": 50.78239997330574,
+            "peak_voltage_v": 4.194858072576956,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.59570526278966,
+            "peak_voltage_v": 3.8443816194965805,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3067,
+            "safe_mode_steps": 3059,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 531.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 531.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 541.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 1,
+          "undefended": {
+            "peak_temperature_c": 53.50516101966957,
+            "peak_voltage_v": 4.187830960066665,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.90245595698136,
+            "peak_voltage_v": 3.82758334897304,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3132,
+            "safe_mode_steps": 3122,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 468.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 468.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 478.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 2,
+          "undefended": {
+            "peak_temperature_c": 51.02658180351907,
+            "peak_voltage_v": 4.191361603436051,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.67507910177627,
+            "peak_voltage_v": 3.843511795721422,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3106,
+            "safe_mode_steps": 3097,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 493.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 493.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 503.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 3,
+          "undefended": {
+            "peak_temperature_c": 51.52518704464422,
+            "peak_voltage_v": 4.189499732854152,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.73676881661028,
+            "peak_voltage_v": 3.8354959801313453,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3112,
+            "safe_mode_steps": 3102,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 488.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 488.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 498.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 4,
+          "undefended": {
+            "peak_temperature_c": 52.1221307283806,
+            "peak_voltage_v": 4.18791335541864,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.7175432519062,
+            "peak_voltage_v": 3.8256836221679715,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3125,
+            "safe_mode_steps": 3115,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 475.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 475.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 485.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 5,
+          "undefended": {
+            "peak_temperature_c": 52.492882867644596,
+            "peak_voltage_v": 4.1819246788142825,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.78380693112647,
+            "peak_voltage_v": 3.8171380195506166,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3124,
+            "safe_mode_steps": 3114,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 476.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 476.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 486.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 6,
+          "undefended": {
+            "peak_temperature_c": 52.62546456755312,
+            "peak_voltage_v": 4.19161207397327,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.68470035469739,
+            "peak_voltage_v": 3.844743509190811,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3099,
+            "safe_mode_steps": 3089,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 501.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 501.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 511.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 7,
+          "undefended": {
+            "peak_temperature_c": 51.517348735347305,
+            "peak_voltage_v": 4.1863847201239865,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.80419988875404,
+            "peak_voltage_v": 3.8239450430213244,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3136,
+            "safe_mode_steps": 3129,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 461.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 461.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 471.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 8,
+          "undefended": {
+            "peak_temperature_c": 52.27854564739367,
+            "peak_voltage_v": 4.184658226751616,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.86040960070016,
+            "peak_voltage_v": 3.841739972679733,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3137,
+            "safe_mode_steps": 3130,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 460.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 460.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 470.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 9,
+          "undefended": {
+            "peak_temperature_c": 53.406960064626325,
+            "peak_voltage_v": 4.183119419377643,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.823456457680784,
+            "peak_voltage_v": 3.8308349544057694,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3107,
+            "safe_mode_steps": 3102,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 488.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 488.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 498.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        }
+      ]
+    },
+    "AT3": {
+      "runs": 10,
+      "undefended": {
+        "mean_peak_temperature_c": 52.18467523332159,
+        "mean_peak_voltage_v": 4.285833839677299,
+        "hazard_event_rate": 0.3
+      },
+      "defended": {
+        "mean_peak_temperature_c": 43.78016893246492,
+        "mean_peak_voltage_v": 3.8314188544409773,
+        "hazard_event_rate": 0.0,
+        "mean_command_unsafe_steps": 3094.4,
+        "mean_safe_mode_steps": 3105.9
+      },
+      "paired_reduction": {
+        "peak_temperature_c": 8.404506300856681,
+        "peak_voltage_v": 0.4544149852363214,
+        "hazard_event_rate": 0.3
+      },
+      "per_seed": [
+        {
+          "seed": 0,
+          "undefended": {
+            "peak_temperature_c": 51.28203328948144,
+            "peak_voltage_v": 4.287248407674089,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.59570526278966,
+            "peak_voltage_v": 3.8323156821295,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 2867,
+            "safe_mode_steps": 3059,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 531.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 531.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 541.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 1,
+          "undefended": {
+            "peak_temperature_c": 52.63908802470142,
+            "peak_voltage_v": 4.266627855248405,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.96944052722751,
+            "peak_voltage_v": 3.826456125077211,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3132,
+            "safe_mode_steps": 3122,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 468.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 468.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 478.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 2,
+          "undefended": {
+            "peak_temperature_c": 52.077331400457254,
+            "peak_voltage_v": 4.307489210878839,
+            "hazard_event": true,
+            "hazard_samples": 100,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.67507910177627,
+            "peak_voltage_v": 3.8426534183855114,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3106,
+            "safe_mode_steps": 3097,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 493.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 493.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 503.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 3,
+          "undefended": {
+            "peak_temperature_c": 51.9365247323908,
+            "peak_voltage_v": 4.286760067594401,
+            "hazard_event": true,
+            "hazard_samples": 45,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.73676881661028,
+            "peak_voltage_v": 3.8346435770890195,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3112,
+            "safe_mode_steps": 3102,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 488.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 488.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 498.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 4,
+          "undefended": {
+            "peak_temperature_c": 52.23062383666994,
+            "peak_voltage_v": 4.286876151025851,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.7175432519062,
+            "peak_voltage_v": 3.824734610521308,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3125,
+            "safe_mode_steps": 3115,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 475.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 475.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 485.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 5,
+          "undefended": {
+            "peak_temperature_c": 52.303810345332515,
+            "peak_voltage_v": 4.272440254523034,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.78380693112647,
+            "peak_voltage_v": 3.8161083263923365,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3124,
+            "safe_mode_steps": 3114,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 476.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 476.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 486.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 6,
+          "undefended": {
+            "peak_temperature_c": 52.664916781795945,
+            "peak_voltage_v": 4.304846830611671,
+            "hazard_event": true,
+            "hazard_samples": 83,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.687685648700146,
+            "peak_voltage_v": 3.8437319231128617,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3099,
+            "safe_mode_steps": 3089,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 501.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 501.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 511.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 7,
+          "undefended": {
+            "peak_temperature_c": 51.828016615953494,
+            "peak_voltage_v": 4.280845855697511,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.80419988875404,
+            "peak_voltage_v": 3.823013085517701,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3136,
+            "safe_mode_steps": 3129,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 461.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 461.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 471.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 8,
+          "undefended": {
+            "peak_temperature_c": 52.177488111169744,
+            "peak_voltage_v": 4.290093807196489,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.86040960070016,
+            "peak_voltage_v": 3.8407068783641907,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3136,
+            "safe_mode_steps": 3130,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 460.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 460.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 470.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 9,
+          "undefended": {
+            "peak_temperature_c": 52.70691919526342,
+            "peak_voltage_v": 4.275109956322694,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.97105029505843,
+            "peak_voltage_v": 3.8298249178201327,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3107,
+            "safe_mode_steps": 3102,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 488.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 488.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 498.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        }
+      ]
+    },
+    "AT4": {
+      "runs": 10,
+      "undefended": {
+        "mean_peak_temperature_c": 47.24438030429443,
+        "mean_peak_voltage_v": 4.052697901970378,
+        "hazard_event_rate": 0.0
+      },
+      "defended": {
+        "mean_peak_temperature_c": 43.78016893246492,
+        "mean_peak_voltage_v": 3.8325415625190637,
+        "hazard_event_rate": 0.0,
+        "mean_command_unsafe_steps": 3114.5,
+        "mean_safe_mode_steps": 3105.9
+      },
+      "paired_reduction": {
+        "peak_temperature_c": 3.4642113718295113,
+        "peak_voltage_v": 0.22015633945131313,
+        "hazard_event_rate": 0.0
+      },
+      "per_seed": [
+        {
+          "seed": 0,
+          "undefended": {
+            "peak_temperature_c": 46.66594656178571,
+            "peak_voltage_v": 4.057046705091867,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.59570526278966,
+            "peak_voltage_v": 3.8435427629103645,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3067,
+            "safe_mode_steps": 3059,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 531.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 531.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 541.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 1,
+          "undefended": {
+            "peak_temperature_c": 47.74282305505195,
+            "peak_voltage_v": 4.0366287922545565,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.96944052722751,
+            "peak_voltage_v": 3.826456125077211,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3132,
+            "safe_mode_steps": 3122,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 468.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 468.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 478.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 2,
+          "undefended": {
+            "peak_temperature_c": 46.976996660506224,
+            "peak_voltage_v": 4.056180141917451,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.67507910177627,
+            "peak_voltage_v": 3.8426534183855114,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3106,
+            "safe_mode_steps": 3097,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 493.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 493.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 503.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 3,
+          "undefended": {
+            "peak_temperature_c": 47.30121008568229,
+            "peak_voltage_v": 4.092818157982182,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.73676881661028,
+            "peak_voltage_v": 3.8346435770890195,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3112,
+            "safe_mode_steps": 3102,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 488.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 488.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 498.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 4,
+          "undefended": {
+            "peak_temperature_c": 47.14565841886512,
+            "peak_voltage_v": 4.049524884371758,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.7175432519062,
+            "peak_voltage_v": 3.824734610521308,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3125,
+            "safe_mode_steps": 3115,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 475.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 475.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 485.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 5,
+          "undefended": {
+            "peak_temperature_c": 47.25429554300164,
+            "peak_voltage_v": 4.036336326744544,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.78380693112647,
+            "peak_voltage_v": 3.8161083263923365,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3124,
+            "safe_mode_steps": 3114,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 476.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 476.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 486.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 6,
+          "undefended": {
+            "peak_temperature_c": 46.983312227666275,
+            "peak_voltage_v": 4.0319569844616145,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.687685648700146,
+            "peak_voltage_v": 3.8437319231128617,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3099,
+            "safe_mode_steps": 3089,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 501.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 501.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 511.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 7,
+          "undefended": {
+            "peak_temperature_c": 47.305460601924935,
+            "peak_voltage_v": 4.071678134127784,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.80419988875404,
+            "peak_voltage_v": 3.823013085517701,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3136,
+            "safe_mode_steps": 3129,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 461.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 461.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 471.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 8,
+          "undefended": {
+            "peak_temperature_c": 47.77536103002126,
+            "peak_voltage_v": 4.071503214212916,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.86040960070016,
+            "peak_voltage_v": 3.8407068783641907,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3137,
+            "safe_mode_steps": 3130,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 460.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 460.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 470.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 9,
+          "undefended": {
+            "peak_temperature_c": 47.29273885843888,
+            "peak_voltage_v": 4.023305678539096,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.97105029505843,
+            "peak_voltage_v": 3.8298249178201327,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3107,
+            "safe_mode_steps": 3102,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 488.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 488.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 498.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        }
+      ]
+    },
+    "AT5": {
+      "runs": 10,
+      "undefended": {
+        "mean_peak_temperature_c": 47.96272615836338,
+        "mean_peak_voltage_v": 4.3160350298115056,
+        "hazard_event_rate": 1.0
+      },
+      "defended": {
+        "mean_peak_temperature_c": 43.75841256230227,
+        "mean_peak_voltage_v": 3.8335057865338613,
+        "hazard_event_rate": 0.0,
+        "mean_command_unsafe_steps": 3114.5,
+        "mean_safe_mode_steps": 3105.9
+      },
+      "paired_reduction": {
+        "peak_temperature_c": 4.204313596061121,
+        "peak_voltage_v": 0.4825292432776445,
+        "hazard_event_rate": 1.0
+      },
+      "per_seed": [
+        {
+          "seed": 0,
+          "undefended": {
+            "peak_temperature_c": 47.79853624542892,
+            "peak_voltage_v": 4.321203805866023,
+            "hazard_event": true,
+            "hazard_samples": 367,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.59570526278966,
+            "peak_voltage_v": 3.8443816194965805,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3067,
+            "safe_mode_steps": 3059,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 531.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 531.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 541.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 1,
+          "undefended": {
+            "peak_temperature_c": 48.04982717667353,
+            "peak_voltage_v": 4.308266181822944,
+            "hazard_event": true,
+            "hazard_samples": 67,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.90245595698136,
+            "peak_voltage_v": 3.82758334897304,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3132,
+            "safe_mode_steps": 3122,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 468.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 468.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 478.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 2,
+          "undefended": {
+            "peak_temperature_c": 47.92533536997168,
+            "peak_voltage_v": 4.320373643933509,
+            "hazard_event": true,
+            "hazard_samples": 361,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.67507910177627,
+            "peak_voltage_v": 3.843511795721422,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3106,
+            "safe_mode_steps": 3097,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 493.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 493.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 503.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 3,
+          "undefended": {
+            "peak_temperature_c": 48.08814021170333,
+            "peak_voltage_v": 4.304007713012051,
+            "hazard_event": true,
+            "hazard_samples": 277,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.73676881661028,
+            "peak_voltage_v": 3.8354959801313453,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3112,
+            "safe_mode_steps": 3102,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 488.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 488.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 498.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 4,
+          "undefended": {
+            "peak_temperature_c": 47.87959489557355,
+            "peak_voltage_v": 4.321625942782464,
+            "hazard_event": true,
+            "hazard_samples": 162,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.7175432519062,
+            "peak_voltage_v": 3.8256836221679715,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3125,
+            "safe_mode_steps": 3115,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 475.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 475.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 485.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 5,
+          "undefended": {
+            "peak_temperature_c": 47.90836520499333,
+            "peak_voltage_v": 4.309147948738699,
+            "hazard_event": true,
+            "hazard_samples": 112,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.78380693112647,
+            "peak_voltage_v": 3.8171380195506166,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3124,
+            "safe_mode_steps": 3114,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 476.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 476.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 486.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 6,
+          "undefended": {
+            "peak_temperature_c": 47.94934547576055,
+            "peak_voltage_v": 4.323876117343177,
+            "hazard_event": true,
+            "hazard_samples": 286,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.68470035469739,
+            "peak_voltage_v": 3.844743509190811,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3099,
+            "safe_mode_steps": 3089,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 501.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 501.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 511.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 7,
+          "undefended": {
+            "peak_temperature_c": 47.94654087828886,
+            "peak_voltage_v": 4.316316871680985,
+            "hazard_event": true,
+            "hazard_samples": 153,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.80419988875404,
+            "peak_voltage_v": 3.8239450430213244,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3136,
+            "safe_mode_steps": 3129,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 461.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 461.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 471.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 8,
+          "undefended": {
+            "peak_temperature_c": 48.070110262537966,
+            "peak_voltage_v": 4.3216319842230115,
+            "hazard_event": true,
+            "hazard_samples": 159,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.86040960070016,
+            "peak_voltage_v": 3.841739972679733,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3137,
+            "safe_mode_steps": 3130,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 460.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 460.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 470.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        },
+        {
+          "seed": 9,
+          "undefended": {
+            "peak_temperature_c": 48.01146586270212,
+            "peak_voltage_v": 4.313900088712195,
+            "hazard_event": true,
+            "hazard_samples": 95,
+            "command_unsafe_steps": 0,
+            "safe_mode_steps": 0,
+            "event_count": 0
+          },
+          "defended": {
+            "peak_temperature_c": 43.823456457680784,
+            "peak_voltage_v": 3.8308349544057694,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "command_unsafe_steps": 3107,
+            "safe_mode_steps": 3102,
+            "event_count": 3
+          },
+          "events": [
+            {
+              "time_s": 488.0,
+              "severity": "warning",
+              "code": "suspect",
+              "text": "Integrity evidence detected."
+            },
+            {
+              "time_s": 488.0,
+              "severity": "critical",
+              "code": "confirmed",
+              "text": "Independent integrity evidence confirmed."
+            },
+            {
+              "time_s": 498.0,
+              "severity": "critical",
+              "code": "safe_mode",
+              "text": "Safe charging mode engaged."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "config_hash": "6d079b3bd6bc4947"
+}\n

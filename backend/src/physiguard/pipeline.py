@@ -91,3 +91,22 @@ def run_pipeline(
     )
     result["hijack_active"] = np.asarray(attack_values, dtype=np.bool_)
     return result
+
+
+def run_paired_pipeline(
+    attack_id: str,
+    seed: int,
+    config: Config | None = None,
+    duration_s: int | None = None,
+    attack_config_path: str | None = None,
+) -> tuple[object, object]:
+    """Run undefended and guarded attack trajectories with common seed/attack inputs."""
+    from .attacks.runner import run_paired_scenario
+
+    return run_paired_scenario(
+        attack_id,
+        seed,
+        config=config,
+        duration_s=duration_s,
+        attack_config_path=attack_config_path,
+    )

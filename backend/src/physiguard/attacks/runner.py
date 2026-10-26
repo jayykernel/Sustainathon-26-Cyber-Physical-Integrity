@@ -8,10 +8,18 @@ import numpy as np
 from numpy.typing import NDArray
 
 from ..charger import ChargeProfile, execute_request
+from ..command_guard import CommandGuard
 from ..config import Config, get_config, load_detection_config
 from ..detectors.passive import PassiveDetectors
+from ..detectors.probe import (
+    ProbeScheduler,
+    ProbeWindow,
+    generate_probe_window,
+    is_probe_current_safe,
+)
 from ..pipeline import run_pipeline
 from ..plant import Plant, vary_unit_config
+from ..response import ResponseEvent, ResponseManager, VirtualSensor
 from ..sensors import Sensors
 from ..twin import EKF
 from .base import AttackContext, OracleContext, ReplayContext, Telemetry, TruthState, make_attack
@@ -36,6 +44,14 @@ class AttackTrajectory(TypedDict):
     CUSUM_V_alarm: NDArray[np.bool_]
     CUSUM_T_alarm: NDArray[np.bool_]
     CUSUM_I_alarm: NDArray[np.bool_]
+    defended: bool
+    response_state: NDArray[np.str_]
+    command_unsafe: NDArray[np.bool_]
+    virtual_temperature: NDArray[np.float64]
+    estimate_degraded: NDArray[np.bool_]
+    events: list[ResponseEvent]
+    probe_active: NDArray[np.bool_]
+    probe_delta: NDArray[np.float64]
 
 
 def run_attack_scenario(
@@ -44,8 +60,9 @@ def run_attack_scenario(
     config: Config | None = None,
     duration_s: int | None = None,
     attack_config_path: str | None = None,
+    defended: bool = False,
 ) -> AttackTrajectory:
-    """Simulate one deterministic, undefended attack run and B0/B1/B2 monitors."""
+    """Simulate one attack run, optionally adding command guard and response."""
     base_config = config or get_config()
     if duration_s is None:
         duration_s = base_config.simulation.duration
@@ -60,6 +77,9 @@ def run_attack_scenario(
     profile = ChargeProfile(run_config)
     monitor = PassiveDetectors(run_config)
     ekf = EKF(run_config)
+    command_guard = CommandGuard(run_config) if defended else None
+    response = ResponseManager(run_config) if defended else None
+    virtual_sensor = VirtualSensor(run_config) if defended else None
     previous_current_a = 0.0
 
     replay_ctx: ReplayContext | None = None
@@ -95,6 +115,17 @@ def run_attack_scenario(
     b1_values: list[bool] = []
     b2_values: list[bool] = []
     cusum_values: dict[str, list[bool]] = {channel: [] for channel in ("V", "T", "I")}
+    response_values: list[str] = []
+    command_unsafe_values: list[bool] = []
+    virtual_temperature_values: list[float] = []
+    estimate_degraded_values: list[bool] = []
+    probe_active_values: list[bool] = []
+    probe_delta_values: list[float] = []
+    probe_scheduler = ProbeScheduler(run_config, seed + 2) if defended else None
+    probe_key = run_config.probe.key or f"validation-probe-key-{seed}"
+    active_challenge: ProbeWindow | None = None
+    active_challenge_mode = ""
+    active_challenge_start = 0
 
     for index in range(duration_s):
         t_s = index * float(run_config.simulation.dt)
@@ -142,10 +173,142 @@ def run_attack_scenario(
         requested = profile.request(reported["V_rep"])
         requested = attack.request(t_s, requested, truth)
         attack.physical(t_s, plant)
-        applied = execute_request(requested, reported["T_rep"], run_config)
         b0_alarm = any(alarm.startswith("RANGE_") for alarm in passive_alarms)
         b1_alarm = "NIS" in passive_alarms
         b2_alarm = b1_alarm or any(alarm.startswith("CUSUM_") for alarm in passive_alarms)
+
+        command_unsafe = False
+        virtual_temperature = reported["T_rep"]
+        estimate_degraded = False
+        response_state = "NORMAL"
+        control_request = requested
+        derate_temperature = reported["T_rep"]
+        probe_mode = "NORMAL"
+        if defended:
+            assert command_guard is not None and response is not None and virtual_sensor is not None
+            flagged_channels = {
+                channel
+                for channel, alarm in (("V", "CUSUM_V"), ("T", "CUSUM_T"))
+                if alarm in passive_alarms
+            }
+            virtual_temperature, estimate_quality = virtual_sensor.update(
+                reported["V_rep"],
+                reported["T_rep"],
+                previous_current_a,
+                flagged_channels,
+                force_degraded=response.state == "SAFE_MODE",
+            )
+            estimate_degraded = estimate_quality == "degraded"
+            guard_result = command_guard.evaluate(
+                requested,
+                virtual_sensor.state,
+                worst_case=response.state == "SAFE_MODE",
+            )
+            command_unsafe = guard_result.unsafe
+            evidence_classes: set[str] = set()
+            if b1_alarm:
+                evidence_classes.add("passive_NIS")
+            if any(alarm.startswith("CUSUM_") for alarm in passive_alarms):
+                evidence_classes.add("CUSUM")
+            snapshot = response.update(
+                t_s,
+                evidence_classes,
+                command_unsafe=command_unsafe,
+                prediction_violation=guard_result.violation,
+                clean_challenge=(
+                    index > 0
+                    and index % max(1, int(run_config.probe.period)) == 0
+                    and not evidence_classes
+                    and not command_unsafe
+                ),
+            )
+            if snapshot.safe_mode:
+                guard_result = command_guard.evaluate(
+                    requested, virtual_sensor.state, worst_case=True
+                )
+                command_unsafe = command_unsafe or guard_result.unsafe
+            control_request = guard_result.applied_request_a
+            response_state = snapshot.state
+            probe_mode = snapshot.state
+            if snapshot.use_virtual_temperature:
+                derate_temperature = virtual_temperature
+        applied = execute_request(control_request, derate_temperature, run_config)
+        probe_delta = 0.0
+        probe_active = False
+        if defended:
+            assert probe_scheduler is not None
+            if probe_mode == "NORMAL":
+                probe_active = probe_scheduler.is_active(t_s, "NORMAL")
+                if probe_active:
+                    challenge_index = probe_scheduler.window_index(t_s, "NORMAL")
+                    challenge_start = int(
+                        round(
+                            challenge_index
+                            * run_config.probe.period
+                            / run_config.simulation.dt
+                        )
+                    )
+                    if (
+                        active_challenge is None
+                        or active_challenge_mode != "NORMAL"
+                        or active_challenge_start != challenge_start
+                    ):
+                        nonce = probe_scheduler.nonce_for(t_s, "NORMAL")
+                        if nonce is None:
+                            raise RuntimeError("normal probe window has no nonce")
+                        active_challenge = generate_probe_window(
+                            applied,
+                            control_request,
+                            int(round(run_config.probe.window / run_config.simulation.dt)),
+                            key=probe_key,
+                            nonce=nonce,
+                            config=run_config,
+                            plant=plant,
+                        )
+                        active_challenge_mode = "NORMAL"
+                        active_challenge_start = challenge_start
+                    offset = index - active_challenge_start
+                    if active_challenge is not None and 0 <= offset < len(active_challenge.delta_I):
+                        probe_delta = float(active_challenge.delta_I[offset])
+            else:
+                probe_active = True
+                window_samples = int(
+                    round(run_config.probe.window / run_config.simulation.dt)
+                )
+                if (
+                    active_challenge is None
+                    or active_challenge_mode != probe_mode
+                    or index >= active_challenge_start + window_samples
+                ):
+                    nonce = probe_scheduler.nonce_for(t_s, probe_mode)
+                    if nonce is None:
+                        raise RuntimeError("continuous probe window has no nonce")
+                    active_challenge = generate_probe_window(
+                        applied,
+                        control_request,
+                        window_samples,
+                        key=probe_key,
+                        nonce=nonce,
+                        config=run_config,
+                        plant=plant,
+                    )
+                    active_challenge_mode = probe_mode
+                    active_challenge_start = index
+                offset = index - active_challenge_start
+                if active_challenge is not None and 0 <= offset < len(active_challenge.delta_I):
+                    probe_delta = float(active_challenge.delta_I[offset])
+            if probe_active and is_probe_current_safe(applied + probe_delta, plant, run_config):
+                applied += probe_delta
+            else:
+                probe_delta = 0.0
+                probe_active = False
+        if defended:
+            response_values.append(response_state)
+            command_unsafe_values.append(command_unsafe)
+            virtual_temperature_values.append(float(virtual_temperature))
+            estimate_degraded_values.append(estimate_degraded)
+            probe_active_values.append(probe_active)
+            probe_delta_values.append(probe_delta)
 
         state = {
             "t": t_s,
@@ -179,5 +342,40 @@ def run_attack_scenario(
             "CUSUM_V_alarm": np.asarray(cusum_values["V"], dtype=np.bool_),
             "CUSUM_T_alarm": np.asarray(cusum_values["T"], dtype=np.bool_),
             "CUSUM_I_alarm": np.asarray(cusum_values["I"], dtype=np.bool_),
+            "defended": defended,
+            "response_state": np.asarray(response_values, dtype=np.str_),
+            "command_unsafe": np.asarray(command_unsafe_values, dtype=np.bool_),
+            "virtual_temperature": np.asarray(virtual_temperature_values, dtype=np.float64),
+            "estimate_degraded": np.asarray(estimate_degraded_values, dtype=np.bool_),
+            "events": response.events if response is not None else [],
+            "probe_active": np.asarray(probe_active_values, dtype=np.bool_),
+            "probe_delta": np.asarray(probe_delta_values, dtype=np.float64),
         },
     )
+
+
+def run_paired_scenario(
+    attack_id: str,
+    seed: int,
+    config: Config | None = None,
+    duration_s: int | None = None,
+    attack_config_path: str | None = None,
+) -> tuple[AttackTrajectory, AttackTrajectory]:
+    """Run undefended and defended plants from identical seed and attack inputs."""
+    undefended = run_attack_scenario(
+        attack_id,
+        seed,
+        config=config,
+        duration_s=duration_s,
+        attack_config_path=attack_config_path,
+        defended=False,
+    )
+    defended = run_attack_scenario(
+        attack_id,
+        seed,
+        config=config,
+        duration_s=duration_s,
+        attack_config_path=attack_config_path,
+        defended=True,
+    )
+    return undefended, defended

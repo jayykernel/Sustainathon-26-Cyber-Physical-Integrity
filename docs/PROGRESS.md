@@ -3,7 +3,7 @@
 Living log. Update after each task and phase so the current implementation state and evidence stay visible.
 
 ## Current status
-- Current phase: P5 active verification (P4 complete)
+- Current phase: P6 guard/response (P5 complete with AT4 limitation)
 - Event clock at last update: 2026-10-26 (start time = 2026-10-26 00:00 local)
 - Last green `make check`: 2026-10-26
 - Tags: none
@@ -18,7 +18,7 @@ Living log. Update after each task and phase so the current implementation state
 | P3 Attack engine | complete | 3 h | | `make check`; `make stealth-report`; `attacks-frozen` tag | AT1–AT6 and seven scenarios implemented; all SPEC 6 stealth criteria pass on validation seeds 0–99. |
 | P4 Localization | complete | 2 h | | `make localization-report`; localization unit tests; `make check` | Validation threshold and dominance ratio calibrated; AT1 and AT2 confusion matrices recorded on seeds 0–99. |
 | P5 Active verification | complete with AT4 limitation | 3.5 h | | `make probe-report`; probe tests; `make check` | Fresh keyed probes, safe amplitude clipping, gain detectors, validation calibration, sweep, overhead, and AT6 oracle results recorded. AT3 is exposed; active verification does not improve on B2 for AT4 and its reported-current input is the suspected cause. |
-| P6 Guard/response | todo | 3 h | | | |
+| P6 Guard/response | complete | 3 h | | `make guard-report`; response and guard tests; `make check` | Pessimistic command guard, virtual sensor, hysteretic response, and paired validation implemented. On seeds 0–9, AT3 hazard rate fell 30%→0 and AT5 100%→0; AT2/AT4 had no hazards in either arm. |
 | P7 Evaluation | todo | 3 h | | | |
 | P8 API | todo | 3 h | | | |
 | P9 Frontend | todo | 8 h | | | |
@@ -90,8 +90,15 @@ Living log. Update after each task and phase so the current implementation state
 - Mean paired overhead across 20 runs: peak temperature +0.0118 °C, final temperature +0.0020 °C, time to 90% SOC +1.25 s, estimated efficiency change −0.000137 percentage points. The sweep uses 20 clean calibration seeds and 20 separate attack seeds per amplitude; each point meets 0.20 false alarms/hour. AT3 combined detection is 100% throughout; AT4 combined detection is 10% at 0.5–3% amplitude and 0% at 5–8%, below B2. See `data/results/probe_report.json` and `data/results/probe_amplitude_sweep.svg`.
 - Probe tests and the full backend test suite pass. Ruff passes for backend source/tests and the new report script; strict mypy passes for all 28 backend source files. Frontend Vitest (1), ESLint, TypeScript, and production build pass.
 
+## P6 implementation and evidence
+- Added the 300-second pessimistic command guard with configured R_th, ambient, and R0 uncertainty, a closed-form horizon prediction equivalent to repeated twin steps, and an at-most-eight-step bisection for the largest safe current. SAFE_MODE uses the configured worst-case cooling resistance.
+- Added the response state machine: one evidence class enters SUSPECT; two independent classes within 60 seconds, two consecutive failed probes, or an unsafe predicted command confirms; CONFIRMED persists for 10 seconds before SAFE_MODE. Exit requires an explicit operator reset and three clean challenge windows.
+- Added virtual SOC/polarization/temperature estimates that fuse unflagged V/T channels. When no telemetry channel is trusted or SAFE_MODE forces isolation, the open-loop pessimistic twin supplies a degraded estimate. SAFE_MODE substitutes virtual temperature for charger derating and requests continuous keyed probes; probe current is clipped against next-step current, voltage, and thermal limits.
+- `make guard-report` ran paired undefended/defended AT2, AT3, AT4, and AT5 scenarios on validation seeds 0–9 for 3600 seconds each. Mean peak temperature and voltage decreased for all four attacks. Hazard-event rates were AT2 0%→0%, AT3 30%→0%, AT4 0%→0%, and AT5 100%→0%. Full paired per-seed metrics and event streams are in `data/results/p6_closed_loop_report.json`; the summary table is `data/results/p6_closed_loop_summary.md`.
+- Full backend tests pass; Ruff and strict mypy pass; frontend test, lint, typecheck, and production build pass. Response tests cover confirmation hysteresis, two-probe confirmation, safe-mode persistence, operator reset, trust degradation/recovery, and the guard horizon against repeated twin simulation.
+
 ## Exact continuation point
-- Next: begin P6 guard/response.
+- Next: begin P7 evaluation harness.
 - P0 was pushed in ten commits and P1 in eight focused commits; P2 was committed in five focused commits. P3 freeze is recorded by the `attacks-frozen` tag.
 
 ## Measured numbers log
@@ -118,6 +125,8 @@ Living log. Update after each task and phase so the current implementation state
 `P5 | make probe-report | AT3 V/I/combined detection | 100% / 100% / 100% | 0–99 | 6d079b3bd6bc4947`
 `P5 | make probe-report | AT4 V/I/combined detection; B2 with probe | 0% / 3% / 3%; 29% | 0–99 | 6d079b3bd6bc4947`
 `P5 | make probe-report | AT6 oracle V/I/combined detection | 0% / 3% / 3% | 0–99 | 6d079b3bd6bc4947`
+`P6 | make guard-report | AT3 hazard-event rate, undefended→defended | 30% → 0% | 0–9 | 6d079b3bd6bc4947`
+`P6 | make guard-report | AT5 hazard-event rate, undefended→defended | 100% → 0% | 0–9 | 6d079b3bd6bc4947`
 
 ## Ideas parked
 - Remediate npm audit advisories in a dedicated dependency update with compatibility checks.
