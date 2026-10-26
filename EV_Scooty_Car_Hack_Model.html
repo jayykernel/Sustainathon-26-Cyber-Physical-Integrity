@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sustainathon '26 — Interactive Visual Scroll Simulation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; user-select: none; }
+        html, body {
+            margin: 0;
+            padding: 0;
+            background-color: #030712;
+            color: #f8fafc;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #030712; }
+        ::-webkit-scrollbar-thumb { background: #00f2fe88; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00f2fe; }
+
+        .glass-pill {
+            background: rgba(8, 15, 30, 0.78);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(148, 163, 184, 0.18);
+        }
+        .stage-node {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        @keyframes mouseWheel {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(7px); opacity: 0; }
+        }
+        .wheel-dot {
+            animation: mouseWheel 1.3s infinite;
+        }
+        @keyframes spinSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .vehicle-card:hover .preview-wheel {
+            animation: spinSlow 1.6s linear infinite;
+        }
+        .vehicle-card {
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .vehicle-card:hover {
+            transform: translateY(-8px) scale(1.015);
+            box-shadow: 0 0 55px rgba(0, 242, 254, 0.25);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== FULL-SCREEN BIG VISUAL VEHICLE CHOOSER OVERLAY ==================== -->
+    <div id="vehicleChooserModal" class="fixed inset-0 z-[100] bg-slate-950/95 backdrop-blur-2xl flex flex-col items-center justify-center p-4 sm:p-8 transition-opacity duration-500">
+        <!-- Minimal Visual Header Pill -->
+        <div class="glass-pill px-5 py-2 rounded-full mb-6 sm:mb-8 flex items-center gap-3 border border-cyan-500/40 shadow-2xl">
+            <span class="w-3 h-3 rounded-full bg-cyan-400 animate-ping"></span>
+            <span class="font-mono text-xs sm:text-sm font-black tracking-widest text-white">SELECT EV VEHICLE TO START SCROLL SIMULATION</span>
+        </div>
+
+        <!-- 2 Giant Side-by-Side Visual Vehicle Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 w-full max-w-6xl">
+            
+            <!-- OPTION 1: EV CAR BIG VISUAL CARD -->
+            <button onclick="selectVehicle('car', true)" class="vehicle-card group relative rounded-3xl bg-gradient-to-b from-slate-900/90 to-slate-950/95 border-2 border-cyan-500/40 hover:border-cyan-400 p-6 sm:p-8 flex flex-col items-center justify-between overflow-hidden text-left cursor-pointer shadow-2xl">
+                <!-- Ambient Top Glow -->
+                <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-80 h-48 bg-cyan-500/20 rounded-full blur-3xl group-hover:bg-cyan-400/35 transition"></div>
+
+                <!-- Top Badge Row -->
+                <div class="w-full flex items-center justify-between z-10 mb-2">
+                    <span class="px-3.5 py-1 rounded-full bg-cyan-500/20 border border-cyan-400/50 font-mono text-xs font-extrabold text-cyan-300">
+                        🚗 OPTION 1 • EV CAR
+                    </span>
+                    <span class="font-mono text-xs font-bold text-emerald-400 bg-emerald-500/15 px-3 py-1 rounded-full border border-emerald-500/30">
+                        396V • 2RC PACK
+                    </span>
+                </div>
+
+                <!-- Giant Animated SVG Illustration of Futuristic EV Sports Sedan -->
+                <div class="w-full h-52 sm:h-64 flex items-center justify-center my-2 z-10">
+                    <svg viewBox="0 0 500 220" class="w-full h-full drop-shadow-[0_0_20px_rgba(0,242,254,0.3)]">
+                        <defs>
+                            <linearGradient id="carBodyGrad" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#0f172a"/>
+                                <stop offset="55%" stop-color="#1e293b"/>
+                                <stop offset="100%" stop-color="#090d16"/>
+                            </linearGradient>
+                            <linearGradient id="carBeam" x1="0" y1="0" x2="1" y2="0">
+                                <stop offset="0%" stop-color="#00f2fe" stop-opacity="0.6"/>
+                                <stop offset="100%" stop-color="#00f2fe" stop-opacity="0"/>
+                            </linearGradient>
+                        </defs>
+                        <!-- Road Line -->
+                        <line x1="20" y1="186" x2="480" y2="186" stroke="#00f2fe" stroke-width="3" stroke-opacity="0.5"/>
+                        <!-- Headlight Beam -->
+                        <polygon points="435,122 498,95 498,165 435,138" fill="url(#carBeam)" class="opacity-60 group-hover:opacity-100 transition"/>
+                        <!-- Sleek EV Sedan Silhouette -->
+                        <path d="M 55 152 L 48 118 L 88 102 L 165 62 L 315 62 L 395 102 L 445 116 L 452 152 L 420 162 L 75 162 Z" fill="url(#carBodyGrad)" stroke="#00f2fe" stroke-width="3.5"/>
+                        <!-- Cabin Glass Canopy -->
+                        <path d="M 105 102 L 172 70 L 305 70 L 378 102 Z" fill="#06152d" stroke="#38bdf8" stroke-width="2"/>
+                        <line x1="242" y1="70" x2="242" y2="102" stroke="#38bdf8" stroke-width="2"/>
+                        <!-- Glowing LED Taillight & Headlight -->
+                        <rect x="48" y="120" width="12" height="16" rx="4" fill="#f43f5e"/>
+                        <polygon points="424,118 448,122 444,136 420,132" fill="#ffffff"/>
+                        <!-- Inbuilt 2RC Floorboard Battery X-Ray Cutaway -->
+                        <rect x="148" y="122" width="198" height="34" rx="7" fill="#04131a" stroke="#10b981" stroke-width="2.5"/>
+                        <rect x="158" y="131" width="35" height="16" rx="3" fill="#06281e" stroke="#34d399" stroke-width="1.5"/>
+                        <rect x="202" y="131" width="62" height="16" rx="3" fill="#06281e" stroke="#34d399" stroke-width="1.5"/>
+                        <rect x="272" y="131" width="64" height="16" rx="3" fill="#06281e" stroke="#00f2fe" stroke-width="1.5"/>
+                        <text x="175" y="143" fill="#6ee7b7" font-family="JetBrains Mono" font-size="10" font-weight="800" text-anchor="middle">R0</text>
+                        <text x="233" y="143" fill="#6ee7b7" font-family="JetBrains Mono" font-size="10" font-weight="800" text-anchor="middle">R1||C1</text>
+                        <text x="304" y="143" fill="#38bdf8" font-family="JetBrains Mono" font-size="10" font-weight="800" text-anchor="middle">R2||C2</text>
+                        <!-- Rear Wheel -->
+                        <g style="transform-origin: 115px 156px;" class="preview-wheel">
+                            <circle cx="115" cy="156" r="28" fill="#090d16" stroke="#334155" stroke-width="7"/>
+                            <circle cx="115" cy="156" r="19" fill="none" stroke="#00f2fe" stroke-width="2.5"/>
+                            <line x1="115" y1="137" x2="115" y2="175" stroke="#00f2fe" stroke-width="2.5"/>
+                            <line x1="96" y1="156" x2="134" y2="156" stroke="#00f2fe" stroke-width="2.5"/>
+                            <circle cx="115" cy="156" r="6" fill="#f8fafc"/>
+                        </g>
+                        <!-- Front Wheel -->
+                        <g style="transform-origin: 382px 156px;" class="preview-wheel">
+                            <circle cx="382" cy="156" r="28" fill="#090d16" stroke="#334155" stroke-width="7"/>
+                            <circle cx="382" cy="156" r="19" fill="none" stroke="#00f2fe" stroke-width="2.5"/>
+                            <line x1="382" y1="137" x2="382" y2="175" stroke="#00f2fe" stroke-width="2.5"/>
+                            <line x1="363" y1="156" x2="401" y2="156" stroke="#00f2fe" stroke-width="2.5"/>
+                            <circle cx="382" cy="156" r="6" fill="#f8fafc"/>
+                        </g>
+                    </svg>
+                </div>
+
+                <!-- Big Visual Action Bar -->
+                <div class="w-full flex items-center justify-between pt-3 border-t border-slate-800/80 z-10">
+                    <div class="flex items-center gap-2 font-mono text-xs text-slate-300">
+                        <span class="px-2 py-0.5 rounded bg-slate-800 text-cyan-300">2RC</span>
+                        <span>→</span>
+                        <span class="px-2 py-0.5 rounded bg-slate-800 text-rose-400">⚡ HACK</span>
+                        <span>→</span>
+                        <span class="px-2 py-0.5 rounded bg-slate-800 text-purple-300">🛡️ 1RC TWIN</span>
+                    </div>
+                    <span class="px-4 py-2 rounded-xl bg-cyan-400 text-slate-950 font-mono text-xs sm:text-sm font-black tracking-wider group-hover:bg-white transition flex items-center gap-2">
+                        DRIVE CAR <i class="fa-solid fa-arrow-right"></i>
+                    </span>
+                </div>
+            </button>
+
+            <!-- OPTION 2: EV SCOOTY / BIKE BIG VISUAL CARD -->
+            <button onclick="selectVehicle('scooty', true)" class="vehicle-card group relative rounded-3xl bg-gradient-to-b from-slate-900/90 to-slate-950/95 border-2 border-emerald-500/40 hover:border-emerald-400 p-6 sm:p-8 flex flex-col items-center justify-between overflow-hidden text-left cursor-pointer shadow-2xl">
+                <!-- Ambient Top Glow -->
+                <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-80 h-48 bg-emerald-500/20 rounded-full blur-3xl group-hover:bg-emerald-400/35 transition"></div>
+
+                <!-- Top Badge Row -->
+                <div class="w-full flex items-center justify-between z-10 mb-2">
+                    <span class="px-3.5 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/50 font-mono text-xs font-extrabold text-emerald-300">
+                        🛵 OPTION 2 • EV SCOOTY / BIKE
+                    </span>
+                    <span class="font-mono text-xs font-bold text-cyan-300 bg-cyan-500/15 px-3 py-1 rounded-full border border-cyan-500/30">
+                        48.2V • 2RC PACK
+                    </span>
+                </div>
+
+                <!-- Giant Animated SVG Illustration of Futuristic EV Scooty / Bike -->
+                <div class="w-full h-52 sm:h-64 flex items-center justify-center my-2 z-10">
+                    <svg viewBox="0 0 500 220" class="w-full h-full drop-shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+                        <defs>
+                            <linearGradient id="scootyBeam" x1="0" y1="0" x2="1" y2="0">
+                                <stop offset="0%" stop-color="#10b981" stop-opacity="0.6"/>
+                                <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
+                            </linearGradient>
+                        </defs>
+                        <!-- Road Line -->
+                        <line x1="20" y1="186" x2="480" y2="186" stroke="#10b981" stroke-width="3" stroke-opacity="0.5"/>
+                        <!-- Headlight Beam -->
+                        <polygon points="368,85 490,60 490,155 368,105" fill="url(#scootyBeam)" class="opacity-60 group-hover:opacity-100 transition"/>
+                        <!-- Scooty Chassis Body -->
+                        <path d="M 118 145 L 132 82 L 218 88 L 230 132 L 315 132 L 340 62 L 325 32 L 358 38 L 372 108 L 338 158 L 140 158 Z" fill="#0f172a" stroke="#10b981" stroke-width="3.5"/>
+                        <!-- Seat -->
+                        <rect x="122" y="64" width="92" height="22" rx="10" fill="#1e293b" stroke="#64748b" stroke-width="2.5"/>
+                        <!-- Handlebar & Stem -->
+                        <line x1="342" y1="156" x2="322" y2="26" stroke="#cbd5e1" stroke-width="6"/>
+                        <rect x="304" y="18" width="34" height="12" rx="6" fill="#00f2fe"/>
+                        <!-- LED Headlamp -->
+                        <circle cx="364" cy="86" r="9" fill="#ffffff"/>
+                        <!-- Inbuilt 2RC Floorboard Battery X-Ray Cutaway -->
+                        <rect x="172" y="114" width="136" height="42" rx="8" fill="#04131a" stroke="#00f2fe" stroke-width="2.5"/>
+                        <rect x="180" y="125" width="28" height="20" rx="3" fill="#06281e" stroke="#34d399" stroke-width="1.5"/>
+                        <rect x="214" y="125" width="42" height="20" rx="3" fill="#06281e" stroke="#34d399" stroke-width="1.5"/>
+                        <rect x="262" y="125" width="40" height="20" rx="3" fill="#06281e" stroke="#00f2fe" stroke-width="1.5"/>
+                        <text x="194" y="139" fill="#6ee7b7" font-family="JetBrains Mono" font-size="9.5" font-weight="800" text-anchor="middle">R0</text>
+                        <text x="235" y="139" fill="#6ee7b7" font-family="JetBrains Mono" font-size="9.5" font-weight="800" text-anchor="middle">R1||C1</text>
+                        <text x="282" y="139" fill="#38bdf8" font-family="JetBrains Mono" font-size="9.5" font-weight="800" text-anchor="middle">R2||C2</text>
+                        <!-- Rear Wheel -->
+                        <g style="transform-origin: 146px 156px;" class="preview-wheel">
+                            <circle cx="146" cy="156" r="29" fill="#090d16" stroke="#334155" stroke-width="7"/>
+                            <circle cx="146" cy="156" r="20" fill="none" stroke="#10b981" stroke-width="2.5"/>
+                            <line x1="146" y1="136" x2="146" y2="176" stroke="#10b981" stroke-width="2.5"/>
+                            <line x1="126" y1="156" x2="166" y2="156" stroke="#10b981" stroke-width="2.5"/>
+                            <circle cx="146" cy="156" r="6" fill="#f8fafc"/>
+                        </g>
+                        <!-- Front Wheel -->
+                        <g style="transform-origin: 342px 156px;" class="preview-wheel">
+                            <circle cx="342" cy="156" r="29" fill="#090d16" stroke="#334155" stroke-width="7"/>
+                            <circle cx="342" cy="156" r="20" fill="none" stroke="#10b981" stroke-width="2.5"/>
+                            <line x1="342" y1="136" x2="342" y2="176" stroke="#10b981" stroke-width="2.5"/>
+                            <line x1="322" y1="156" x2="362" y2="156" stroke="#10b981" stroke-width="2.5"/>
+                            <circle cx="342" cy="156" r="6" fill="#f8fafc"/>
+                        </g>
+                    </svg>
+                </div>
+
+                <!-- Big Visual Action Bar -->
+                <div class="w-full flex items-center justify-between pt-3 border-t border-slate-800/80 z-10">
+                    <div class="flex items-center gap-2 font-mono text-xs text-slate-300">
+                        <span class="px-2 py-0.5 rounded bg-slate-800 text-emerald-300">2RC</span>
+                        <span>→</span>
+                        <span class="px-2 py-0.5 rounded bg-slate-800 text-rose-400">⚡ HACK</span>
+                        <span>→</span>
+                        <span class="px-2 py-0.5 rounded bg-slate-800 text-purple-300">🛡️ 1RC TWIN</span>
+                    </div>
+                    <span class="px-4 py-2 rounded-xl bg-emerald-400 text-slate-950 font-mono text-xs sm:text-sm font-black tracking-wider group-hover:bg-white transition flex items-center gap-2">
+                        DRIVE SCOOTY <i class="fa-solid fa-arrow-right"></i>
+                    </span>
+                </div>
+            </button>
+
+        </div>
+    </div>
+
+    <!-- ==================== MINIMAL VISUAL STAGE ICON STEPPER (TOP) ==================== -->
+    <header class="fixed top-3 left-0 right-0 z-50 px-3 sm:px-6 pointer-events-none flex items-center justify-between gap-2">
+        <!-- Instant Vehicle Switcher Pill (Car vs Scooty + Reopen Big Modal) -->
+        <div class="glass-pill p-1 rounded-full pointer-events-auto flex items-center gap-1 shadow-lg">
+            <button id="topCarBtn" onclick="selectVehicle('car', false)" class="px-2.5 py-1 rounded-full font-mono text-xs font-extrabold flex items-center gap-1.5 transition bg-cyan-500/25 text-cyan-300 border border-cyan-400/60" title="Switch to EV Car">
+                <span>🚗</span>
+                <span class="hidden sm:inline">CAR</span>
+            </button>
+            <button id="topScootyBtn" onclick="selectVehicle('scooty', false)" class="px-2.5 py-1 rounded-full font-mono text-xs font-extrabold flex items-center gap-1.5 transition text-slate-400 hover:text-white border border-transparent" title="Switch to EV Scooty">
+                <span>🛵</span>
+                <span class="hidden sm:inline">SCOOTY</span>
+            </button>
+            <button onclick="openVehicleModal()" class="w-7 h-7 rounded-full text-slate-300 hover:text-cyan-300 hover:bg-slate-800/80 flex items-center justify-center text-xs transition" title="Open Full-Screen Vehicle Chooser">
+                <i class="fa-solid fa-Maximize"></i>
+            </button>
+        </div>
+
+        <!-- 6 Visual Scenario Icons (Click to Jump or Scroll to Scrub) -->
+        <nav class="glass-pill px-2 py-1.5 rounded-full pointer-events-auto flex items-center gap-1 sm:gap-2 shadow-2xl overflow-x-auto max-w-[72vw] sm:max-w-none">
+            <button onclick="jumpToStage(1)" id="step1" class="stage-node px-2.5 py-1 rounded-full flex items-center gap-1.5 text-xs font-mono font-bold bg-cyan-500/25 text-cyan-300 border border-cyan-400/60" title="1. 2RC Battery Inside Scooty">
+                <i class="fa-solid fa-car-battery"></i>
+                <span class="hidden md:inline">1. 2RC Pack</span>
+            </button>
+            <button onclick="jumpToStage(2)" id="step2" class="stage-node px-2.5 py-1 rounded-full flex items-center gap-1.5 text-xs font-mono font-bold text-slate-400 hover:text-white border border-transparent" title="2. Temp, Current, Voltage">
+                <i class="fa-solid fa-gauge-high"></i>
+                <span class="hidden md:inline">2. T / I / V</span>
+            </button>
+            <button onclick="jumpToStage(3)" id="step3" class="stage-node px-2.5 py-1 rounded-full flex items-center gap-1.5 text-xs font-mono font-bold text-slate-400 hover:text-white border border-transparent" title="3. Charging Station Attack">
+                <i class="fa-solid fa-plug-circle-bolt"></i>
+                <span class="hidden md:inline">3. Charge Hack</span>
+            </button>
+            <button onclick="jumpToStage(4)" id="step4" class="stage-node px-2.5 py-1 rounded-full flex items-center gap-1.5 text-xs font-mono font-bold text-slate-400 hover:text-white border border-transparent" title="4. Overheating & Damage">
+                <i class="fa-solid fa-fire-flame-curved"></i>
+                <span class="hidden md:inline">4. Overheat</span>
+            </button>
+            <button onclick="jumpToStage(5)" id="step5" class="stage-node px-2.5 py-1 rounded-full flex items-center gap-1.5 text-xs font-mono font-bold text-slate-400 hover:text-white border border-transparent" title="5. 1RC Fake Destruction Signal">
+                <i class="fa-solid fa-satellite-dish"></i>
+                <span class="hidden md:inline">5. 1RC Spoof</span>
+            </button>
+            <button onclick="jumpToStage(6)" id="step6" class="stage-node px-2.5 py-1 rounded-full flex items-center gap-1.5 text-xs font-mono font-bold text-slate-400 hover:text-white border border-transparent" title="6. Attacker Collapsed & Safe">
+                <i class="fa-solid fa-shield-heart"></i>
+                <span class="hidden md:inline">6. Safe</span>
+            </button>
+        </nav>
+
+        <!-- Auto-Play & Backend Sync Icon Buttons -->
+        <div class="flex items-center gap-1.5 pointer-events-auto">
+            <button id="autoPlayBtn" onclick="toggleAutoPlay()" class="glass-pill px-3 py-1.5 rounded-full text-xs font-mono font-bold text-cyan-300 hover:bg-cyan-500/20 border border-cyan-500/40 flex items-center gap-1.5 transition" title="Auto-Scroll Animation">
+                <i id="autoPlayIcon" class="fa-solid fa-play text-[10px]"></i>
+                <span id="autoPlayText" class="hidden sm:inline">Auto</span>
+            </button>
+            <button onclick="toggleBackendDrawer()" id="apiBtn" class="glass-pill w-8 h-8 rounded-full text-xs font-mono text-emerald-400 hover:bg-emerald-500/20 flex items-center justify-center transition" title="Sync Local Backend API">
+                <i class="fa-solid fa-server"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- ==================== FULLSCREEN STICKY VISUAL CANVAS VIEWPORT ==================== -->
+    <div class="fixed inset-0 w-screen h-screen overflow-hidden z-10">
+        <canvas id="visualStageCanvas" class="w-full h-full block"></canvas>
+    </div>
+
+    <!-- ==================== COMPACT BOTTOM SCROLL SCRUBBER BAR ==================== -->
+    <div class="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 pointer-events-none flex items-center gap-3">
+        <div class="glass-pill px-4 py-2 rounded-full flex items-center gap-3 shadow-2xl pointer-events-auto">
+            <!-- Animated Mouse Scroll Wheel Icon -->
+            <div class="w-4 h-6 rounded-full border-2 border-cyan-400 flex justify-center pt-1">
+                <div class="w-1 h-1.5 bg-cyan-400 rounded-full wheel-dot"></div>
+            </div>
+            <span id="bottomVisualCue" class="font-mono text-xs font-bold tracking-wide text-slate-200">
+                SCROLL TO DRIVE SCOOTY
+            </span>
+            <div class="w-24 sm:w-36 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                <div id="scrollFillBar" class="h-full bg-gradient-to-r from-cyan-400 via-rose-500 to-emerald-400" style="width: 1%;"></div>
+            </div>
+            <span id="scrollPctLabel" class="font-mono text-xs font-extrabold text-cyan-400 w-9 text-right">0%</span>
+        </div>
+    </div>
+
+    <!-- ==================== MINIMAL BACKEND API DRAWER (HIDDEN BY DEFAULT) ==================== -->
+    <div id="backendDrawer" class="fixed top-14 right-4 z-50 glass-pill rounded-2xl p-3.5 w-80 hidden shadow-2xl border border-cyan-500/40">
+        <div class="flex items-center justify-between mb-2">
+            <span class="font-mono text-xs font-bold text-cyan-300"><i class="fa-solid fa-plug mr-1"></i>Backend Live Sync</span>
+            <button onclick="toggleBackendDrawer()" class="text-slate-400 hover:text-white text-xs"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="flex gap-1.5">
+            <input id="apiUrlInput" type="text" value="http://127.0.0.1:8000/api/telemetry" class="flex-1 bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1 text-[11px] font-mono text-white focus:outline-none focus:border-cyan-400">
+            <button onclick="connectBackend()" class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-mono text-[11px] font-bold">Sync</button>
+        </div>
+        <div id="apiStatusMsg" class="text-[10px] font-mono text-slate-400 mt-1.5">Mode: Interactive Scroll Physics</div>
+    </div>
+
+    <!-- ==================== INVISIBLE TALL SCROLL TRACK (900VH) ==================== -->
+    <!-- Zero text blocks! Scrolling this 900vh track directly drives the entire visual movie -->
+    <div id="scrollTrack" class="w-full h-[900vh] pointer-events-none"></div>
+
+    <!-- ==================== PURE VISUAL SCROLL ANIMATION ENGINE ==================== -->
+    <script>
+        const canvas = document.getElementById('visualStageCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Master Simulation & Visual State
+        const sim = {
+            vehicle: 'car',       // 'car' or 'scooty'
+            rawScroll: 0,         // 0.0 -> 1.0 directly from scrollbar
+            p: 0,                 // Smoothly interpolated progress (0.0 -> 1.0)
+            speed: 0,             // Instantaneous scroll speed
+            stage: 1,             // 1..6
+            autoPlay: false,
+            backendSync: false,
+            apiUrl: 'http://127.0.0.1:8000/api/telemetry',
+
+            // Live EV Vehicle & Battery Physics Values
+            temp: 28.5,           // °C
+            current: 14.2,        // Amps
+            voltage2RC: 48.2,     // Volts (48.2V for Scooty, scaled ~396V for Car display)
+            voltage1RC: 48.2,     // Volts (1RC Digital Twin)
+            vRC1: 0.15,
+            vRC2: 0.09,
+            soc: 80,
+            damageCracks: 0,      // 0.0 -> 1.0
+
+            // Rolling waveform arrays for visual sparklines
+            waveV2RC: new Array(45).fill(48.2),
+            waveTemp: new Array(45).fill(28.5),
+
+            // Particle pools
+            stars: [],
+            flames: [],
+            sparks: []
+        };
+
+        // Vehicle Selection & Modal Controls
+        function selectVehicle(type, resetScroll) {
+            sim.vehicle = type;
+            const modal = document.getElementById('vehicleChooserModal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => modal.classList.add('hidden'), 450);
+
+            const carBtn = document.getElementById('topCarBtn');
+            const scootyBtn = document.getElementById('topScootyBtn');
+            if (type === 'car') {
+                carBtn.className = 'px-2.5 py-1 rounded-full font-mono text-xs font-extrabold flex items-center gap-1.5 transition bg-cyan-500/25 text-cyan-300 border border-cyan-400/60';
+                scootyBtn.className = 'px-2.5 py-1 rounded-full font-mono text-xs font-extrabold flex items-center gap-1.5 transition text-slate-400 hover:text-white border border-transparent';
+            } else {
+                scootyBtn.className = 'px-2.5 py-1 rounded-full font-mono text-xs font-extrabold flex items-center gap-1.5 transition bg-emerald-500/25 text-emerald-300 border border-emerald-400/60';
+                carBtn.className = 'px-2.5 py-1 rounded-full font-mono text-xs font-extrabold flex items-center gap-1.5 transition text-slate-400 hover:text-white border border-transparent';
+            }
+
+            lastUiStage = 0; // Refresh bottom cue label for chosen vehicle
+            if (resetScroll) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function openVehicleModal() {
+            const modal = document.getElementById('vehicleChooserModal');
+            modal.classList.remove('hidden');
+            requestAnimationFrame(() => {
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+            });
+        }
+
+        // Populate parallax sky stars
+        for (let i = 0; i < 80; i++) {
+            sim.stars.push({
+                x: Math.random() * 2400,
+                y: Math.random() * 500,
+                r: Math.random() * 1.8 + 0.6,
+                a: Math.random() * 0.7 + 0.2,
+                s: Math.random() * 0.35 + 0.1
+            });
+        }
+
+        // Populate fire/smoke particles for Stage 4 Overheating
+        for (let i = 0; i < 38; i++) {
+            sim.flames.push({
+                ox: (Math.random() - 0.5) * 110,
+                phase: Math.random(),
+                speed: 0.6 + Math.random() * 0.9,
+                size: 10 + Math.random() * 22
+            });
+        }
+
+        function resizeCanvas() {
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            canvas.width = window.innerWidth * dpr;
+            canvas.height = window.innerHeight * dpr;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+
+        function onScroll() {
+            const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+            sim.rawScroll = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('scroll', onScroll, { passive: true });
+
+        //Rounded rectangle helper
+        function rRect(x, y, w, h, r) {
+            ctx.beginPath();
+            ctx.roundRect(x, y, w, h, r);
+            ctx.closePath();
+        }
+
+        /***********************************************************************
+         * COMPUTE STAGE (1..6) AND BATTERY VALUES FROM SCROLL PROGRESS `p`
+         ***********************************************************************/
+        function updatePhysicsFromScroll(p, t) {
+            // Determine active scenario (1 to 6)
+            if (p < 0.165) sim.stage = 1;
+            else if (p < 0.33) sim.stage = 2;
+            else if (p < 0.50) sim.stage = 3;
+            else if (p < 0.67) sim.stage = 4;
+            else if (p < 0.84) sim.stage = 5;
+            else sim.stage = 6;
+
+            const pulse = Math.sin(t * 4);
+            const jitter = Math.sin(t * 19);
+
+            if (sim.stage === 1) {
+                // Scenario 1: Scooty running + X-Ray 2RC Battery Inside
+                const lp = p / 0.165;
+                sim.temp = 28.4 + lp * 1.1;
+                sim.current = 14.0 + pulse * 1.1;
+                sim.voltage2RC = 48.4 - lp * 0.3;
+                sim.voltage1RC = sim.voltage2RC;
+                sim.vRC1 = 0.16;
+                sim.vRC2 = 0.09;
+                sim.soc = 84 - lp * 5;
+                sim.damageCracks = 0;
+            }
+            else if (sim.stage === 2) {
+                // Scenario 2: Floating Temperature, Current, Voltage Gauges
+                const lp = (p - 0.165) / 0.165;
+                sim.temp = 29.5 + lp * 2.5 + pulse * 0.3;
+                sim.current = 17.5 + Math.sin(lp * Math.PI) * 4.0 + pulse;
+                sim.voltage2RC = 48.1 - lp * 2.4;
+                sim.voltage1RC = sim.voltage2RC + 0.02;
+                sim.vRC1 = 0.24;
+                sim.vRC2 = 0.15;
+                sim.soc = 79 - lp * 35; // Drops to 44% before charging station
+                sim.damageCracks = 0;
+            }
+            else if (sim.stage === 3) {
+                // Scenario 3: Docked at Charging Station + Cyber Attacker Injects Malware
+                const lp = (p - 0.33) / 0.17;
+                sim.soc = 44 + lp * 42; // Charges up to 86%
+                sim.current = -32.0 + (lp > 0.3 ? jitter * 8.5 : 0); // Charging current + malicious harmonic
+                sim.temp = 32.0 + lp * 6.5;
+                sim.voltage2RC = 46.2 + lp * 2.8;
+                sim.voltage1RC = 46.2 + lp * 2.4;
+                sim.damageCracks = 0;
+            }
+            else if (sim.stage === 4) {
+                // Scenario 4: Scooty rides some distance -> Attack causes severe Overheating & Damage!
+                const lp = (p - 0.50) / 0.17;
+                sim.soc = 86 - lp * 26;
+                sim.current = 64.0 + lp * 16.0 + jitter * 5.0; // Massive malicious discharge surge
+                sim.temp = 39.0 + Math.pow(lp, 0.8) * 58.0 + jitter * 1.5; // Spikes to 97°C!
+                sim.voltage2RC = 48.0 - lp * 7.8 + jitter * 1.2; // Severe voltage sag
+                sim.voltage1RC = 47.6 - lp * 0.6; // 1RC Digital Twin reference
+                sim.damageCracks = Math.min(1, lp * 1.3);
+            }
+            else if (sim.stage === 5) {
+                // Scenario 5: 1RC Digital Twin Senses Overheating & Sends Fake "Scooty Destroyed" Signal
+                const lp = (p - 0.67) / 0.17;
+                sim.soc = 60 - lp * 4;
+                sim.current = 68.0 - lp * 48.0; // Twin begins clamping real current
+                sim.temp = 95.0 - lp * 32.0;    // Twin starts cooling real pack while spoofing 160°C
+                sim.voltage2RC = 41.5 + lp * 5.2;
+                sim.voltage1RC = 47.2;
+                sim.damageCracks = 1 - lp * 0.5;
+            }
+            else {
+                // Scenario 6: Attacker Collapses & Digital Twin Stops Overheating Completely
+                const lp = (p - 0.84) / 0.16;
+                sim.soc = 56 - lp * 3;
+                sim.current = 14.5 + pulse * 0.8;
+                sim.temp = 34.0 - Math.min(1, lp * 1.4) * 3.5; // Cooled to 30.5°C
+                sim.voltage2RC = 47.8 + pulse * 0.1;
+                sim.voltage1RC = 47.8;
+                sim.damageCracks = 0;
+            }
+        }
+
+        /***********************************************************************
+         * UPDATE TOP STAGE BUTTONS & BOTTOM PROGRESS BAR
+         ***********************************************************************/
+        let lastUiStage = 0;
+        let lastHistoryPush = 0;
+
+        function syncMinimalHud(tMs) {
+            const pct = Math.round(sim.p * 100);
+            document.getElementById('scrollFillBar').style.width = `${ Math.max(1, pct) }%`;
+            document.getElementById('scrollPctLabel').textContent = `${pct}%`;
+
+            if (tMs - lastHistoryPush > 80) {
+                lastHistoryPush = tMs;
+                sim.waveV2RC.push(sim.voltage2RC);
+                sim.waveV2RC.shift();
+                sim.waveTemp.push(sim.temp);
+                sim.waveTemp.shift();
+            }
+
+            if (sim.stage !== lastUiStage) {
+                lastUiStage = sim.stage;
+                const vName = sim.vehicle === 'car' ? 'EV CAR' : 'EV SCOOTY';
+                const cues = [
+                    `1/6 • ${vName} INBUILT 2RC BATTERY (X-RAY)`,
+                    `2/6 • ${vName} LIVE TEMP, CURRENT & VOLTAGE`,
+                    `3/6 • CHARGING STATION CYBER ATTACK ON ${vName}`,
+                    `4/6 • ${vName} OVERHEATING & THERMAL DAMAGE`,
+                    `5/6 • 1RC TWIN SENDS FAKE DESTRUCTION SIGNAL`,
+                    `6/6 • ATTACKER COLLAPSED & ${vName} SAFE`
+                ];
+                document.getElementById('bottomVisualCue').textContent = cues[sim.stage - 1];
+
+                for (let i = 1; i <= 6; i++) {
+                    const btn = document.getElementById(`step${i}`);
+                    if (i === sim.stage) {
+                        const activeColors = {
+                            1: 'bg-cyan-500/25 text-cyan-300 border-cyan-400',
+                            2: 'bg-emerald-500/25 text-emerald-300 border-emerald-400',
+                            3: 'bg-amber-500/25 text-amber-300 border-amber-400',
+                            4: 'bg-rose-500/30 text-rose-300 border-rose-500 animate-pulse',
+                            5: 'bg-purple-500/30 text-purple-200 border-purple-400',
+                            6: 'bg-emerald-500/30 text-emerald-300 border-emerald-400'
+                        };
+                        btn.className = `stage-node px-2.5 py-1 rounded-full flex items-center gap-1.5 text-xs font-mono font-bold border ${activeColors[i]}`;
+                    } else {
+                        btn.className = 'stage-node px-2.5 py-1 rounded-full flex items-center gap-1.5 text-xs font-mono font-bold text-slate-400 hover:text-white border border-transparent';
+                    }
+                }
+            }
+        }
+
+        /***********************************************************************
+         * MASTER SCENE RENDERER (100% VISUAL STORYTELLING ON CANVAS)
+         ***********************************************************************/
+        function renderScene(tMs) {
+            const t = tMs * 0.001;
+            const W = window.innerWidth;
+            const H = window.innerHeight;
+
+            // Smooth scroll scrubbing
+            const prevP = sim.p;
+            sim.p += (sim.rawScroll - sim.p) * 0.11;
+            sim.speed = sim.p - prevP;
+
+            if (!sim.backendSync) {
+                updatePhysicsFromScroll(sim.p, t);
+            }
+            syncMinimalHud(tMs);
+
+            // Virtual Road Distance (Stops scrolling road while parked at Charger in Stage 3!)
+            let effectiveRoadP = sim.p;
+            if (sim.p >= 0.33 && sim.p <= 0.50) {
+                // Park Scooty right at the charging station during Stage 3
+                effectiveRoadP = 0.33;
+            } else if (sim.p > 0.50) {
+                // Resume road distance smoothly after Stage 3
+                effectiveRoadP = sim.p - 0.17;
+            }
+            const roadDist = effectiveRoadP * 9200;
+            const roadY = Math.min(H - 85, Math.max(H * 0.72, H - 135));
+            const scootyX = W * 0.46;
+
+            // 1. DYNAMIC SKY ATMOSPHERE
+            const sky = ctx.createLinearGradient(0, 0, 0, H);
+            if (sim.stage === 4) {
+                sky.addColorStop(0, '#1a040a');
+                sky.addColorStop(0.6, '#260712');
+                sky.addColorStop(1, '#090d16');
+            } else if (sim.stage === 5) {
+                sky.addColorStop(0, '#0f0520');
+                sky.addColorStop(0.6, '#1a0b33');
+                sky.addColorStop(1, '#080c18');
+            } else {
+                sky.addColorStop(0, '#030712');
+                sky.addColorStop(0.6, '#081428');
+                sky.addColorStop(1, '#050914');
+            }
+            ctx.fillStyle = sky;
+            ctx.fillRect(0, 0, W, H);
+
+            // 2. PARALLAX STARS & CYBER SKYLINE
+            drawParallaxWorld(W, H, roadY, roadDist);
+
+            // 3. HIGHWAY ASPHALT, LANE STRIPES & DISTANCE TREES/POLES
+            drawHighwayRoad(W, H, roadY, roadDist);
+
+            // 4. SCENARIO 3 CHARGING STATION + HACKER INJECTING MALWARE
+            drawChargingStationScene(W, roadY, scootyX, sim.p, t);
+
+            // 5. CHOSEN EV VEHICLE (CAR OR SCOOTY) + INBUILT 2RC BATTERY + OVERHEATING EFFECTS
+            if (sim.vehicle === 'car') {
+                drawEvCar(scootyX, roadY, effectiveRoadP, t);
+            } else {
+                drawEvScooty(scootyX, roadY, effectiveRoadP, t);
+            }
+
+            // 6. SCENARIO-SPECIFIC VISUAL OVERLAYS (ONE BY ONE AS USER SCROLLS)
+            if (sim.stage === 1) {
+                drawScenario1_2RCZoomLens(scootyX, roadY, t);
+            }
+            if (sim.stage >= 2) {
+                drawScenario2_FloatingGauges(scootyX, roadY, t);
+            }
+            if (sim.stage === 4) {
+                drawScenario4_OverheatDamageVisuals(scootyX, roadY, t);
+            }
+            if (sim.stage === 5 || sim.stage === 6) {
+                drawScenario5And6_DigitalTwinAndAttackerCollapse(W, scootyX, roadY, t);
+            }
+        }
+
+        /***********************************************************************
+         * PARALLAX SKYLINE & HIGHWAY ROAD
+         ***********************************************************************/
+        function drawParallaxWorld(W, H, roadY, roadDist) {
+            ctx.save();
+            // Stars
+            for (const st of sim.stars) {
+                const sx = ((st.x - roadDist * st.s) % W + W) % W;
+                const sy = st.y % (roadY - 90);
+                ctx.fillStyle = `rgba(186, 230, 253, ${st.a})`;
+                ctx.beginPath();
+                ctx.arc(sx, sy, st.r, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Distant Futuristic City Buildings
+            const bScroll = roadDist * 0.22;
+            for (let i = -2; i < Math.ceil(W / 130) + 3; i++) {
+                const idx = Math.floor(bScroll / 130) + i;
+                const bx = i * 130 - (bScroll % 130);
+                const bh = 60 + Math.abs(Math.sin(idx * 2.1)) * 120;
+                const by = roadY - bh;
+
+                ctx.fillStyle = 'rgba(10, 18, 34, 0.85)';
+                ctx.strokeStyle = sim.stage === 4 ? 'rgba(244, 63, 94, 0.28)' : 'rgba(56, 189, 248, 0.22)';
+                ctx.lineWidth = 1;
+                ctx.fillRect(bx, by, 108, bh);
+                ctx.strokeRect(bx, by, 108, bh);
+
+                // Neon Windows
+                ctx.fillStyle = sim.stage === 4 ? 'rgba(244, 63, 94, 0.16)' : 'rgba(0, 242, 254, 0.12)';
+                for (let wy = by + 12; wy < roadY - 14; wy += 18) {
+                    for (let wx = bx + 12; wx < bx + 90; wx += 22) {
+                        if ((wx + wy + idx) % 3 !== 0) ctx.fillRect(wx, wy, 10, 8);
+                    }
+                }
+            }
+
+            // Roadside Cyber Lamp Posts (Moves strictly when Scooty runs!)
+            const poleScroll = roadDist * 0.75;
+            for (let i = -1; i < Math.ceil(W / 280) + 2; i++) {
+                const px = i * 280 - (poleScroll % 280);
+                ctx.strokeStyle = '#1e293b';
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.moveTo(px, roadY);
+                ctx.lineTo(px, roadY - 145);
+                ctx.lineTo(px + 28, roadY - 155);
+                ctx.stroke();
+
+                // Lamp glow
+                ctx.fillStyle = sim.stage === 4 ? '#f43f5e' : '#00f2fe';
+                ctx.beginPath();
+                ctx.arc(px + 28, roadY - 155, 4, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.restore();
+        }
+
+        function drawHighwayRoad(W, H, roadY, roadDist) {
+            ctx.save();
+            const rGrad = ctx.createLinearGradient(0, roadY, 0, H);
+            rGrad.addColorStop(0, '#0f172a');
+            rGrad.addColorStop(0.5, '#090e1a');
+            rGrad.addColorStop(1, '#030712');
+            ctx.fillStyle = rGrad;
+            ctx.fillRect(0, roadY, W, H - roadY);
+
+            // Glowing Highway Horizon Edge
+            const curbColor = sim.stage === 4 ? '#f43f5e' : (sim.stage === 5 ? '#c084fc' : (sim.stage === 6 ? '#10b981' : '#00f2fe'));
+            ctx.strokeStyle = curbColor;
+            ctx.lineWidth = 3;
+            ctx.shadowColor = curbColor;
+            ctx.shadowBlur = 14;
+            ctx.beginPath();
+            ctx.moveTo(0, roadY);
+            ctx.lineTo(W, roadY);
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            // Moving Lane Stripes (Directly scrubbed by scroll!)
+            const dashW = 130;
+            const offset = roadDist % dashW;
+            ctx.fillStyle = sim.stage === 4 ? 'rgba(244, 63, 94, 0.7)' : 'rgba(56, 189, 248, 0.55)';
+            for (let x = -offset; x < W + dashW; x += dashW) {
+                ctx.fillRect(x, roadY + 36, 65, 5);
+            }
+            ctx.restore();
+        }
+
+        /***********************************************************************
+         * DRAW EV SCOOTY + INBUILT 2RC BATTERY CUTAWAY ON FLOORBOARD
+         ***********************************************************************/
+        function drawEvScooty(scootyX, roadY, effectiveRoadP, t) {
+            ctx.save();
+
+            // Violent vibration during Stage 4 overheating
+            const shakeX = sim.stage === 4 ? (Math.random() - 0.5) * 6 : 0;
+            const shakeY = sim.stage === 4 ? (Math.random() - 0.5) * 5 : 0;
+            // Smooth suspension bounce while riding
+            const bounceY = (sim.stage !== 3 && Math.abs(sim.speed) > 0.0001) ? Math.sin(effectiveRoadP * 500) * 2.5 : 0;
+
+            const cx = scootyX + shakeX;
+            const cy = roadY + bounceY + shakeY;
+
+            // Wheel spin angle strictly proportional to road distance
+            const wheelRotation = effectiveRoadP * 340;
+            const rearX = cx - 82;
+            const frontX = cx + 84;
+            const wheelY = cy - 28;
+            const wheelR = 29;
+
+            // Theme colors by stage
+            const mainColor = sim.stage === 4 ? '#f43f5e' : (sim.stage === 5 ? '#c084fc' : (sim.stage === 6 ? '#10b981' : '#00f2fe'));
+
+            // 1. WHEELS (REAR & FRONT)
+            [rearX, frontX].forEach(wx => {
+                ctx.save();
+                ctx.translate(wx, wheelY);
+                ctx.rotate(wheelRotation);
+
+                // Tire
+                ctx.fillStyle = '#090d16';
+                ctx.strokeStyle = '#334155';
+                ctx.lineWidth = 7;
+                ctx.beginPath();
+                ctx.arc(0, 0, wheelR, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+
+                // Glowing Rim
+                ctx.strokeStyle = mainColor;
+                ctx.lineWidth = 2.5;
+                ctx.beginPath();
+                ctx.arc(0, 0, wheelR - 7, 0, Math.PI * 2);
+                ctx.stroke();
+
+                // 6 Spokes so user clearly sees wheel rotation when scrolling
+                for (let i = 0; i < 6; i++) {
+                    const a = (i * Math.PI) / 3;
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.lineTo(Math.cos(a) * (wheelR - 7), Math.sin(a) * (wheelR - 7));
+                    ctx.stroke();
+                }
+
+                // Center Axle
+                ctx.fillStyle = '#f8fafc';
+                ctx.beginPath();
+                ctx.arc(0, 0, 5.5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            });
+
+            // 2. SCOOTY BODY FRAME & FLOORBOARD
+            ctx.fillStyle = '#0f172a';
+            ctx.strokeStyle = mainColor;
+            ctx.lineWidth = 2.8;
+            ctx.beginPath();
+            ctx.moveTo(rearX - 22, wheelY - 10);
+            ctx.lineTo(rearX - 10, wheelY - 68);
+            ctx.lineTo(cx - 24, wheelY - 62);
+            ctx.lineTo(cx - 14, wheelY - 22);
+            ctx.lineTo(frontX - 22, wheelY - 22);
+            ctx.lineTo(frontX - 2, wheelY - 88);
+            ctx.lineTo(frontX - 18, wheelY - 118);
+            ctx.lineTo(frontX + 12, wheelY - 112);
+            ctx.lineTo(frontX + 24, wheelY - 45);
+            ctx.lineTo(frontX - 8, wheelY + 4);
+            ctx.lineTo(rearX, wheelY + 4);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            // Seat
+            ctx.fillStyle = '#1e293b';
+            ctx.strokeStyle = '#64748b';
+            ctx.lineWidth = 2;
+            rRect(rearX - 14, wheelY - 84, 76, 19, 9);
+            ctx.fill();
+            ctx.stroke();
+
+            // Steering Column & Handlebar
+            ctx.strokeStyle = '#cbd5e1';
+            ctx.lineWidth = 5;
+            ctx.beginPath();
+            ctx.moveTo(frontX, wheelY);
+            ctx.lineTo(frontX - 20, wheelY - 132);
+            ctx.stroke();
+
+            ctx.fillStyle = mainColor;
+            rRect(frontX - 36, wheelY - 138, 28, 10, 5);
+            ctx.fill();
+
+            // Headlight Beam
+            const hlX = frontX + 16;
+            const hlY = wheelY - 82;
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(hlX, hlY, 7, 0, Math.PI * 2);
+            ctx.fill();
+
+            const beam = ctx.createLinearGradient(hlX, hlY, hlX + 220, wheelY + 25);
+            beam.addColorStop(0, sim.stage === 4 ? 'rgba(244, 63, 94, 0.45)' : 'rgba(0, 242, 254, 0.38)');
+            beam.addColorStop(1, 'rgba(0, 242, 254, 0)');
+            ctx.fillStyle = beam;
+            ctx.beginPath();
+            ctx.moveTo(hlX, hlY - 5);
+            ctx.lineTo(hlX + 230, wheelY - 35);
+            ctx.lineTo(hlX + 230, wheelY + 30);
+            ctx.lineTo(hlX, hlY + 6);
+            ctx.closePath();
+            ctx.fill();
+
+            // 3. INBUILT 2RC BATTERY PACK INSIDE THE SCOOTY FLOORBOARD (ALWAYS VISIBLE)
+            const bx = cx - 64;
+            const by = wheelY - 48;
+            const bw = 112;
+            const bh = 42;
+
+            ctx.fillStyle = sim.stage === 4 ? '#4c0519' : '#040d1a';
+            ctx.strokeStyle = sim.stage === 4 ? '#f43f5e' : '#10b981';
+            ctx.lineWidth = 2.5;
+            rRect(bx, by, bw, bh, 8);
+            ctx.fill();
+            ctx.stroke();
+
+            // Mini 2RC Circuit Branches drawn right inside the Scooty Battery Bay!
+            ctx.strokeStyle = sim.stage === 4 ? '#fda4af' : '#34d399';
+            ctx.lineWidth = 1.5;
+            // R0
+            ctx.strokeRect(bx + 8, by + 18, 20, 12);
+            // R1||C1
+            ctx.strokeRect(bx + 34, by + 15, 30, 18);
+            // R2||C2
+            ctx.strokeRect(bx + 70, by + 15, 32, 18);
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '800 9px "JetBrains Mono", monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText('INBUILT 2RC BATTERY', bx + bw / 2, by + 11);
+
+            ctx.font = '700 7.5px "JetBrains Mono", monospace';
+            ctx.fillStyle = sim.stage === 4 ? '#fda4af' : '#6ee7b7';
+            ctx.fillText('R0', bx + 18, by + 27);
+            ctx.fillText('R1||C1', bx + 49, by + 27);
+            ctx.fillText('R2||C2', bx + 86, by + 27);
+
+            // Damage Cracks on Battery Casing during Stage 4
+            if (sim.damageCracks > 0.1) {
+                ctx.strokeStyle = '#fbbf24';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(bx + 25, by + 4);
+                ctx.lineTo(bx + 38, by + 20);
+                ctx.lineTo(bx + 30, by + 38);
+                ctx.moveTo(bx + 80, by + 6);
+                ctx.lineTo(bx + 68, by + 24);
+                ctx.lineTo(bx + 85, by + 39);
+                ctx.stroke();
+            }
+
+            ctx.restore();
+        }
+
+        /***********************************************************************
+         * DRAW EV CAR + INBUILT 2RC BATTERY CUTAWAY ON CHASSIS FLOORBOARD
+         ***********************************************************************/
+        function drawEvCar(carX, roadY, effectiveRoadP, t) {
+            ctx.save();
+
+            // Violent vibration during Stage 4 overheating
+            const shakeX = sim.stage === 4 ? (Math.random() - 0.5) * 7 : 0;
+            const shakeY = sim.stage === 4 ? (Math.random() - 0.5) * 5.5 : 0;
+            // Smooth suspension bounce while driving
+            const bounceY = (sim.stage !== 3 && Math.abs(sim.speed) > 0.0001) ? Math.sin(effectiveRoadP * 480) * 2.2 : 0;
+
+            const cx = carX + shakeX;
+            const cy = roadY + bounceY + shakeY;
+
+            const wheelRotation = effectiveRoadP * 320;
+            const rearX = cx - 98;
+            const frontX = cx + 98;
+            const wheelY = cy - 30;
+            const wheelR = 30;
+
+            const mainColor = sim.stage === 4 ? '#f43f5e' : (sim.stage === 5 ? '#c084fc' : (sim.stage === 6 ? '#10b981' : '#00f2fe'));
+
+            // 1. SLEEK AERODYNAMIC EV SPORTS SEDAN BODY
+            const bodyGrad = ctx.createLinearGradient(cx - 145, wheelY - 95, cx + 145, wheelY + 10);
+            bodyGrad.addColorStop(0, '#0f172a');
+            bodyGrad.addColorStop(0.55, '#1e293b');
+            bodyGrad.addColorStop(1, '#090d16');
+
+            ctx.fillStyle = bodyGrad;
+            ctx.strokeStyle = mainColor;
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(cx - 145, wheelY - 6);
+            ctx.lineTo(cx - 150, wheelY - 42);
+            ctx.lineTo(cx - 112, wheelY - 58);
+            ctx.lineTo(cx - 42, wheelY - 96);
+            ctx.lineTo(cx + 62, wheelY - 96);
+            ctx.lineTo(cx + 122, wheelY - 56);
+            ctx.lineTo(cx + 152, wheelY - 38);
+            ctx.lineTo(cx + 156, wheelY - 4);
+            ctx.lineTo(cx - 145, wheelY - 4);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            // Panoramic Tinted Cabin Glass Canopy
+            ctx.fillStyle = '#06152d';
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 1.8;
+            ctx.beginPath();
+            ctx.moveTo(cx - 95, wheelY - 58);
+            ctx.lineTo(cx - 35, wheelY - 88);
+            ctx.lineTo(cx + 55, wheelY - 88);
+            ctx.lineTo(cx + 108, wheelY - 58);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            // B-Pillar Window Divider
+            ctx.beginPath();
+            ctx.moveTo(cx + 12, wheelY - 88);
+            ctx.lineTo(cx + 12, wheelY - 58);
+            ctx.stroke();
+
+            // Red LED Taillight Bar
+            ctx.fillStyle = '#f43f5e';
+            rRect(cx - 150, wheelY - 38, 10, 16, 3);
+            ctx.fill();
+
+            // Matrix LED Headlight & Ground Beam
+            const hlX = cx + 146;
+            const hlY = wheelY - 30;
+            ctx.fillStyle = '#ffffff';
+            rRect(hlX - 10, hlY - 5, 14, 9, 3);
+            ctx.fill();
+
+            const beam = ctx.createLinearGradient(hlX, hlY, hlX + 240, wheelY + 25);
+            beam.addColorStop(0, sim.stage === 4 ? 'rgba(244, 63, 94, 0.48)' : 'rgba(0, 242, 254, 0.42)');
+            beam.addColorStop(1, 'rgba(0, 242, 254, 0)');
+            ctx.fillStyle = beam;
+            ctx.beginPath();
+            ctx.moveTo(hlX, hlY - 4);
+            ctx.lineTo(hlX + 245, wheelY - 32);
+            ctx.lineTo(hlX + 245, wheelY + 30);
+            ctx.lineTo(hlX, hlY + 6);
+            ctx.closePath();
+            ctx.fill();
+
+            // 2. INBUILT 2RC BATTERY PACK INSIDE THE CAR SKATEBOARD CHASSIS
+            const bx = cx - 68;
+            const by = wheelY - 46;
+            const bw = 136;
+            const bh = 40;
+
+            ctx.fillStyle = sim.stage === 4 ? '#4c0519' : '#040d1a';
+            ctx.strokeStyle = sim.stage === 4 ? '#f43f5e' : '#10b981';
+            ctx.lineWidth = 2.5;
+            rRect(bx, by, bw, bh, 8);
+            ctx.fill();
+            ctx.stroke();
+
+            // 2RC Circuit Branches inside Car Battery Pack
+            ctx.strokeStyle = sim.stage === 4 ? '#fda4af' : '#34d399';
+            ctx.lineWidth = 1.5;
+            ctx.strokeRect(bx + 8, by + 16, 24, 18);
+            ctx.strokeRect(bx + 38, by + 16, 42, 18);
+            ctx.strokeRect(bx + 86, by + 16, 42, 18);
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '800 9px "JetBrains Mono", monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText('EV CAR 2RC BATTERY PACK', bx + bw / 2, by + 11);
+
+            ctx.font = '700 8px "JetBrains Mono", monospace';
+            ctx.fillStyle = sim.stage === 4 ? '#fda4af' : '#6ee7b7';
+            ctx.fillText('R0', bx + 20, by + 28);
+            ctx.fillText('R1||C1', bx + 59, by + 28);
+            ctx.fillText('R2||C2', bx + 107, by + 28);
+
+            // Damage Cracks on Car Battery Casing during Stage 4
+            if (sim.damageCracks > 0.1) {
+                ctx.strokeStyle = '#fbbf24';
+                ctx.lineWidth = 2.2;
+                ctx.beginPath();
+                ctx.moveTo(bx + 28, by + 3);
+                ctx.lineTo(bx + 42, by + 20);
+                ctx.lineTo(bx + 34, by + 37);
+                ctx.moveTo(bx + 98, by + 5);
+                ctx.lineTo(bx + 84, by + 23);
+                ctx.lineTo(bx + 102, by + 38);
+                ctx.stroke();
+            }
+
+            // 3. SPINNING TURBINE ALLOY WHEELS (REAR & FRONT)
+            [rearX, frontX].forEach(wx => {
+                ctx.save();
+                ctx.translate(wx, wheelY);
+                ctx.rotate(wheelRotation);
+
+                ctx.fillStyle = '#090d16';
+                ctx.strokeStyle = '#334155';
+                ctx.lineWidth = 7;
+                ctx.beginPath();
+                ctx.arc(0, 0, wheelR, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.strokeStyle = mainColor;
+                ctx.lineWidth = 2.5;
+                ctx.beginPath();
+                ctx.arc(0, 0, wheelR - 7, 0, Math.PI * 2);
+                ctx.stroke();
+
+                for (let i = 0; i < 6; i++) {
+                    const a = (i * Math.PI) / 3;
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.lineTo(Math.cos(a) * (wheelR - 7), Math.sin(a) * (wheelR - 7));
+                    ctx.stroke();
+                }
+
+                ctx.fillStyle = '#f8fafc';
+                ctx.beginPath();
+                ctx.arc(0, 0, 6, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            });
+
+            ctx.restore();
+        }
+
+        /***********************************************************************
+         * SCENARIO 1: GIANT X-RAY ZOOM MAGNIFIER OF THE INBUILT 2RC BATTERY
+         ***********************************************************************/
+        function drawScenario1_2RCZoomLens(scootyX, roadY, t) {
+            ctx.save();
+            const batX = scootyX - 8;
+            const batY = roadY - 55;
+
+            const zoomX = scootyX;
+            const zoomY = roadY - 255;
+            const zoomW = 390;
+            const zoomH = 145;
+
+            // Glowing X-Ray Projection Cone from Scooty Battery to Zoom Schematic
+            const coneGrad = ctx.createLinearGradient(batX, batY, zoomX, zoomY + zoomH);
+            coneGrad.addColorStop(0, 'rgba(16, 185, 129, 0.45)');
+            coneGrad.addColorStop(1, 'rgba(0, 242, 254, 0.12)');
+            ctx.fillStyle = coneGrad;
+            ctx.beginPath();
+            ctx.moveTo(batX - 55, batY);
+            ctx.lineTo(zoomX - zoomW / 2 + 15, zoomY + zoomH);
+            ctx.lineTo(zoomX + zoomW / 2 - 15, zoomY + zoomH);
+            ctx.lineTo(batX + 55, batY);
+            ctx.closePath();
+            ctx.fill();
+
+            // X-Ray Frame
+            ctx.fillStyle = 'rgba(5, 12, 26, 0.94)';
+            ctx.strokeStyle = '#00f2fe';
+            ctx.lineWidth = 2.5;
+            ctx.shadowColor = '#00f2fe';
+            ctx.shadowBlur = 18;
+            rRect(zoomX - zoomW / 2, zoomY, zoomW, zoomH, 16);
+            ctx.fill();
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            const lx = zoomX - zoomW / 2;
+            const ly = zoomY;
+
+            // Visual Header Badge
+            ctx.fillStyle = '#00f2fe';
+            ctx.font = '800 12px "JetBrains Mono", monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText('🔍 X-RAY: INBUILT 2RC BATTERY CIRCUIT', zoomX, ly + 24);
+
+            // Draw Full 2RC Equivalent Circuit Diagram Visually
+            const cy = ly + 82;
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(lx + 35, cy);
+            ctx.lineTo(lx + 355, cy);
+            ctx.moveTo(lx + 35, cy);
+            ctx.lineTo(lx + 35, cy + 42);
+            ctx.lineTo(lx + 355, cy + 42);
+            ctx.lineTo(lx + 355, cy);
+            ctx.stroke();
+
+            // Animated Green Electrons Flowing Around the 2RC Loop
+            for (let i = 0; i < 8; i++) {
+                const prog = ((t * 0.7 + i / 8) % 1);
+                const ex = lx + 35 + prog * 320;
+                ctx.fillStyle = '#10b981';
+                ctx.shadowColor = '#10b981';
+                ctx.shadowBlur = 8;
+                ctx.beginPath();
+                ctx.arc(ex, cy, 4, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+
+            // Voc Circle
+            ctx.fillStyle = '#06152d';
+            ctx.strokeStyle = '#00f2fe';
+            ctx.lineWidth = 2.2;
+            ctx.beginPath();
+            ctx.arc(lx + 35, cy + 21, 16, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            ctx.fillStyle = '#00f2fe';
+            ctx.font = '800 9px "JetBrains Mono", monospace';
+            ctx.fillText('Voc', lx + 35, cy + 24);
+
+            // R0 Ohmic Resistor
+            ctx.fillStyle = '#0f172a';
+            ctx.strokeStyle = '#38bdf8';
+            rRect(lx + 68, cy - 14, 52, 28, 6);
+            ctx.fill();
+            ctx.stroke();
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillText('R0', lx + 94, cy + 3);
+
+            // Branch 1: R1 || C1 (Fast RC Pair)
+            ctx.fillStyle = '#062019';
+            ctx.strokeStyle = '#10b981';
+            rRect(lx + 138, cy - 26, 92, 52, 8);
+            ctx.fill();
+            ctx.stroke();
+            ctx.fillStyle = '#34d399';
+            ctx.font = '800 10px "JetBrains Mono", monospace';
+            ctx.fillText('R1 || C1', lx + 184, cy - 6);
+            ctx.fillStyle = '#a7f3d0';
+            ctx.font = '700 8.5px "JetBrains Mono", monospace';
+            ctx.fillText('RC PAIR #1', lx + 184, cy + 14);
+
+            // Branch 2: R2 || C2 (Slow RC Pair)
+            ctx.fillStyle = '#061a24';
+            ctx.strokeStyle = '#00f2fe';
+            rRect(lx + 246, cy - 26, 92, 52, 8);
+            ctx.fill();
+            ctx.stroke();
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = '800 10px "JetBrains Mono", monospace';
+            ctx.fillText('R2 || C2', lx + 292, cy - 6);
+            ctx.fillStyle = '#bae6fd';
+            ctx.font = '700 8.5px "JetBrains Mono", monospace';
+            ctx.fillText('RC PAIR #2', lx + 292, cy + 14);
+
+            ctx.restore();
+        }
+
+        /***********************************************************************
+         * SCENARIO 2+: FLOATING RADIAL GAUGES (TEMPERATURE, CURRENT, VOLTAGE)
+         ***********************************************************************/
+        function drawScenario2_FloatingGauges(scootyX, roadY, t) {
+            ctx.save();
+            // Position the 3 circular gauges tethered above/left of the Scooty
+            const baseY = sim.stage >= 5 ? roadY - 315 : roadY - 265;
+            const g1X = scootyX - 185;
+            const g2X = scootyX - 55;
+            const g3X = scootyX + 75;
+
+            const isHot = sim.temp > 60;
+
+            // Leader lines from Scooty battery to gauges
+            ctx.strokeStyle = isHot ? 'rgba(244, 63, 94, 0.45)' : 'rgba(56, 189, 248, 0.35)';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([4, 4]);
+            [g1X, g2X, g3X].forEach(gx => {
+                ctx.beginPath();
+                ctx.moveTo(scootyX - 15, roadY - 55);
+                ctx.lineTo(gx, baseY + 45);
+                ctx.stroke();
+            });
+            ctx.setLineDash([]);
+
+            // 1. TEMPERATURE GAUGE
+            const tempColor = sim.temp > 60 ? '#f43f5e' : (sim.temp > 35 ? '#f59e0b' : '#10b981');
+            drawRadialGauge(g1X, baseY, 52, 'TEMP', `${sim.temp.toFixed(1)}°C`, Math.min(1, sim.temp / 105), tempColor, '🌡️');
+
+            // 2. CURRENT GAUGE (Scaled higher for EV Car vs Scooty)
+            const displayCurrent = sim.vehicle === 'car' ? sim.current * 2.4 : sim.current;
+            const curColor = sim.current > 45 ? '#f43f5e' : (sim.current < 0 ? '#00f2fe' : '#f59e0b');
+            const curLabel = `${displayCurrent >= 0 ? '+' : ''}${displayCurrent.toFixed(1)}A`;
+            drawRadialGauge(g2X, baseY, 52, 'CURRENT', curLabel, Math.min(1, Math.abs(sim.current) / 80), curColor, '⚡');
+
+            // 3. VOLTAGE GAUGE (396V pack architecture for EV Car, 48.2V for EV Scooty)
+            const displayVolt = sim.vehicle === 'car' ? sim.voltage2RC * 8.2 : sim.voltage2RC;
+            const voltColor = sim.voltage2RC < 43 ? '#f43f5e' : '#00f2fe';
+            drawRadialGauge(g3X, baseY, 52, 'VOLTAGE', `${displayVolt.toFixed(1)}V`, Math.min(1, Math.max(0.1, (sim.voltage2RC - 36) / 16)), voltColor, '🔋');
+
+            ctx.restore();
+        }
+
+        function drawRadialGauge(cx, cy, r, title, valText, norm, color, emoji) {
+            ctx.save();
+            // Backing Disc
+            ctx.fillStyle = 'rgba(7, 13, 27, 0.92)';
+            ctx.strokeStyle = 'rgba(148, 163, 184, 0.25)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(cx, cy, r, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+
+            // Background Arc
+            const startAngle = Math.PI * 0.75;
+            const endAngle = Math.PI * 2.25;
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 6;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.arc(cx, cy, r - 8, startAngle, endAngle);
+            ctx.stroke();
+
+            // Active Value Arc
+            ctx.strokeStyle = color;
+            ctx.shadowColor = color;
+            ctx.shadowBlur = 10;
+            ctx.beginPath();
+            ctx.arc(cx, cy, r - 8, startAngle, startAngle + (endAngle - startAngle) * Math.max(0.05, norm));
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            // Emoji + Value + Label
+            ctx.textAlign = 'center';
+            ctx.font = '13px sans-serif';
+            ctx.fillText(emoji, cx, cy - 15);
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '800 13px "JetBrains Mono", monospace';
+            ctx.fillText(valText, cx, cy + 6);
+
+            ctx.fillStyle = color;
+            ctx.font = '700 8.5px "JetBrains Mono", monospace';
+            ctx.fillText(title, cx, cy + 22);
+            ctx.restore();
+        }
+
+        /***********************************************************************
+         * SCENARIO 3: CHARGING STATION + CYBER ATTACKER INJECTING MALWARE
+         ***********************************************************************/
+        function drawChargingStationScene(W, roadY, scootyX, p, t) {
+            // Station approaches as user scrolls from 0.25 -> 0.33, stays parked 0.33 -> 0.50, then recedes left
+            let stationOffset = 0;
+            if (p < 0.33) {
+                stationOffset = (0.33 - p) * 5200;
+            } else if (p <= 0.50) {
+                stationOffset = 0;
+            } else {
+                stationOffset = (0.50 - p) * 5200;
+            }
+
+            const stX = scootyX + 165 + stationOffset;
+            if (stX < -350 || stX > W + 350) return;
+
+            ctx.save();
+            const isDocked = (p >= 0.33 && p <= 0.50);
+            const isHacking = (p >= 0.355 && p <= 0.50);
+
+            // 1. CHARGING STATION TOWER
+            ctx.fillStyle = '#0b1528';
+            ctx.strokeStyle = isHacking ? '#f43f5e' : '#00f2fe';
+            ctx.lineWidth = 3;
+            rRect(stX - 42, roadY - 185, 84, 185, 12);
+            ctx.fill();
+            ctx.stroke();
+
+            // Glowing Header Sign
+            ctx.fillStyle = isHacking ? '#f43f5e' : '#10b981';
+            rRect(stX - 48, roadY - 202, 96, 20, 6);
+            ctx.fill();
+            ctx.fillStyle = '#030712';
+            ctx.font = '900 9.5px "JetBrains Mono", monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText(isHacking ? '⚡ HACKED CHARGER' : '⚡ EV CHARGE DOCK', stX, roadY - 189);
+
+            // Station Display Screen
+            ctx.fillStyle = '#030712';
+            rRect(stX - 30, roadY - 160, 60, 65, 8);
+            ctx.fill();
+
+            ctx.fillStyle = isHacking ? '#f43f5e' : '#00f2fe';
+            ctx.font = '800 18px sans-serif';
+            ctx.fillText(isHacking ? '☠️' : '🔋', stX, roadY - 130);
+            ctx.font = '800 10px "JetBrains Mono", monospace';
+            ctx.fillText(`${Math.round(sim.soc)}%`, stX, roadY - 108);
+
+            // 2. CYBER ATTACKER SILHOUETTE & LAPTOP (HACKING THE CHARGER)
+            const atkX = stX + 135;
+            const atkY = roadY - 135;
+
+            // Attacker Platform Card
+            ctx.fillStyle = 'rgba(28, 6, 15, 0.94)';
+            ctx.strokeStyle = '#f43f5e';
+            ctx.lineWidth = 2.5;
+            ctx.shadowColor = '#f43f5e';
+            ctx.shadowBlur = isHacking ? 18 : 0;
+            rRect(atkX - 58, atkY - 58, 116, 110, 14);
+            ctx.fill();
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            // Hooded Hacker Visual Silhouette
+            ctx.fillStyle = '#f43f5e';
+            ctx.beginPath();
+            ctx.arc(atkX, atkY - 22, 18, 0, Math.PI * 2);
+            ctx.fill();
+            // Dark Face Cutout + Glowing Red Eyes
+            ctx.fillStyle = '#090408';
+            ctx.beginPath();
+            ctx.arc(atkX, atkY - 20, 12, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#ff0040';
+            ctx.fillRect(atkX - 7, atkY - 23, 5, 3);
+            ctx.fillRect(atkX + 2, atkY - 23, 5, 3);
+
+            // Hacker Laptop Icon
+            ctx.fillStyle = '#e2e8f0';
+            rRect(atkX - 20, atkY - 4, 40, 22, 4);
+            ctx.fill();
+            ctx.fillStyle = '#f43f5e';
+            ctx.font = '800 10px "JetBrains Mono", monospace';
+            ctx.fillText('☠️', atkX, atkY + 11);
+
+            ctx.fillStyle = '#fda4af';
+            ctx.font = '800 9.5px "JetBrains Mono", monospace';
+            ctx.fillText('CYBER ATTACKER', atkX, atkY + 34);
+            ctx.fillStyle = '#f43f5e';
+            ctx.font = '700 8px "JetBrains Mono", monospace';
+            ctx.fillText(isHacking ? 'INJECTING VIRUS!' : 'TARGETING CHARGER', atkX, atkY + 46);
+
+            // Wire from Attacker Laptop -> Charging Station
+            ctx.strokeStyle = '#f43f5e';
+            ctx.lineWidth = 2.5;
+            ctx.setLineDash([6, 4]);
+            ctx.beginPath();
+            ctx.moveTo(atkX - 58, atkY);
+            ctx.lineTo(stX + 42, roadY - 130);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // 3. PLUGGED-IN CHARGING CABLE & FLOWING RED MALWARE PACKETS
+            if (isDocked) {
+                const cStartX = stX - 42;
+                const cStartY = roadY - 75;
+                const cEndX = sim.vehicle === 'car' ? scootyX + 68 : scootyX + 26;
+                const cEndY = sim.vehicle === 'car' ? roadY - 58 : roadY - 52;
+
+                // Heavy Power Cable
+                ctx.strokeStyle = isHacking ? '#f43f5e' : '#00f2fe';
+                ctx.lineWidth = 6;
+                ctx.beginPath();
+                ctx.moveTo(cStartX, cStartY);
+                ctx.quadraticCurveTo((cStartX + cEndX) / 2, roadY - 12, cEndX, cEndY);
+                ctx.stroke();
+
+                // Plug Nozzle on Scooty
+                ctx.fillStyle = isHacking ? '#f43f5e' : '#10b981';
+                rRect(cEndX - 8, cEndY - 6, 14, 12, 3);
+                ctx.fill();
+
+                // Animated Malware Bugs / Skulls traveling from Attacker -> Charger -> Scooty Battery!
+                for (let i = 0; i < 6; i++) {
+                    const prog = ((t * 1.1 + i / 6) % 1);
+                    const mx = (1 - prog) * (1 - prog) * cStartX + 2 * (1 - prog) * prog * ((cStartX + cEndX) / 2) + prog * prog * cEndX;
+                    const my = (1 - prog) * (1 - prog) * cStartY + 2 * (1 - prog) * prog * (roadY - 12) + prog * prog * cEndY;
+
+                    ctx.fillStyle = isHacking ? '#f43f5e' : '#00f2fe';
+                    ctx.shadowColor = ctx.fillStyle;
+                    ctx.shadowBlur = 12;
+                    ctx.beginPath();
+                    ctx.arc(mx, my, isHacking ? 7 : 4.5, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+
+                    if (isHacking && i % 2 === 0) {
+                        ctx.font = '10px sans-serif';
+                        ctx.fillText('👾', mx, my - 10);
+                    }
+                }
+            }
+
+            ctx.restore();
+        }
+
+        /***********************************************************************
+         * SCENARIO 4: OVERHEATING FLAMES, SMOKE PLUMES & BATTERY DAMAGE
+         ***********************************************************************/
+        function drawScenario4_OverheatDamageVisuals(scootyX, roadY, t) {
+            ctx.save();
+            const coreX = scootyX - 10;
+            const coreY = roadY - 45;
+
+            // Intense Pulsing Red Thermal Aura around Scooty Battery
+            const heatGrad = ctx.createRadialGradient(coreX, coreY, 10, coreX, coreY, 175);
+            heatGrad.addColorStop(0, 'rgba(244, 63, 94, 0.72)');
+            heatGrad.addColorStop(0.5, 'rgba(245, 158, 11, 0.35)');
+            heatGrad.addColorStop(1, 'rgba(244, 63, 94, 0)');
+            ctx.fillStyle = heatGrad;
+            ctx.beginPath();
+            ctx.arc(coreX, coreY, 175, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Animated Fire & Smoke Particles Rising from the Scooty Battery
+            for (const f of sim.flames) {
+                const life = (t * f.speed + f.phase) % 1;
+                const fx = coreX + f.ox + Math.sin(t * 6 + f.phase * 10) * 14;
+                const fy = coreY - life * 145;
+                const rad = f.size * (0.4 + life * 0.9);
+
+                if (life < 0.45) {
+                    // Bright orange/red flame core
+                    ctx.fillStyle = `rgba(251, 146, 60, ${(1 - life) * 0.85})`;
+                } else {
+                    // Dark crimson/charcoal smoke plume
+                    ctx.fillStyle = `rgba(225, 29, 72, ${(1 - life) * 0.55})`;
+                }
+                ctx.beginPath();
+                ctx.arc(fx, fy, rad, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Visual Warning Callout Badge right on the Scooty
+            const warnY = roadY - 165 + Math.sin(t * 14) * 3;
+            ctx.fillStyle = 'rgba(69, 10, 10, 0.95)';
+            ctx.strokeStyle = '#f43f5e';
+            ctx.lineWidth = 2.5;
+            rRect(scootyX - 115, warnY - 22, 230, 40, 10);
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '900 12px "JetBrains Mono", monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText(`🔥 OVERHEATING! ${sim.temp.toFixed(0)}°C | ⚡ DAMAGE`, scootyX, warnY + 3);
+
+            ctx.restore();
+        }
+
+        /***********************************************************************
+         * SCENARIO 5 & 6: 1RC DIGITAL TWIN SPOOFS FAKE DESTRUCTION SIGNAL
+         *                 -> ATTACKER COLLAPSES & OVERHEATING STOPS
+         ***********************************************************************/
+        function drawScenario5And6_DigitalTwinAndAttackerCollapse(W, scootyX, roadY, t) {
+            ctx.save();
+            const isCollapsed = (sim.stage === 6);
+
+            // 1. HOLOGRAPHIC 1RC DIGITAL TWIN BATTERY FLOATING ABOVE SCOOTY
+            const twinX = scootyX - 10;
+            const twinY = roadY - 190;
+            const twinW = 220;
+            const twinH = 68;
+
+            // Sensor Scan Beam between 1RC Digital Twin and Physical 2RC Pack
+            const beamGrad = ctx.createLinearGradient(twinX, twinY + twinH, twinX, roadY - 40);
+            beamGrad.addColorStop(0, isCollapsed ? 'rgba(16, 185, 129, 0.55)' : 'rgba(192, 132, 252, 0.55)');
+            beamGrad.addColorStop(1, 'rgba(0, 242, 254, 0.05)');
+            ctx.fillStyle = beamGrad;
+            ctx.beginPath();
+            ctx.moveTo(twinX - 80, twinY + twinH);
+            ctx.lineTo(twinX - 55, roadY - 45);
+            ctx.lineTo(twinX + 55, roadY - 45);
+            ctx.lineTo(twinX + 80, twinY + twinH);
+            ctx.closePath();
+            ctx.fill();
+
+            // Protective Energy Shield Dome over Scooty
+            ctx.strokeStyle = isCollapsed ? '#10b981' : '#c084fc';
+            ctx.lineWidth = 3;
+            ctx.setLineDash([10, 6]);
+            ctx.beginPath();
+            ctx.arc(scootyX, roadY - 45, 138, Math.PI, 0, false);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // 1RC Digital Twin Hologram Module
+            ctx.fillStyle = isCollapsed ? 'rgba(6, 28, 22, 0.94)' : 'rgba(26, 10, 46, 0.94)';
+            ctx.strokeStyle = isCollapsed ? '#10b981' : '#c084fc';
+            ctx.lineWidth = 2.5;
+            ctx.shadowColor = ctx.strokeStyle;
+            ctx.shadowBlur = 16;
+            rRect(twinX - twinW / 2, twinY, twinW, twinH, 12);
+            ctx.fill();
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            ctx.textAlign = 'center';
+            ctx.fillStyle = isCollapsed ? '#34d399' : '#e879f9';
+            ctx.font = '900 11px "JetBrains Mono", monospace';
+            ctx.fillText('🛡️ 1RC DIGITAL TWIN BATTERY', twinX, twinY + 20);
+
+            // Mini 1RC Circuit Diagram inside Twin Box
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 1.5;
+            ctx.strokeRect(twinX - 80, twinY + 29, 45, 16);
+            ctx.strokeStyle = '#c084fc';
+            ctx.strokeRect(twinX - 25, twinY + 29, 105, 16);
+
+            ctx.fillStyle = '#f8fafc';
+            ctx.font = '700 8.5px "JetBrains Mono", monospace';
+            ctx.fillText('R0', twinX - 57, twinY + 40);
+            ctx.fillText('1RC (R1 || C1)', twinX + 27, twinY + 40);
+
+            ctx.fillStyle = isCollapsed ? '#6ee7b7' : '#f0abfc';
+            ctx.font = '800 9px "JetBrains Mono", monospace';
+            const vLabel = sim.vehicle === 'car' ? 'CAR' : 'SCOOTY';
+            ctx.fillText(
+                isCollapsed ? `❄️ COOLING ${vLabel} -> 30.5°C SAFE` : '📡 SENDING FAKE DESTRUCTION SIGNAL!',
+                twinX,
+                twinY + 59
+            );
+
+            // 2. REMOTE CYBER ATTACKER MONITOR (TOP-RIGHT OF SCENE)
+            const monW = 250;
+            const monH = 148;
+            const monX = Math.min(W - monW - 24, scootyX + 195);
+            const monY = roadY - 315;
+
+            // Animated Fake Destruction Signal Waves flying from 1RC Twin -> Attacker Monitor
+            if (!isCollapsed) {
+                ctx.strokeStyle = '#e879f9';
+                ctx.lineWidth = 2.5;
+                ctx.setLineDash([8, 6]);
+                ctx.beginPath();
+                ctx.moveTo(twinX + twinW / 2, twinY + 25);
+                ctx.lineTo(monX, monY + 70);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Flying Decoy Packets ("FAKE: 💥 0V / 160°C")
+                for (let i = 0; i < 4; i++) {
+                    const prog = ((t * 1.1 + i * 0.25) % 1);
+                    const px = (1 - prog) * (twinX + twinW / 2) + prog * monX;
+                    const py = (1 - prog) * (twinY + 25) + prog * (monY + 70);
+
+                    ctx.fillStyle = '#e879f9';
+                    ctx.beginPath();
+                    ctx.arc(px, py, 6, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    if (i === 0 || i === 2) {
+                        ctx.fillStyle = '#f0abfc';
+                        ctx.font = '800 9px "JetBrains Mono", monospace';
+                        ctx.fillText('FAKE: 💥0V', px, py - 10);
+                    }
+                }
+            }
+
+            // Attacker C2 Screen Frame
+            ctx.fillStyle = isCollapsed ? 'rgba(9, 20, 18, 0.95)' : 'rgba(28, 7, 22, 0.95)';
+            ctx.strokeStyle = isCollapsed ? '#10b981' : '#f43f5e';
+            ctx.lineWidth = 3;
+            rRect(monX, monY, monW, monH, 14);
+            ctx.fill();
+            ctx.stroke();
+
+            // Header bar of Attacker Screen
+            ctx.fillStyle = isCollapsed ? '#10b981' : '#f43f5e';
+            rRect(monX, monY, monW, 24, 12);
+            ctx.fill();
+            ctx.fillStyle = '#030712';
+            ctx.font = '900 10px "JetBrains Mono", monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText(
+                isCollapsed ? '❌ ATTACKER COLLAPSED / OFFLINE' : '👁️ ATTACKER SCREEN (FOOLED BY 1RC)',
+                monX + monW / 2,
+                monY + 16
+            );
+
+            if (!isCollapsed) {
+                // SCENARIO 5: Attacker sees a FAKE hologram of the chosen vehicle completely destroyed!
+                const fakeScootyX = monX + monW / 2;
+                const fakeScootyY = monY + 74;
+
+                // Explosion burst inside Attacker Monitor
+                ctx.fillStyle = 'rgba(244, 63, 94, 0.35)';
+                ctx.beginPath();
+                ctx.arc(fakeScootyX, fakeScootyY, 32 + Math.sin(t * 18) * 6, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.font = '28px sans-serif';
+                ctx.fillText(sim.vehicle === 'car' ? '🚗💥🔥' : '🛵💥🔥', fakeScootyX, fakeScootyY + 8);
+
+                ctx.fillStyle = '#fda4af';
+                ctx.font = '800 10.5px "JetBrains Mono", monospace';
+                ctx.fillText(`FAKE SIGNAL: ${vLabel} DESTROYED!`, fakeScootyX, monY + 118);
+
+                ctx.fillStyle = '#f43f5e';
+                ctx.font = '800 10px "JetBrains Mono", monospace';
+                ctx.fillText('TEMP: 160°C | VOLT: 0.0V 💀', fakeScootyX, monY + 136);
+            } else {
+                // SCENARIO 6: Attacker Collapses & Disconnects!
+                const centerMonX = monX + monW / 2;
+                ctx.font = '32px sans-serif';
+                ctx.fillText('🏴‍☠️❌📉', centerMonX, monY + 72);
+
+                ctx.fillStyle = '#34d399';
+                ctx.font = '900 11px "JetBrains Mono", monospace';
+                ctx.fillText('ATTACKER COLLAPSED!', centerMonX, monY + 106);
+
+                ctx.fillStyle = '#cbd5e1';
+                ctx.font = '700 9.5px "JetBrains Mono", monospace';
+                ctx.fillText('Overheating Stopped by 1RC Twin', centerMonX, monY + 126);
+                ctx.fillStyle = '#38bdf8';
+                ctx.fillText(`${vLabel} Running Safely (30.5°C)`, centerMonX, monY + 140);
+            }
+
+            ctx.restore();
+        }
+
+        /***********************************************************************
+         * NAVIGATION, AUTO-SCROLL & OPTIONAL LOCAL BACKEND SYNC
+         ***********************************************************************/
+        function jumpToStage(stageNum) {
+            const targets = { 1: 0.05, 2: 0.24, 3: 0.415, 4: 0.585, 5: 0.755, 6: 0.92 };
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            window.scrollTo({ top: (targets[stageNum] || 0) * maxScroll, behavior: 'smooth' });
+        }
+
+        function toggleAutoPlay() {
+            sim.autoPlay = !sim.autoPlay;
+            const icon = document.getElementById('autoPlayIcon');
+            const text = document.getElementById('autoPlayText');
+            if (sim.autoPlay) {
+                icon.className = 'fa-solid fa-pause text-[10px]';
+                text.textContent = 'Pause';
+                if (sim.rawScroll >= 0.98) window.scrollTo({ top: 0 });
+            } else {
+                icon.className = 'fa-solid fa-play text-[10px]';
+                text.textContent = 'Auto';
+            }
+        }
+
+        function toggleBackendDrawer() {
+            const d = document.getElementById('backendDrawer');
+            d.classList.toggle('hidden');
+        }
+
+        async function connectBackend() {
+            sim.apiUrl = document.getElementById('apiUrlInput').value.trim();
+            const msg = document.getElementById('apiStatusMsg');
+            msg.textContent = 'Pinging local backend...';
+            try {
+                const res = await fetch(sim.apiUrl);
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const data = await res.json();
+                if (typeof data.temperature === 'number') sim.temp = data.temperature;
+                if (typeof data.current === 'number') sim.current = data.current;
+                if (typeof data.voltage_2rc === 'number') sim.voltage2RC = data.voltage_2rc;
+                sim.backendSync = true;
+                msg.textContent = 'Connected: Live Backend Telemetry Active';
+                msg.className = 'text-[10px] font-mono text-emerald-400 mt-1.5';
+            } catch (e) {
+                sim.backendSync = false;
+                msg.textContent = 'Using Built-in Scroll Physics Engine';
+                msg.className = 'text-[10px] font-mono text-cyan-400 mt-1.5';
+            }
+        }
+
+        function loop(tMs) {
+            if (sim.autoPlay) {
+                const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+                const nextY = window.scrollY + maxScroll * 0.00065;
+                if (nextY >= maxScroll) {
+                    toggleAutoPlay();
+                } else {
+                    window.scrollTo(0, nextY);
+                }
+            }
+            renderScene(tMs);
+            requestAnimationFrame(loop);
+        }
+
+        window.onload = () => {
+            resizeCanvas();
+            onScroll();
+            requestAnimationFrame(loop);
+        };
+    </script>
+</body>
+</html>
