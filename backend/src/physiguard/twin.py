@@ -6,6 +6,8 @@ State order is [SOC, V1, T], with current in amperes and temperature in °C.
 from __future__ import annotations
 
 import logging
+from functools import lru_cache
+from math import exp, isnan
 from typing import TypedDict
 
 import numpy as np
@@ -19,6 +21,11 @@ logger = logging.getLogger(__name__)
 _OCV_GRID_CACHE: dict[int, tuple[list[float], NDArray[np.float64]]] = {}
 
 
+@lru_cache(maxsize=64)
+def _decay(dt_s: float, tau_s: float) -> float:
+    return exp(-dt_s / tau_s)
+
+
 def twin_ocv_lookup(soc: float, config: Config) -> float:
     """Interpolate the twin's configured OCV table at a bounded SOC."""
     values = config.twin.OCV_n
@@ -29,7 +36,10 @@ def twin_ocv_lookup(soc: float, config: Config) -> float:
         cached = (values, table)
         _OCV_GRID_CACHE[id(values)] = cached
     _, ocv_values = cached
-    bounded_soc = float(np.clip(soc, 0.0, 1.0))
+    scalar_soc = float(soc)
+    if isnan(scalar_soc):
+        return float("nan")
+    bounded_soc = min(1.0, max(0.0, scalar_soc))
     position = bounded_soc * (ocv_values.size - 1)
     lower = min(int(position), ocv_values.size - 2)
     fraction = position - lower
@@ -76,7 +86,7 @@ class Twin:
         dt_s = float(self.config.simulation.dt)
         p = self.config.twin
         soc, v1, temperature_c = self.x
-        decay = np.exp(-dt_s / p.tau1_n)
+        decay = _decay(dt_s, float(p.tau1_n))
         soc_new = soc + self.config.plant.eta * current_a * dt_s / (3600.0 * p.Q_n)
         v1_new = v1 * decay + p.R1_n * (1.0 - decay) * current_a
         heat_w = current_a**2 * (p.R0_n + p.R1_n)
@@ -139,7 +149,7 @@ class EKF:
         dt_s = float(self.config.simulation.dt)
         p = self.config.twin
         soc, v1, temperature_c = self.x
-        decay = np.exp(-dt_s / p.tau1_n)
+        decay = _decay(dt_s, float(p.tau1_n))
         soc_new = soc + self.config.plant.eta * current_a * dt_s / (3600.0 * p.Q_n)
         v1_new = v1 * decay + p.R1_n * (1.0 - decay) * current_a
         heat_w = current_a**2 * (p.R0_n + p.R1_n)

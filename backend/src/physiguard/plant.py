@@ -8,6 +8,8 @@ from __future__ import annotations
 
 import logging
 from copy import deepcopy
+from functools import lru_cache
+from math import exp, isnan
 from typing import TypedDict
 
 import numpy as np
@@ -41,11 +43,26 @@ def ocv_lookup(
     soc: float | NDArray[np.float64], offset_v: float = 0.0
 ) -> float | NDArray[np.float64]:
     """Return piecewise-linear open-circuit voltage for SOC in [0, 1]."""
+    if np.isscalar(soc):
+        scalar_soc = float(soc)
+        if isnan(scalar_soc):
+            return float("nan")
+        bounded_soc = min(1.0, max(0.0, scalar_soc))
+        position = bounded_soc * (_OCV_TABLE.size - 1)
+        lower = min(int(position), _OCV_TABLE.size - 2)
+        fraction = position - lower
+        voltage = _OCV_TABLE[lower] + fraction * (
+            _OCV_TABLE[lower + 1] - _OCV_TABLE[lower]
+        )
+        return float(voltage + offset_v)
     soc_clipped = np.clip(soc, 0.0, 1.0)
     voltage = np.interp(soc_clipped, _SOC_POINTS, _OCV_TABLE) + offset_v
-    if np.isscalar(soc):
-        return float(voltage)
     return np.asarray(voltage, dtype=np.float64)
+
+
+@lru_cache(maxsize=64)
+def _decay(dt_s: float, tau_s: float) -> float:
+    return exp(-dt_s / tau_s)
 
 
 def resistance_r0(config: Config, temperature_c: float) -> float:
@@ -76,8 +93,8 @@ def plant_step(
     r0 = resistance_r0(config, temperature_c)
     soc_new = max(0.0, soc + p.eta * current_a * dt_s / (3600.0 * p.Q))
 
-    decay1 = np.exp(-dt_s / p.tau1)
-    decay2 = np.exp(-dt_s / p.tau2)
+    decay1 = _decay(float(dt_s), float(p.tau1))
+    decay2 = _decay(float(dt_s), float(p.tau2))
     v1_new = v1 * decay1 + p.R1 * (1.0 - decay1) * current_a
     v2_new = v2 * decay2 + p.R2 * (1.0 - decay2) * current_a
 

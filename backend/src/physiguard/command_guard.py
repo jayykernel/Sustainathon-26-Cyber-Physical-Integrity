@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 from dataclasses import dataclass
+from math import exp
 
 import numpy as np
 from numpy.typing import NDArray
@@ -92,7 +93,7 @@ class CommandGuard:
         dt_s = float(config.simulation.dt)
         p = config.twin
         soc, v1, temperature = map(float, state)
-        decay_rc = float(np.exp(-dt_s / p.tau1_n))
+        decay_rc = exp(-dt_s / p.tau1_n)
         r0 = p.R0_n
         heat_w = current_a**2 * (r0 + p.R1_n)
         thermal_decay = 1.0 - dt_s / (p.C_th_n * p.R_th_n)

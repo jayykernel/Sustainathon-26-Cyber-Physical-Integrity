@@ -6,7 +6,17 @@ from scipy.stats import chi2
 
 from physiguard.config import Config
 from physiguard.plant import ocv_lookup
-from physiguard.twin import EKF, NumericalError, Twin
+from physiguard.twin import EKF, NumericalError, Twin, twin_ocv_lookup
+
+
+def test_twin_ocv_scalar_interpolation_matches_numpy_reference_and_propagates_nan() -> None:
+    config = Config()
+    table = np.asarray(config.twin.OCV_n, dtype=np.float64)
+    points = np.linspace(0.0, 1.0, table.size)
+    for soc in (0.013, 0.26, 0.543, 0.997, -0.1, 1.1):
+        expected = float(np.interp(soc, points, table))
+        assert twin_ocv_lookup(soc, config) == pytest.approx(expected)
+    assert np.isnan(twin_ocv_lookup(float("nan"), config))
 
 
 def test_twin_step_uses_configured_charge_and_thermal_model() -> None:

@@ -17,6 +17,15 @@ def test_ocv_is_monotone_and_clips_out_of_range_soc() -> None:
     assert ocv_lookup(1.2) == pytest.approx(4.2)
 
 
+def test_scalar_ocv_interpolation_matches_numpy_reference_and_propagates_nan() -> None:
+    points = np.linspace(0.0, 1.0, 11)
+    table = np.array([3.00, 3.30, 3.45, 3.55, 3.62, 3.68, 3.75, 3.82, 3.92, 4.05, 4.20])
+    for soc in (0.013, 0.26, 0.543, 0.997, -0.1, 1.1):
+        expected = float(np.interp(soc, points, table))
+        assert ocv_lookup(soc) == pytest.approx(expected)
+    assert np.isnan(ocv_lookup(float("nan")))
+
+
 def test_plant_advance_conserves_charge_and_is_seed_reproducible() -> None:
     """Positive current increases SOC by eta*I*dt/(3600*Q), deterministically."""
     config = Config()

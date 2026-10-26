@@ -92,7 +92,7 @@ def main(argv: Sequence[str] | None = None) -> None:
     parser.add_argument("--start-seed", type=int, default=1000)
     parser.add_argument("--runs", type=int, default=200, help="Runs per scenario; SPEC default is 200")
     parser.add_argument("--duration", type=int, default=None, help="Override simulated seconds per run")
-    parser.add_argument("--workers", type=int, default=min(12, os.cpu_count() or 1))
+    parser.add_argument("--workers", type=int, default=min(8, os.cpu_count() or 1))
     parser.add_argument("--output-dir", type=Path, default=RESULTS_DIR)
     args = parser.parse_args(argv)
     if args.runs < 1 or args.workers < 1 or args.start_seed < 0:
