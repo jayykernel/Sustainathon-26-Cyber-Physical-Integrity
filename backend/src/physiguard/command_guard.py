@@ -31,6 +31,16 @@ class CommandGuard:
 
     def __init__(self, config: Config | None = None) -> None:
         self.config = config or get_config()
+        self._limit_configs: dict[bool, Config] = {}
+        for worst_case, multiplier in (
+            (False, float(self.config.command_guard.R_th_pessimism)),
+            (True, float(self.config.command_guard.R_th_worst)),
+        ):
+            limit_config = deepcopy(self.config)
+            limit_config.twin.R_th_n *= multiplier
+            limit_config.twin.T_amb_hat += float(self.config.command_guard.T_amb_pessimism)
+            limit_config.twin.R0_n *= float(self.config.command_guard.R0_pessimism)
+            self._limit_configs[worst_case] = limit_config
 
     def evaluate(
         self,
@@ -47,14 +57,7 @@ class CommandGuard:
             raise ValueError("state must be a finite [SOC, V1, temperature] vector")
         c = self.config
         requested = min(float(requested_current_a), float(c.charger.I_rated))
-        limit_config = deepcopy(c)
-        limit_config.twin.R_th_n *= (
-            float(c.command_guard.R_th_worst)
-            if worst_case
-            else float(c.command_guard.R_th_pessimism)
-        )
-        limit_config.twin.T_amb_hat += float(c.command_guard.T_amb_pessimism)
-        limit_config.twin.R0_n *= float(c.command_guard.R0_pessimism)
+        limit_config = self._limit_configs[worst_case]
 
         requested_prediction = self._predict(limit_config, initial, requested)
         violation = not self._safe(*requested_prediction)
@@ -95,24 +98,22 @@ class CommandGuard:
         thermal_decay = 1.0 - dt_s / (p.C_th_n * p.R_th_n)
         equilibrium = p.T_amb_hat + heat_w * p.R_th_n
 
-        def prediction_at(step: int) -> tuple[float, float, float]:
-            soc_at = soc + config.plant.eta * current_a * dt_s * step / (
-                3600.0 * p.Q_n
-            )
-            decay_n = decay_rc**step
-            v1_at = v1 * decay_n + p.R1_n * (1.0 - decay_n) * current_a
-            temp_at = equilibrium + (temperature - equilibrium) * thermal_decay**step
-            voltage = (
-                twin_ocv_lookup(soc_at, config) + current_a * r0 + v1_at
-            )
-            return voltage, temp_at, soc_at
-
-        first = prediction_at(1)
-        last = prediction_at(steps)
+        decay_n = decay_rc**steps
+        v1_end = v1 * decay_n + p.R1_n * (1.0 - decay_n) * current_a
+        soc_end = soc + config.plant.eta * current_a * dt_s * steps / (3600.0 * p.Q_n)
+        temp_end = equilibrium + (temperature - equilibrium) * thermal_decay**steps
+        # SOC/OCV and RC voltage are monotone under a constant non-negative
+        # request; the independent maxima give a conservative voltage envelope.
+        voltage_max = (
+            twin_ocv_lookup(soc_end, config) + current_a * r0 + max(v1, v1_end)
+        )
+        # Keep the analytical envelope conservative across accumulated float
+        # rounding in the step-by-step twin used by the plant.
+        numerical_margin = 1e-9
         return (
-            max(first[0], last[0]),
-            max(first[1], last[1]),
-            max(first[2], last[2]),
+            voltage_max + numerical_margin,
+            max(temperature, temp_end) + numerical_margin,
+            max(soc, soc_end) + numerical_margin,
         )
 
     def _safe(self, voltage_v: float, temperature_c: float, soc: float) -> bool:

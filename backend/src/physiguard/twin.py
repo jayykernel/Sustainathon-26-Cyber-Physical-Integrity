@@ -16,11 +16,24 @@ from .config import Config, get_config
 logger = logging.getLogger(__name__)
 
 
+_OCV_GRID_CACHE: dict[int, tuple[list[float], NDArray[np.float64]]] = {}
+
+
 def twin_ocv_lookup(soc: float, config: Config) -> float:
     """Interpolate the twin's configured OCV table at a bounded SOC."""
-    ocv_values = np.asarray(config.twin.OCV_n, dtype=np.float64)
-    soc_points = np.linspace(0.0, 1.0, ocv_values.size)
-    return float(np.interp(np.clip(soc, 0.0, 1.0), soc_points, ocv_values))
+    values = config.twin.OCV_n
+    cached = _OCV_GRID_CACHE.get(id(values))
+    if cached is None or cached[0] is not values:
+        table = np.asarray(values, dtype=np.float64)
+        table.setflags(write=False)
+        cached = (values, table)
+        _OCV_GRID_CACHE[id(values)] = cached
+    _, ocv_values = cached
+    bounded_soc = float(np.clip(soc, 0.0, 1.0))
+    position = bounded_soc * (ocv_values.size - 1)
+    lower = min(int(position), ocv_values.size - 2)
+    fraction = position - lower
+    return float(ocv_values[lower] + fraction * (ocv_values[lower + 1] - ocv_values[lower]))
 
 
 class EKFUpdate(TypedDict):

@@ -12,6 +12,7 @@
     9
   ],
   "duration_s": 3600,
+  "config_hash": "6d079b3bd6bc4947",
   "attacks": {
     "AT2": {
       "runs": 10,
@@ -21,15 +22,15 @@
         "hazard_event_rate": 0.0
       },
       "defended": {
-        "mean_peak_temperature_c": 43.75841256230227,
-        "mean_peak_voltage_v": 3.8335057865338613,
+        "mean_peak_temperature_c": 43.75944271441141,
+        "mean_peak_voltage_v": 3.8334397727466154,
         "hazard_event_rate": 0.0,
-        "mean_command_unsafe_steps": 3114.5,
+        "mean_command_unsafe_steps": 3114.9,
         "mean_safe_mode_steps": 3105.9
       },
       "paired_reduction": {
-        "peak_temperature_c": 8.369853682906161,
-        "peak_voltage_v": 0.35441049780546496,
+        "peak_temperature_c": 8.368823530797004,
+        "peak_voltage_v": 0.3544765115927109,
         "hazard_event_rate": 0.0
       },
       "per_seed": [
@@ -45,17 +46,17 @@
             "event_count": 0
           },
           "defended": {
-            "peak_temperature_c": 43.59570526278966,
-            "peak_voltage_v": 3.8443816194965805,
+            "peak_temperature_c": 43.60342824602472,
+            "peak_voltage_v": 3.844699816543012,
             "hazard_event": false,
             "hazard_samples": 0,
-            "command_unsafe_steps": 3067,
+            "command_unsafe_steps": 3069,
             "safe_mode_steps": 3059,
             "event_count": 3
           },
           "events": [
             {
-              "time_s": 531.0,
+              "time_s": 120.0,
               "severity": "warning",
               "code": "suspect",
               "text": "Integrity evidence detected."
@@ -373,17 +374,17 @@
             "event_count": 0
           },
           "defended": {
-            "peak_temperature_c": 43.86040960070016,
-            "peak_voltage_v": 3.841739972679733,
+            "peak_temperature_c": 43.86298813855668,
+            "peak_voltage_v": 3.8407616377608425,
             "hazard_event": false,
             "hazard_samples": 0,
-            "command_unsafe_steps": 3137,
+            "command_unsafe_steps": 3139,
             "safe_mode_steps": 3130,
             "event_count": 3
           },
           "events": [
             {
-              "time_s": 460.0,
+              "time_s": 120.0,
               "severity": "warning",
               "code": "suspect",
               "text": "Integrity evidence detected."
@@ -453,15 +454,15 @@
         "hazard_event_rate": 0.3
       },
       "defended": {
-        "mean_peak_temperature_c": 43.78016893246492,
-        "mean_peak_voltage_v": 3.8314188544409773,
+        "mean_peak_temperature_c": 43.78119908457407,
+        "mean_peak_voltage_v": 3.8313145535694675,
         "hazard_event_rate": 0.0,
-        "mean_command_unsafe_steps": 3094.4,
+        "mean_command_unsafe_steps": 3094.8,
         "mean_safe_mode_steps": 3105.9
       },
       "paired_reduction": {
-        "peak_temperature_c": 8.404506300856681,
-        "peak_voltage_v": 0.4544149852363214,
+        "peak_temperature_c": 8.40347614874752,
+        "peak_voltage_v": 0.4545192861078318,
         "hazard_event_rate": 0.3
       },
       "per_seed": [
@@ -477,17 +478,17 @@
             "event_count": 0
           },
           "defended": {
-            "peak_temperature_c": 43.59570526278966,
-            "peak_voltage_v": 3.8323156821295,
+            "peak_temperature_c": 43.60342824602472,
+            "peak_voltage_v": 3.8322503982888754,
             "hazard_event": false,
             "hazard_samples": 0,
-            "command_unsafe_steps": 2867,
+            "command_unsafe_steps": 2869,
             "safe_mode_steps": 3059,
             "event_count": 3
           },
           "events": [
             {
-              "time_s": 531.0,
+              "time_s": 120.0,
               "severity": "warning",
               "code": "suspect",
               "text": "Integrity evidence detected."
@@ -805,17 +806,17 @@
             "event_count": 0
           },
           "defended": {
-            "peak_temperature_c": 43.86040960070016,
-            "peak_voltage_v": 3.8407068783641907,
+            "peak_temperature_c": 43.86298813855668,
+            "peak_voltage_v": 3.8397291534897104,
             "hazard_event": false,
             "hazard_samples": 0,
-            "command_unsafe_steps": 3136,
+            "command_unsafe_steps": 3138,
             "safe_mode_steps": 3130,
             "event_count": 3
           },
           "events": [
             {
-              "time_s": 460.0,
+              "time_s": 120.0,
               "severity": "warning",
               "code": "suspect",
               "text": "Integrity evidence detected."
@@ -885,15 +886,15 @@
         "hazard_event_rate": 0.0
       },
       "defended": {
-        "mean_peak_temperature_c": 43.78016893246492,
-        "mean_peak_voltage_v": 3.8325415625190637,
+        "mean_peak_temperature_c": 43.78119908457407,
+        "mean_peak_voltage_v": 3.8324755232667016,
         "hazard_event_rate": 0.0,
-        "mean_command_unsafe_steps": 3114.5,
+        "mean_command_unsafe_steps": 3114.9,
         "mean_safe_mode_steps": 3105.9
       },
       "paired_reduction": {
-        "peak_temperature_c": 3.4642113718295113,
-        "peak_voltage_v": 0.22015633945131313,
+        "peak_temperature_c": 3.463181219720353,
+        "peak_voltage_v": 0.22022237870367561,
         "hazard_event_rate": 0.0
       },
       "per_seed": [
@@ -909,17 +910,17 @@
             "event_count": 0
           },
           "defended": {
-            "peak_temperature_c": 43.59570526278966,
-            "peak_voltage_v": 3.8435427629103645,
+            "peak_temperature_c": 43.60342824602472,
+            "peak_voltage_v": 3.8438600952612196,
             "hazard_event": false,
             "hazard_samples": 0,
-            "command_unsafe_steps": 3067,
+            "command_unsafe_steps": 3069,
             "safe_mode_steps": 3059,
             "event_count": 3
           },
           "events": [
             {
-              "time_s": 531.0,
+              "time_s": 120.0,
               "severity": "warning",
               "code": "suspect",
               "text": "Integrity evidence detected."
@@ -1237,17 +1238,17 @@
             "event_count": 0
           },
           "defended": {
-            "peak_temperature_c": 43.86040960070016,
-            "peak_voltage_v": 3.8407068783641907,
+            "peak_temperature_c": 43.86298813855668,
+            "peak_voltage_v": 3.8397291534897104,
             "hazard_event": false,
             "hazard_samples": 0,
-            "command_unsafe_steps": 3137,
+            "command_unsafe_steps": 3139,
             "safe_mode_steps": 3130,
             "event_count": 3
           },
           "events": [
             {
-              "time_s": 460.0,
+              "time_s": 120.0,
               "severity": "warning",
               "code": "suspect",
               "text": "Integrity evidence detected."
@@ -1317,15 +1318,15 @@
         "hazard_event_rate": 1.0
       },
       "defended": {
-        "mean_peak_temperature_c": 43.75841256230227,
-        "mean_peak_voltage_v": 3.8335057865338613,
+        "mean_peak_temperature_c": 43.75944271441141,
+        "mean_peak_voltage_v": 3.8334397727466154,
         "hazard_event_rate": 0.0,
-        "mean_command_unsafe_steps": 3114.5,
+        "mean_command_unsafe_steps": 3114.9,
         "mean_safe_mode_steps": 3105.9
       },
       "paired_reduction": {
-        "peak_temperature_c": 4.204313596061121,
-        "peak_voltage_v": 0.4825292432776445,
+        "peak_temperature_c": 4.203283443951963,
+        "peak_voltage_v": 0.4825952570648903,
         "hazard_event_rate": 1.0
       },
       "per_seed": [
@@ -1341,17 +1342,17 @@
             "event_count": 0
           },
           "defended": {
-            "peak_temperature_c": 43.59570526278966,
-            "peak_voltage_v": 3.8443816194965805,
+            "peak_temperature_c": 43.60342824602472,
+            "peak_voltage_v": 3.844699816543012,
             "hazard_event": false,
             "hazard_samples": 0,
-            "command_unsafe_steps": 3067,
+            "command_unsafe_steps": 3069,
             "safe_mode_steps": 3059,
             "event_count": 3
           },
           "events": [
             {
-              "time_s": 531.0,
+              "time_s": 120.0,
               "severity": "warning",
               "code": "suspect",
               "text": "Integrity evidence detected."
@@ -1669,17 +1670,17 @@
             "event_count": 0
           },
           "defended": {
-            "peak_temperature_c": 43.86040960070016,
-            "peak_voltage_v": 3.841739972679733,
+            "peak_temperature_c": 43.86298813855668,
+            "peak_voltage_v": 3.8407616377608425,
             "hazard_event": false,
             "hazard_samples": 0,
-            "command_unsafe_steps": 3137,
+            "command_unsafe_steps": 3139,
             "safe_mode_steps": 3130,
             "event_count": 3
           },
           "events": [
             {
-              "time_s": 460.0,
+              "time_s": 120.0,
               "severity": "warning",
               "code": "suspect",
               "text": "Integrity evidence detected."
@@ -1741,6 +1742,5 @@
         }
       ]
     }
-  },
-  "config_hash": "6d079b3bd6bc4947"
+  }
 }

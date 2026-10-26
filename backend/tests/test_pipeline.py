@@ -30,6 +30,14 @@ def test_paired_attack_pipeline_reuses_seed_and_returns_guard_evidence() -> None
     assert isinstance(defended["events"], list)
 
 
+def test_defended_baseline_runs_probe_gain_challenge_and_response() -> None:
+    _, defended = run_paired_pipeline("baseline", seed=29, duration_s=130)
+
+    assert defended["probe_delta"].shape == (130,)
+    assert defended["probe_gain_alarm"].shape == (130,)
+    assert defended["B3_alarm"].shape == (130,)
+
+
 def test_honest_one_hour_run_stays_within_operating_limits() -> None:
     config = Config()
     result = run_pipeline(config, seed=11, duration_s=3600, unit_variation=False)

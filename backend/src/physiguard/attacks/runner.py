@@ -10,6 +10,7 @@ from numpy.typing import NDArray
 from ..charger import ChargeProfile, execute_request
 from ..command_guard import CommandGuard
 from ..config import Config, get_config, load_detection_config
+from ..detectors.gain import evaluate_gain_window, load_gain_thresholds
 from ..detectors.passive import PassiveDetectors
 from ..detectors.probe import (
     ProbeScheduler,
@@ -22,7 +23,15 @@ from ..plant import Plant, vary_unit_config
 from ..response import ResponseEvent, ResponseManager, VirtualSensor
 from ..sensors import Sensors
 from ..twin import EKF
-from .base import AttackContext, OracleContext, ReplayContext, Telemetry, TruthState, make_attack
+from .base import (
+    AttackBase,
+    AttackContext,
+    OracleContext,
+    ReplayContext,
+    Telemetry,
+    TruthState,
+    make_attack,
+)
 
 
 class AttackTrajectory(TypedDict):
@@ -36,6 +45,7 @@ class AttackTrajectory(TypedDict):
     I_rep: NDArray[np.float64]
     T_rep: NDArray[np.float64]
     I_req: NDArray[np.float64]
+    I_base_cmd: NDArray[np.float64]
     I_cmd: NDArray[np.float64]
     attack_active: NDArray[np.bool_]
     B0_alarm: NDArray[np.bool_]
@@ -52,6 +62,8 @@ class AttackTrajectory(TypedDict):
     events: list[ResponseEvent]
     probe_active: NDArray[np.bool_]
     probe_delta: NDArray[np.float64]
+    B3_alarm: NDArray[np.bool_]
+    probe_gain_alarm: NDArray[np.bool_]
 
 
 def run_attack_scenario(
@@ -71,7 +83,11 @@ def run_attack_scenario(
     detection = load_detection_config(base_config=base_config)
     run_config = vary_unit_config(base_config, seed)
     run_config.detection = detection
-    attack = make_attack(attack_id, run_config, seed, attack_config_path)
+    attack: AttackBase | None = (
+        None
+        if attack_id == "baseline"
+        else make_attack(attack_id, run_config, seed, attack_config_path)
+    )
     plant = Plant(run_config)
     sensors = Sensors(run_config, seed + 1)
     profile = ChargeProfile(run_config)
@@ -107,6 +123,7 @@ def run_attack_scenario(
         "I_rep",
         "T_rep",
         "I_req",
+        "I_base_cmd",
         "I_cmd",
     )
     samples: dict[str, list[float]] = {key: [] for key in keys}
@@ -121,7 +138,10 @@ def run_attack_scenario(
     estimate_degraded_values: list[bool] = []
     probe_active_values: list[bool] = []
     probe_delta_values: list[float] = []
+    probe_gain_alarm_values: list[bool] = []
+    b3_values: list[bool] = []
     probe_scheduler = ProbeScheduler(run_config, seed + 2) if defended else None
+    gain_thresholds = load_gain_thresholds(base_config) if defended else None
     probe_key = run_config.probe.key or f"validation-probe-key-{seed}"
     active_challenge: ProbeWindow | None = None
     active_challenge_mode = ""
@@ -143,7 +163,11 @@ def run_attack_scenario(
             attack_context = replay_ctx
         else:
             attack_context = AttackContext()
-        reported = attack.apply(t_s, truth, raw, attack.rng, attack_context)
+        reported = (
+            attack.apply(t_s, truth, raw, attack.rng, attack_context)
+            if attack is not None
+            else raw
+        )
 
         if index == 0:
             ekf.initialize(reported["V_rep"], reported["T_rep"])
@@ -171,8 +195,9 @@ def run_attack_scenario(
             cusum_values[channel].append(f"CUSUM_{channel}" in passive_alarms)
 
         requested = profile.request(reported["V_rep"])
-        requested = attack.request(t_s, requested, truth)
-        attack.physical(t_s, plant)
+        if attack is not None:
+            requested = attack.request(t_s, requested, truth)
+            attack.physical(t_s, plant)
         b0_alarm = any(alarm.startswith("RANGE_") for alarm in passive_alarms)
         b1_alarm = "NIS" in passive_alarms
         b2_alarm = b1_alarm or any(alarm.startswith("CUSUM_") for alarm in passive_alarms)
@@ -184,8 +209,41 @@ def run_attack_scenario(
         control_request = requested
         derate_temperature = reported["T_rep"]
         probe_mode = "NORMAL"
+        probe_failed = False
+        probe_challenge_completed = False
+        probe_gain_alarm = False
         if defended:
             assert command_guard is not None and response is not None and virtual_sensor is not None
+            assert gain_thresholds is not None
+            window_samples = int(round(run_config.probe.window / run_config.simulation.dt))
+            if (
+                active_challenge is not None
+                and index == active_challenge_start + window_samples
+                and index <= len(probe_delta_values)
+            ):
+                window_start = active_challenge_start
+                delta_window = np.asarray(probe_delta_values[window_start:index], dtype=np.float64)
+                if delta_window.size == window_samples and float(delta_window @ delta_window) > 1e-10:
+                    voltage_window = np.asarray(
+                        [*samples["V_rep"][window_start + 1 : index], reported["V_rep"]],
+                        dtype=np.float64,
+                    )
+                    current_window = np.asarray(
+                        [*samples["I_rep"][window_start + 1 : index], reported["I_rep"]],
+                        dtype=np.float64,
+                    ) - np.asarray(samples["I_base_cmd"][window_start:index], dtype=np.float64)
+                    gain_decision = evaluate_gain_window(
+                        voltage_window,
+                        current_window,
+                        delta_window,
+                        config=run_config,
+                        g_min_v=gain_thresholds[0],
+                        g_min_i=gain_thresholds[1],
+                        initial_soc=samples["soc_true"][window_start],
+                    )
+                    probe_failed = gain_decision.detected_combined
+                    probe_gain_alarm = probe_failed
+                    probe_challenge_completed = True
             flagged_channels = {
                 channel
                 for channel, alarm in (("V", "CUSUM_V"), ("T", "CUSUM_T"))
@@ -210,14 +268,16 @@ def run_attack_scenario(
                 evidence_classes.add("passive_NIS")
             if any(alarm.startswith("CUSUM_") for alarm in passive_alarms):
                 evidence_classes.add("CUSUM")
+            if probe_gain_alarm:
+                evidence_classes.add("probe_gain")
             snapshot = response.update(
                 t_s,
                 evidence_classes,
+                probe_failed=probe_failed,
                 command_unsafe=command_unsafe,
                 prediction_violation=guard_result.violation,
                 clean_challenge=(
-                    index > 0
-                    and index % max(1, int(run_config.probe.period)) == 0
+                    probe_challenge_completed
                     and not evidence_classes
                     and not command_unsafe
                 ),
@@ -319,14 +379,17 @@ def run_attack_scenario(
             "I_rep": reported["I_rep"],
             "T_rep": reported["T_rep"],
             "I_req": requested,
+            "I_base_cmd": applied - probe_delta,
             "I_cmd": applied,
         }
         for key, value in state.items():
             samples[key].append(value)
-        active_values.append(attack.is_active(t_s))
+        active_values.append(attack.is_active(t_s) if attack is not None else False)
         b0_values.append(b0_alarm)
         b1_values.append(b1_alarm)
         b2_values.append(b2_alarm)
+        b3_values.append(defended and response_state != "NORMAL")
+        probe_gain_alarm_values.append(probe_gain_alarm)
 
         plant.step(applied)
         previous_current_a = applied
@@ -350,6 +413,8 @@ def run_attack_scenario(
             "events": response.events if response is not None else [],
             "probe_active": np.asarray(probe_active_values, dtype=np.bool_),
             "probe_delta": np.asarray(probe_delta_values, dtype=np.float64),
+            "B3_alarm": np.asarray(b3_values, dtype=np.bool_),
+            "probe_gain_alarm": np.asarray(probe_gain_alarm_values, dtype=np.bool_),
         },
     )
 

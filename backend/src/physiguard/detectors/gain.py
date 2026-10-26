@@ -141,7 +141,10 @@ def evaluate_gain_window(
 ) -> GainDecision:
     """Evaluate V-only, I-only, and OR-combined gain alarms for one challenge."""
     cfg = config or get_config()
-    calibrated_v, calibrated_i = load_gain_thresholds(cfg)
+    if g_min_v is None or g_min_i is None:
+        calibrated_v, calibrated_i = load_gain_thresholds(cfg)
+    else:
+        calibrated_v, calibrated_i = g_min_v, g_min_i
     v_threshold = calibrated_v if g_min_v is None else g_min_v
     i_threshold = calibrated_i if g_min_i is None else g_min_i
     voltage_expected = expected_voltage_response(delta_I, cfg, initial_soc=initial_soc)
