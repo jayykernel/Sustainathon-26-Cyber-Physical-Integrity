@@ -1,0 +1,138 @@
+# PhysiGuard default configuration
+# All parameters from SPEC.md sections 2-5
+# Single source of truth - no magic numbers in code
+
+plant:
+  Q: 60.0                    # Capacity (Ah)
+  R0_ref: 0.0012             # Ohmic resistance at 25°C (ohms)
+  R1: 0.0006                 # First RC resistance (ohms)
+  tau1: 30.0                 # First RC time constant (seconds)
+  R2: 0.0005                 # Second RC resistance (ohms)
+  tau2: 160.0                # Second RC time constant (seconds)
+  C_th: 800.0                # Thermal capacitance (J/K)
+  R_th: 2.5                  # Thermal resistance (K/W)
+  T_amb: 35.0                # Ambient temperature (°C)
+  T_amb_drift_rate: 0.0004166666666666667  # ±1.5°C/h in °C/s
+  SOC_0: 0.10                # Initial SOC
+  T_0: null                  # Initial temperature (null = T_amb)
+  eta: 0.995                 # Coulombic efficiency (charging)
+  a_R: 0.012                 # Temperature coefficient of R0 (1/°C)
+  # Unit-to-unit variation (seeded per run)
+  Q_var_pct: 3.0
+  R0_var_pct: 10.0
+  R1_var_pct: 10.0
+  R_th_var_pct: 10.0
+  OCV_offset_mV: 10.0
+  # Hazard and operational limits
+  T_hazard: 55.0
+  T_warn: 50.0
+  V_hazard: 4.30
+  V_max: 4.20
+  V_min: 3.00
+  I_rated: 180.0
+
+twin:
+  Q_n: 60.0
+  R0_n: 0.0012
+  R1_n: 0.0011               # Lumped R1+R2
+  tau1_n: 60.0               # Fitted in P1
+  C_th_n: 800.0
+  R_th_n: 2.5
+  T_amb_hat: 35.0
+  OCV_n:
+    - 3.00
+    - 3.30
+    - 3.45
+    - 3.55
+    - 3.62
+    - 3.68
+    - 3.75
+    - 3.82
+    - 3.92
+    - 4.05
+    - 4.20
+
+sensors:
+  V_sigma: 0.008
+  I_sigma: 0.15
+  T_sigma: 0.10
+  V_quant: 0.001
+  I_quant: 0.01
+  T_quant: 0.01
+  I_residual_sigma: 0.2
+
+charger:
+  I_fast: 90.0
+  I_rated: 180.0
+  V_max: 4.20
+  T_derate_start: 40.0
+  T_derate_end: 50.0
+  derate_min_factor: 0.2
+  CV_kp: 200.0
+
+detection:
+  FA_target: 0.2
+  NIS_window: 30
+  CUSUM_kappa: 0.5
+  CUSUM_h: 6.0
+  CUSUM_deadband: 0.5
+  dTdt_limit: 0.5
+  # Calibration outputs (populated by make calibrate)
+  NIS_threshold: 11.0
+  calibration_seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99]
+  calibration_config_hash: ""
+  calibration_date: ""
+
+probe:
+  amplitude_pct: 4.0
+  chip_length: 5
+  window: 120
+  period: 600
+  continuous_modes:
+    - "SUSPECT"
+    - "CONFIRMED"
+    - "SAFE_MODE"
+  g_min_V: 0.5
+  g_min_I: 0.5
+  key: ""  # From PHYSIGUARD_PROBE_KEY env var
+  sweep_amplitudes:
+    - 0.5
+    - 1.0
+    - 2.0
+    - 3.0
+    - 4.0
+    - 5.0
+    - 6.0
+    - 7.0
+    - 8.0
+  sweep_modes:
+    - "passive_with_probe"
+    - "gain_test"
+
+localization:
+  window: 60
+  dominance_factor: 1.5
+
+command_guard:
+  horizon: 300
+  R_th_pessimism: 1.5
+  T_amb_pessimism: 5.0
+  R0_pessimism: 1.2
+  bisection_max_iter: 8
+  R_th_worst: 4.0
+
+response:
+  N_clean: 3
+  SUSPECT_to_CONFIRMED_evidence_classes: 2
+  SUSPECT_to_CONFIRMED_window: 60
+  CONFIRMED_to_SAFE_MODE_persist: 10
+  evidence_classes:
+    - "passive_NIS"
+    - "CUSUM"
+    - "probe_gain"
+    - "command_unsafe"
+
+simulation:
+  dt: 1.0
+  duration: 3600
+  seed: null
