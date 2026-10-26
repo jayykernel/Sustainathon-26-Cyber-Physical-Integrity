@@ -112,7 +112,8 @@ make lint        # ruff + eslint
 make typecheck   # mypy --strict + tsc --noEmit
 make fit-twin    # fit nominal 1-RC parameters on the fixed validation seed
 make plot-nominal # save honest and attack plausibility trajectories
-make calibrate   # validation seeds -> configs/detection.yaml
+make calibrate   # validation seeds 0–99 -> configs/detection.yaml + diagnostics
+make eval-passive # frozen thresholds -> one-time test seeds 100–199 false-alarm report
 make eval        # test seeds -> data/results/*  (must finish < 10 min)
 make build       # frontend production build
 make serve       # single-port production server

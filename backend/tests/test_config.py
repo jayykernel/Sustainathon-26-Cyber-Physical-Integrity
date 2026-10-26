@@ -3,8 +3,9 @@
 from pathlib import Path
 
 import pytest
+import yaml
 
-from physiguard.config import Config, load_config
+from physiguard.config import Config, load_config, load_detection_config
 
 # Ensure we're loading from the project root, not the installed package
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -43,3 +44,16 @@ def test_config_requires_yaml_mapping(tmp_path: Path) -> None:
 
     with pytest.raises(ValueError, match="YAML mapping"):
         load_config(config_path)
+
+
+def test_calibrated_detection_config_checks_source_hash(tmp_path: Path) -> None:
+    config = Config()
+    data = config.detection.model_dump(mode="json")
+    data["calibration_config_hash"] = config.config_hash()
+    path = tmp_path / "detection.yaml"
+    path.write_text(yaml.safe_dump(data), encoding="utf-8")
+
+    assert load_detection_config(path, config).calibration_config_hash == config.config_hash()
+    config.plant.Q += 1.0
+    with pytest.raises(ValueError, match="different config hash"):
+        load_detection_config(path, config)

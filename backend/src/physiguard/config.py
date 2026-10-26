@@ -321,6 +321,26 @@ def load_config(path: Path | str | None = None) -> Config:
     return config
 
 
+def load_detection_config(
+    path: Path | str | None = None, base_config: Config | None = None
+) -> DetectionConfig:
+    """Load calibrated detection thresholds, optionally checking their source hash."""
+    if path is None:
+        path = CONFIG_DIR / "detection.yaml"
+    detection_path = Path(path)
+    if not detection_path.exists():
+        raise FileNotFoundError(f"Detection config not found: {detection_path}")
+    with detection_path.open(encoding="utf-8") as stream:
+        data = yaml.safe_load(stream) or {}
+    if not isinstance(data, dict):
+        raise ValueError(f"Detection config must contain a YAML mapping: {detection_path}")
+    detection = DetectionConfig(**data)
+    if base_config is not None and detection.calibration_config_hash:
+        if detection.calibration_config_hash != base_config.config_hash():
+            raise ValueError("Detection thresholds were calibrated for a different config hash")
+    return detection
+
+
 def save_config(config: Config, path: Path | str | None = None) -> None:
     """Save configuration to YAML file."""
     if path is None:
