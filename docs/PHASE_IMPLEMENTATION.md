@@ -2,7 +2,7 @@
 
 Budgets are **wall-clock caps for Claude Code work**, not human time. Total build budget: about 30 h, leaving buffer inside a 48 h event. Phases marked **REVIEW** stop for the user's "go". Priority tags: **MUST / SHOULD / COULD**.
 
-Order of dependency: P0 → P1 → P2 → P3 → P4 → P5 → P6 → P7 → P8 → P9 → P10 → P11. Backend (P1–P7) is finished and tested **before** the frontend starts, so the UI is built against a stable API.
+Order of dependency: P0 → P1 → P2 → P3 → P4 → P5 → P6 → P7 → P8 → P9 → P10 → P11. Backend phases P1–P7 must be finished and tested **before** the frontend starts, so the UI is built against a stable API. Current continuation point: P7 evaluation harness.
 
 ## Cut rules (apply automatically, log in PROGRESS.md)
 
@@ -22,7 +22,7 @@ Never cut: determinism, tests, honesty rules, offline replay mode, `make check`,
 
 ---
 
-## P0 — Bootstrap (budget 0.75 h, MUST)
+## P0 — Bootstrap (budget 0.75 h, MUST) — **COMPLETE**
 
 **Goal:** a repo where `make check` runs green on trivial content, so every later phase has a working gate.
 
@@ -65,7 +65,7 @@ Gate: on validation seeds the combined passive FA ≤ `FA_target`; on **test** s
 
 ---
 
-## P3 — Attack engine (budget 3 h, MUST) — **REVIEW**
+## P3 — Attack engine (budget 3 h, MUST) — **COMPLETE; attack configuration frozen**
 
 Tasks:
 - `attacks/*` implementing AT1–AT6 per SPEC 6, with `configs/attacks.yaml`. Hooks: telemetry (`apply`), physical (`physical`), request (`request`).
@@ -77,7 +77,7 @@ Gate: stealth requirements in SPEC 6 satisfied or attacks fixed; **`configs/atta
 
 ---
 
-## P4 — Localization (budget 2 h, SHOULD)
+## P4 — Localization (budget 2 h, SHOULD) — **COMPLETE**
 
 Tasks: `localize.py` per SPEC 7, bank of V-only / T-only EKFs, dominance rule calibrated on validation seeds, confusion-matrix function in `eval/metrics.py`.
 
@@ -87,7 +87,7 @@ Cut fallback: dominance-only rule (largest standardized residual), no `multi`.
 
 ---
 
-## P5 — Active verification (budget 3.5 h, MUST)
+## P5 — Active verification (budget 3.5 h, MUST) — **COMPLETE WITH AT4 LIMITATION**
 
 Tasks:
 - Keyed probe generator (`detectors/probe.py`) with fresh nonce per window, safe clipping, zero-mean property test.
@@ -102,18 +102,18 @@ Gate: measure AT3 and AT4 (V-only and combined) on validation, respect the FA bu
 
 ---
 
-## P6 — Command guard, response, paired plants (budget 3 h, MUST) — **REVIEW**
+## P6 — Command guard, response, paired plants (budget 3 h, MUST) — **COMPLETE**
 
 Tasks:
 - `command_guard.py` (pessimistic forward simulation + bisection), `response.py` (state machine, SAFE_MODE actions, virtual sensor, operator reset).
 - `pipeline.py` upgrade: run the **paired** plants (defended and undefended) from the same seed and attack; event stream (`events` with severity and text).
 - Closed-loop tests: AT2/AT3/AT4/AT5 each produce lower peak hazard defended than undefended on validation seeds, or the failure is reported; no oscillation (state machine hysteresis test); operator reset logic test.
 
-Gate: closed-loop summary table on validation seeds (peak T, peak V, hazard-event rate, defended vs undefended) printed.
+Gate: closed-loop summary table on validation seeds (peak T, peak V, hazard-event rate, defended vs undefended) printed. **Complete:** paired seeds 0–9 show lower peak T and V in every defended run for AT2–AT5; hazard rates were AT2 0%→0%, AT3 30%→0%, AT4 0%→0%, AT5 100%→0%. See `data/results/p6_closed_loop_summary.md` and `data/results/p6_closed_loop_report.json`.
 
 ---
 
-## P7 — Evaluation harness (budget 3 h, MUST)
+## P7 — Evaluation harness (budget 3 h, MUST) — **CURRENT PHASE / TODO**
 
 Tasks:
 - `eval/runner.py` (multiprocessing, deterministic per-run seed, progress), `eval/metrics.py` (Wilson CI, delay stats, margins, hazard reduction, confusion), `eval/report.py` (results.json with pydantic schema, CSV, markdown tables, SVG figures: detector ladder bars, delay distributions, detection vs probe amplitude, confusion matrix, probe overhead).

@@ -3,7 +3,7 @@
 Living log. Update after each task and phase so the current implementation state and evidence stay visible.
 
 ## Current status
-- Current phase: P6 guard/response (P5 complete with AT4 limitation)
+- Current phase: P7 evaluation harness (P6 complete)
 - Event clock at last update: 2026-10-26 (start time = 2026-10-26 00:00 local)
 - Last green `make check`: 2026-10-26
 - Tags: none
@@ -94,7 +94,7 @@ Living log. Update after each task and phase so the current implementation state
 - Added the 300-second pessimistic command guard with configured R_th, ambient, and R0 uncertainty, a closed-form horizon prediction equivalent to repeated twin steps, and an at-most-eight-step bisection for the largest safe current. SAFE_MODE uses the configured worst-case cooling resistance.
 - Added the response state machine: one evidence class enters SUSPECT; two independent classes within 60 seconds, two consecutive failed probes, or an unsafe predicted command confirms; CONFIRMED persists for 10 seconds before SAFE_MODE. Exit requires an explicit operator reset and three clean challenge windows.
 - Added virtual SOC/polarization/temperature estimates that fuse unflagged V/T channels. When no telemetry channel is trusted or SAFE_MODE forces isolation, the open-loop pessimistic twin supplies a degraded estimate. SAFE_MODE substitutes virtual temperature for charger derating and requests continuous keyed probes; probe current is clipped against next-step current, voltage, and thermal limits.
-- `make guard-report` ran paired undefended/defended AT2, AT3, AT4, and AT5 scenarios on validation seeds 0–9 for 3600 seconds each. Mean peak temperature and voltage decreased for all four attacks. Hazard-event rates were AT2 0%→0%, AT3 30%→0%, AT4 0%→0%, and AT5 100%→0%. Full paired per-seed metrics and event streams are in `data/results/p6_closed_loop_report.json`; the summary table is `data/results/p6_closed_loop_summary.md`.
+- `make guard-report` ran paired undefended/defended AT2, AT3, AT4, and AT5 scenarios on validation seeds 0–9 for 3600 seconds each. Peak temperature and voltage decreased in every paired defended run for all four attacks. Hazard-event rates were AT2 0%→0%, AT3 30%→0%, AT4 0%→0%, and AT5 100%→0%. Full paired per-seed metrics and event streams are in `data/results/p6_closed_loop_report.json`; the summary table is `data/results/p6_closed_loop_summary.md`.
 - Full backend tests pass; Ruff and strict mypy pass; frontend test, lint, typecheck, and production build pass. Response tests cover confirmation hysteresis, two-probe confirmation, safe-mode persistence, operator reset, trust degradation/recovery, and the guard horizon against repeated twin simulation.
 
 ## Exact continuation point
