@@ -52,6 +52,12 @@ export interface TimelineSample {
   speedKmh: number;
   /** Whether the red alarm state is active. */
   alarm: boolean;
+  /** Live attack state supplied by the backend. */
+  attackActive?: boolean;
+  /** Duration of this run in simulated seconds. */
+  duration_s?: number;
+  channel?: string;
+  controlMode?: string;
 }
 
 export interface Timeline {
