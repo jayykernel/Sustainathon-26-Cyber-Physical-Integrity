@@ -16,7 +16,7 @@ Living log. Update after each task and phase so the current implementation state
 | P1 Plant/twin | complete | 3 h | | `make check`; `make fit-twin`; `make plot-nominal`; user reviewed figure | 22 backend tests and 1 frontend test pass; all MUST criteria met. NASA P1b unavailable and unsupported. |
 | P2 Passive detection | complete | 3.5 h | | `make check`; `make calibrate`; `make eval-passive` | Validation 0.1200 FA/h meets target; held-out test 0.2101 FA/h is reported above target without retuning. |
 | P3 Attack engine | complete | 3 h | | `make check`; `make stealth-report`; `attacks-frozen` tag | AT1–AT6 and seven scenarios implemented; all SPEC 6 stealth criteria pass on validation seeds 0–99. |
-| P4 Localization | todo | 2 h | | | |
+| P4 Localization | complete | 2 h | | `make localization-report`; localization unit tests; `make check` | Validation threshold and dominance ratio calibrated; AT1 and AT2 confusion matrices recorded on seeds 0–99. |
 | P5 Active verification | todo | 3.5 h | | | |
 | P6 Guard/response | todo | 3 h | | | |
 | P7 Evaluation | todo | 3 h | | | |
@@ -74,8 +74,16 @@ Living log. Update after each task and phase so the current implementation state
 - Backend: 43 tests passed; Ruff and strict mypy passed. Frontend: 1 test passed; ESLint, TypeScript, and production build passed.
 - P3 attack config is frozen at commit/tag `attacks-frozen`; parameter changes now require a logged deviation and user approval.
 
+## P4 implementation and evidence
+- Added full, V-only, and T-only EKF tracks. A 60-second rolling window combines standardized full-model residuals, cross-prediction residuals, and current consistency into V/I/T evidence scores.
+- Localization decisions support `v`, `i`, `temp`, `multi`, `command`, `unknown`, and `none`; `eval/metrics.py` implements SPEC multi-channel scoring and ambiguous-case accounting.
+- `make localization-report` calibrated the evidence threshold to 3.8950 (99.5th percentile of 359,900 channel-max samples across clean validation runs 0–99). Dominance ratio candidates 1.25–3.0 were evaluated on tuning seeds 0–49; selected ratio is 3.0. Candidate ratios gave equal tuning accuracy, so the selection is a deterministic tie-break, not a demonstrated performance advantage.
+- Validation confusion: AT1 temperature-dominant → temp 100/100 (100%); AT2 temperature-only drift → temp 85/100 (85%), unknown 5/100, none 10/100. Multi is ambiguous for these scenarios. Full matrices and per-run predictions are in `data/results/localization_report.json`.
+- Synthetic voltage-only and temperature-only sensor steps both localized to the correct channel. Tests cover multi, command override, unknown, none, reset behavior, scalar EKF updates, and confusion scoring.
+- P4 verification: 51 backend tests passed; Ruff and strict mypy passed; frontend test, lint, typecheck, and production build passed.
+
 ## Exact continuation point
-- Next: begin P4 localization.
+- Next: begin P5 active verification.
 - P0 was pushed in ten commits and P1 in eight focused commits; P2 was committed in five focused commits. P3 freeze is recorded by the `attacks-frozen` tag.
 
 ## Measured numbers log
@@ -95,6 +103,9 @@ Living log. Update after each task and phase so the current implementation state
 `P3 | make stealth-report | B0/B1/B2 rates for AT4 | 0% / 2% / 27% | 0–99 | 6d079b3bd6bc4947`
 `P3 | make stealth-report | B0/B1/B2 rates for AT5 | 100% / 2% / 4% | 0–99 | 6d079b3bd6bc4947`
 `P3 | make stealth-report | B0/B1/B2 rates for AT6 | 0% / 5% / 21% | 0–99 | 6d079b3bd6bc4947`
+`P4 | make localization-report | threshold / dominance ratio | 3.8950 / 3.0 (threshold q99.5; ratio ties on tuning accuracy) | clean 0–99, tune 0–49 | 6d079b3bd6bc4947`
+`P4 | make localization-report | AT1 temp localization | 100/100 correct | 0–99 | 6d079b3bd6bc4947`
+`P4 | make localization-report | AT2 temp localization | 85/100 correct; 5 unknown; 10 none | 0–99 | 6d079b3bd6bc4947`
 
 ## Ideas parked
 - Remediate npm audit advisories in a dedicated dependency update with compatibility checks.

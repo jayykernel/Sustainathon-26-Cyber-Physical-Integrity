@@ -192,6 +192,40 @@ class EKF:
             "r_I": current_residual,
         }
 
+    def update_channel(
+        self, channel: str, measurement: float, I_cmd: float
+    ) -> tuple[float, float]:
+        """Update one measurement channel for cross-prediction EKF banks."""
+        if not self.initialized:
+            raise ModelError("EKF is not initialized; call initialize() first")
+        if channel not in {"V", "T"}:
+            raise ValueError("channel must be 'V' or 'T'")
+        if not np.isfinite(measurement) or not np.isfinite(I_cmd):
+            raise ValueError("measurement and I_cmd must be finite")
+
+        soc, v1, temperature_c = self.x
+        if channel == "V":
+            p = self.config.twin
+            predicted = float(twin_ocv_lookup(soc, self.config) + I_cmd * p.R0_n + v1)
+            H = np.array([[self._d_ocv_d_soc(soc), 1.0, 0.0]], dtype=np.float64)
+            variance = float(self.R[0, 0])
+        else:
+            predicted = float(temperature_c)
+            H = np.array([[0.0, 0.0, 1.0]], dtype=np.float64)
+            variance = float(self.R[1, 1])
+
+        innovation = measurement - predicted
+        S = float((H @ self.P @ H.T)[0, 0] + variance)
+        if not np.isfinite(S) or S <= 0:
+            raise NumericalError("Single-channel innovation covariance is invalid")
+        gain = (self.P @ H.T)[:, 0] / S
+        identity = np.eye(3, dtype=np.float64)
+        residual_map = identity - np.outer(gain, H[0])
+        self.P = residual_map @ self.P @ residual_map.T + np.outer(gain, gain) * variance
+        self.P = 0.5 * (self.P + self.P.T)
+        self.x = self.x + gain * innovation
+        return float(innovation), float(np.sqrt(S))
+
     def _d_ocv_d_soc(self, soc: float) -> float:
         """Estimate dOCV/dSOC with a bounded central or one-sided difference."""
         delta = 0.01

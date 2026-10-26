@@ -42,9 +42,9 @@ Unticked items at a phase gate block the phase unless a cut is logged in PROGRES
 - [x] `configs/scenarios.yaml` includes `story_ladder`
 
 ## P4 Localization
-- [ ] Single-channel fault unit tests pass
-- [ ] Confusion matrix on validation for AT1 and AT2
-- [ ] `multi` / `command` / `unknown` outputs covered by tests (or cut logged)
+- [x] Single-channel fault unit tests pass — evidence: synthetic voltage-only and temperature-only steps through the EKF bank
+- [x] Confusion matrix on validation for AT1 and AT2 — evidence: `data/results/localization_report.json`, seeds 0–99
+- [x] `multi` / `command` / `unknown` outputs covered by tests (or cut logged) — evidence: `backend/tests/test_localize.py`; SPEC multi scoring implemented in `eval/metrics.py`
 
 ## P5 Active verification
 - [ ] Probe zero-mean, within limits, deterministic given key+nonce, differs across nonces (tests)
