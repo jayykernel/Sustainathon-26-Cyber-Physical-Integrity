@@ -13,25 +13,25 @@ setup:
 	$(PYTHON) -m venv backend/.venv
 	$(VENV_PYTHON) -m pip install -r backend/requirements.lock
 	$(VENV_PYTHON) -m pip install --no-deps -e backend
-	npm ci --prefix frontend
+	npm ci --prefix static-website
 
 dev: setup
 	$(VENV_PYTHON) scripts/dev.py
 
 test:
 	$(VENV_PYTHON) -m pytest backend/tests/ -v --tb=short
-	npm --prefix frontend test
+	npm --prefix static-website test
 
 test-quick:
 	$(VENV_PYTHON) -m pytest backend/tests/ -v --tb=short -m "not slow and not integration"
+	npm --prefix static-website test
 
 lint:
 	$(VENV_PYTHON) -m ruff check backend/src/ backend/tests/ --config backend/pyproject.toml
-	npm --prefix frontend run lint
 
 typecheck:
 	$(VENV_PYTHON) -m mypy backend/src/ --strict --config-file backend/pyproject.toml
-	npm --prefix frontend run typecheck
+	npm --prefix static-website run typecheck
 
 fit-twin:
 	$(VENV_PYTHON) scripts/fit_twin.py --write
@@ -70,7 +70,7 @@ demo-data:
 	$(VENV_PYTHON) scripts/demo_data.py
 
 build:
-	npm --prefix frontend run build
+	npm --prefix static-website run build
 
 check: lint typecheck test build
 	@echo All checks passed.
