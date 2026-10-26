@@ -90,11 +90,11 @@ Cut fallback: dominance-only rule (largest standardized residual), no `multi`.
 ## P5 — Active verification (budget 3.5 h, MUST) — **COMPLETE WITH AT4 LIMITATION**
 
 Tasks:
-- Keyed probe generator (`detectors/probe.py`) with fresh nonce per window, safe clipping, zero-mean property test.
-- Gain estimator per SPEC 5 with high-pass; calibration of `g_min` on validation attack-free windows; V-only, I-only, combined tests.
-- Probe scheduling (periodic and continuous modes).
-- Amplitude sweep experiment (detection vs amplitude) and overhead measurement experiment.
-- A2 oracle run to demonstrate the limit.
+- [x] Keyed probe generator with fresh nonce per window, safe clipping, and zero-mean property tests.
+- [x] Gain estimator with validation-only `g_min` calibration and V-only, I-only, and combined results.
+- [x] Periodic and continuous probe scheduling.
+- [x] Detection-versus-amplitude sweep and probe-overhead measurements.
+- [x] AT6 oracle run labelled as a limit.
 
 Tests: probe never violates limits; same key+nonce reproduces probe, different nonce differs; authentic telemetry gives ĝ near 1 on validation; AT3 replay gives ĝ near 0; measure and report AT4 separately because its attacker-visible current channel may expose the probe; replay of an old probe window fails.
 
@@ -105,9 +105,9 @@ Gate: measure AT3 and AT4 (V-only and combined) on validation, respect the FA bu
 ## P6 — Command guard, response, paired plants (budget 3 h, MUST) — **COMPLETE**
 
 Tasks:
-- `command_guard.py` (pessimistic forward simulation + bisection), `response.py` (state machine, SAFE_MODE actions, virtual sensor, operator reset).
-- `pipeline.py` upgrade: run the **paired** plants (defended and undefended) from the same seed and attack; event stream (`events` with severity and text).
-- Closed-loop tests: AT2/AT3/AT4/AT5 each produce lower peak hazard defended than undefended on validation seeds, or the failure is reported; no oscillation (state machine hysteresis test); operator reset logic test.
+- [x] `command_guard.py` pessimistic forward simulation and bisection; `response.py` state machine, SAFE_MODE actions, virtual sensor, and operator reset.
+- [x] Paired defended and undefended plants use the same seed and attack; event stream includes severity and text.
+- [x] Closed-loop tests and validation comparison completed. Peak temperature and voltage decreased for every AT2–AT5 pair; hazard outcomes are recorded in the validation table.
 
 Gate: closed-loop summary table on validation seeds (peak T, peak V, hazard-event rate, defended vs undefended) printed. **Complete:** paired seeds 0–9 show lower peak T and V in every defended run for AT2–AT5; hazard rates were AT2 0%→0%, AT3 30%→0%, AT4 0%→0%, AT5 100%→0%. See `data/results/p6_closed_loop_summary.md` and `data/results/p6_closed_loop_report.json`.
 
@@ -116,12 +116,12 @@ Gate: closed-loop summary table on validation seeds (peak T, peak V, hazard-even
 ## P7 — Evaluation harness (budget 3 h, MUST) — **IMPLEMENTED; RUNTIME GATE MISSED**
 
 Tasks:
-- `eval/runner.py` (multiprocessing, deterministic per-run seed, progress), `eval/metrics.py` (Wilson CI, delay stats, margins, hazard reduction, confusion), `eval/report.py` (results.json with pydantic schema, CSV, markdown tables, SVG figures: detector ladder bars, delay distributions, detection vs probe amplitude, confusion matrix, probe overhead).
-- Full hourly evaluation ran on test seeds 1000–1199 (200 runs each across baseline and AT1–AT6). `meta.json` records the base git hash, source fingerprint, config hash, seeds, worker count, and runtime.
-- Repeatability test: run a reduced eval twice, compare JSON equality.
-- S1 residual learner: **only if all earlier gates pass and time remains (COULD)**; with ablation.
+- [x] Multiprocessing runner, deterministic per-run seed, progress, metrics, schema-validated JSON, CSV, Markdown, metadata, and all five requested SVG figures implemented.
+- [x] Full hourly evaluation completed on test seeds 1000–1199 (200 each across baseline and AT1–AT6). Metadata records source/config hashes, seeds, workers, and runtime.
+- [x] Reduced evaluation repeatability test compares serialized JSON and passes.
+- [ ] S1 residual learner (COULD) — skipped because the mandatory runtime gate did not pass.
 
-Gate: results validate against schema and the reduced repeatability test passes. **The 1,400-run evaluation took 1,802.4 s (30 min) with 12 workers, so the <10 min runtime gate is not met.** The system Make utility is unavailable on this Windows host; the Makefile target's command was run directly as `python -m physiguard.eval.cli`. Results and all report artifacts are under `data/results/`.
+Gate: [x] schema and repeatability checks pass; [ ] evaluation finishes under 10 minutes. **The 1,400-run evaluation took 1,802.4 s (30 min) with 12 workers, so the runtime gate is not met.** The system Make utility is unavailable on this Windows host; the Makefile target's command was run directly as `python -m physiguard.eval.cli`. Results and all report artifacts are under `data/results/`.
 
 Held-out findings: B0/B1/B2 show the expected attack-specific behavior, while B3 has a high false-alarm burden (1.000 episodes/hour on baseline and 3.356/hour on attack scenarios). Because pre-onset B3 alarms remain open across attack onset, they are not credited as detections. B3 preempted all 200 AT5 scenarios before activation; detector detection rate is therefore undefined for those runs. B3 lowers paired peak temperature and voltage across all scenarios, but incurs routine interventions on attack-free runs. No held-out thresholds were tuned. See `data/results/tables.md` for all rates, confidence intervals, delays, and safety metrics.
 

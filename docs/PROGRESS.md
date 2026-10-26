@@ -102,10 +102,11 @@ Living log. Update after each task and phase so the current implementation state
 - Full test split: seeds 1000–1199, 200 runs per scenario, 3,600 seconds per run, 12 workers. Completed in 1,802.4 seconds (30 minutes); the required <10-minute gate is missed. On this Windows host, `make` is not installed, so the Makefile target recipe was invoked directly with `python -m physiguard.eval.cli`.
 - B0/B1/B2 detection rates (Wilson 95% intervals) are in `data/results/tables.md`. AT4 B2 detects 27.5%, consistent with the P5 frozen-attack observability limitation. B3 preempts all 200 AT5 attack activations, so its attack detection rate is undefined there; this is reported as preemption, not detection.
 - B3 has a serious alarm burden: 1.000 episodes/hour on baseline and 3.356/hour in attacked scenarios. Pre-onset alarm episodes are not credited as detections when the alarm persists through attack onset. B3 still reduces peak temperature and voltage in paired runs, but it also causes routine attack-free interventions; this held-out limitation is documented without tuning. S1 was skipped because the earlier gates did not pass and runtime was exhausted.
-- Reduced repeatability test passes; a regression test confirms test seeds 1000–1199 do not overlap calibration seeds 0–99. The report validates against its Pydantic schema. All 59 backend tests pass; Ruff and strict mypy pass. Code commits: `55db8e0` and `014acc3`; result/report and phase documentation follow in the next commit.
+- Reduced repeatability test passes; a regression test confirms test seeds 1000–1199 do not overlap calibration seeds 0–99. The report validates against its Pydantic schema. All 59 backend tests pass; Ruff and strict mypy pass. Code commits: `55db8e0` and `014acc3`; results/docs commit: `5cd5cdf`.
+- Checklist correction: P5 and P6 evidence was recorded in the phase narrative, but the implementation checkboxes had remained unchecked. Both `PHASE_CHECKLIST.md` and the P5–P7 task lists in `PHASE_IMPLEMENTATION.md` now reflect verified evidence. The AT4 limitation and missed P7 runtime gate remain explicitly open.
 
 ## Exact continuation point
-- Next: finish P7 checks, commit the complete evaluation artifacts, and optimize the evaluation runtime before P8.
+- Next: optimize the P7 evaluation runtime to meet its 10-minute gate before starting P8.
 - P0 was pushed in ten commits and P1 in eight focused commits; P2 was committed in five focused commits. P3 freeze is recorded by the `attacks-frozen` tag.
 
 ## Measured numbers log
