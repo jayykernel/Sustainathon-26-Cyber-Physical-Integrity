@@ -111,6 +111,7 @@ make test        # pytest + vitest
 make lint        # ruff + eslint
 make typecheck   # mypy --strict + tsc --noEmit
 make fit-twin    # fit nominal 1-RC parameters on the fixed validation seed
+make plot-nominal # save honest and attack plausibility trajectories
 make calibrate   # validation seeds -> configs/detection.yaml
 make eval        # test seeds -> data/results/*  (must finish < 10 min)
 make build       # frontend production build

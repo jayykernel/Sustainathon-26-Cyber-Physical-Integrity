@@ -38,7 +38,7 @@ Acceptance: `make setup && make check` passes from a clean clone; `make dev` sta
 
 ---
 
-## P1 — Plant, twin, sensors, charger (budget 3 h, MUST) — **REVIEW**
+## P1 — Plant, twin, sensors, charger (budget 3 h, MUST) — **COMPLETE**
 
 Tasks:
 - `plant.py` (2-RC + Arrhenius-like R0(T) + thermal), `sensors.py` (noise + quantization, seeded), `charger.py` (profile controller + thermal derate), `twin.py` (1-RC), unit-to-unit variation.

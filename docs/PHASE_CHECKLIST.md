@@ -11,16 +11,16 @@ Unticked items at a phase gate block the phase unless a cut is logged in PROGRES
 - [x] Fonts bundled locally (no network request to font CDNs) — evidence: `cd frontend && npm run build` → IBM Plex font files emitted under `dist/assets/`
 
 ## P1 Plant, twin, sensors, charger
-- [ ] Determinism test: same seed twice gives identical arrays
-- [ ] SOC monotone and charge-conserving test
-- [ ] Analytic steady-state thermal test within 1%
-- [ ] Honest run: T_true < T_warn, V within limits (SPEC 2 target 1)
-- [ ] Under-reported T run reaches T_hazard within about 25 min (SPEC 2 target 2)
-- [ ] Hijacked 150 A request in CV phase reaches V or SOC hazard within 5 min
-- [ ] No NaN across 200 random seeded configs
-- [ ] Twin parameters fitted on validation data and recorded in config
-- [ ] Plausibility figure produced and shown to user
-- [ ] (COULD) P1b NASA validation script ran, with RMSE on held-out cycles, or "dataset unavailable" logged
+- [x] Determinism test: same seed twice gives identical arrays — evidence: `test_pipeline_is_deterministic_for_a_seed` → all trajectory arrays exactly equal
+- [x] SOC monotone and charge-conserving test — evidence: `test_plant_advance_conserves_charge_and_is_seed_reproducible` → SOC increment matches η·I·t/(3600·Q), monotone
+- [x] Analytic steady-state thermal test within 1% — evidence: `test_plant_thermal_steady_state_matches_analytic_solution` → within 1%
+- [x] Honest run: T_true < T_warn, V within limits (SPEC 2 target 1) — evidence: `make plot-nominal` → peak T 45.98 °C, peak V 4.1937 V, final SOC 0.9444
+- [x] Under-reported T run reaches T_hazard within about 25 min (SPEC 2 target 2) — evidence: `make plot-nominal` → crosses 55 °C at 23.10 min while T_rep is held at 30 °C
+- [x] Hijacked 150 A request in CV phase reaches V or SOC hazard within 5 min — evidence: `make plot-nominal` → first CV hijack at 54.67 min, voltage hazard after 141 s
+- [x] No NaN across 200 random seeded configs — evidence: `test_two_hundred_varied_units_have_finite_trajectories` → all trajectory values finite
+- [x] Twin parameters fitted on validation data and recorded in config — evidence: `make fit-twin` / `scripts/fit_twin.py --seed 10000 --write` → R1_n 0.001083371522 Ω, tau1_n 55.23743011 s, polarization RMSE 0.00228423 V
+- [x] Plausibility figure produced and shown to user — evidence: `make plot-nominal` → `docs/screens/p1-plausibility.png` shown in phase report
+- [x] (COULD) P1b NASA validation script ran, with RMSE on held-out cycles, or "dataset unavailable" logged — evidence: `data/raw/nasa/` absent → dataset unavailable; claim marked unsupported, no dataset scraped
 
 ## P2 Passive detection
 - [ ] EKF NIS/NEES test on a synthetic linear system passes

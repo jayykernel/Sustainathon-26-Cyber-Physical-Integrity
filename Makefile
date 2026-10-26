@@ -1,4 +1,4 @@
-.PHONY: all setup dev test test-quick lint typecheck fit-twin calibrate eval build serve demo-data check clean
+.PHONY: all setup dev test test-quick lint typecheck fit-twin plot-nominal calibrate eval build serve demo-data check clean
 
 PYTHON ?= python
 ifeq ($(OS),Windows_NT)
@@ -35,6 +35,9 @@ typecheck:
 
 fit-twin:
 	$(VENV_PYTHON) scripts/fit_twin.py --write
+
+plot-nominal:
+	$(VENV_PYTHON) scripts/plot_nominal.py
 
 calibrate eval serve demo-data:
 	$(VENV_PYTHON) -c "import sys; print('not implemented in this phase: $@', file=sys.stderr); sys.exit(2)"

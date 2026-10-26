@@ -7,7 +7,7 @@ Rule: if evidence does not exist at P11, the claim is softened or removed. Do no
 | # | Claim in submission text | Evidence (file / command) | Status | Final wording or note |
 |---|---|---|---|---|
 | 1 | Digital twin of battery electrical and thermal behavior | `backend/src/physiguard/twin.py`, tests | unverified | |
-| 2 | Twin calibrated and evaluated on public datasets (NASA/CALCE) | `scripts/validate_twin_nasa.py` output; `data/results/twin_validation.json` | unverified | If P1b not done: change to "parameterized from published values and validated against a higher-fidelity simulated plant". Remove CALCE unless S3 shipped. |
+| 2 | Twin calibrated and evaluated on public datasets (NASA/CALCE) | `data/raw/nasa/` absent; no public-dataset validation output | unsupported | No NASA PCoE file was supplied. Do not claim public-dataset validation; the twin was fitted and checked only against synthetic plant-generated validation data. |
 | 3 | EKF with innovation-based chi-square testing | `ekf.py`, `detectors/nis.py`, NIS QQ diagnostic | unverified | Thresholds are empirical; chi-square is a diagnostic. Word it that way. |
 | 4 | CUSUM catches gradual drift | `results.json` AT2 B1 vs B2 rows | unverified | |
 | 5 | Residual signatures localize the suspected channel | confusion matrix in `results.json` | unverified | State accuracy and ambiguous cases. |
