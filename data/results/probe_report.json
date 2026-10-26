@@ -1,0 +1,796 @@
+{
+  "split": "validation",
+  "config_hash": "6d079b3bd6bc4947",
+  "probe": {
+    "amplitude_pct": 4.0,
+    "chip_length_s": 5,
+    "window_s": 120,
+    "period_s": 600,
+    "keyed_prng": "HMAC-SHA256(key, nonce) -> PCG64",
+    "balanced_chips": true,
+    "safety_bounds": [
+      "0 <= I_cmd <= I_rated",
+      "one-step V <= V_max",
+      "one-step T <= T_warn"
+    ]
+  },
+  "calibration": {
+    "source": "attack-free validation windows",
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99
+    ],
+    "gain_windows": 600,
+    "target_combined_FA_per_hour": 0.2,
+    "selected_channel_quantile_average": 0.025,
+    "minimum_channel_quantile": 0.02,
+    "target_combined_FA_per_challenge": 0.03333333333333333,
+    "g_min_V": 0.37245410890066405,
+    "g_min_I": 0.99,
+    "measured_false_alarms": {
+      "V_only_per_hour": 0.12,
+      "I_only_per_hour": 0.07,
+      "combined_per_hour": 0.19,
+      "combined_per_challenge": 0.03166666666666667
+    },
+    "combined_FA_budget_met": true,
+    "config_hash": "6d079b3bd6bc4947"
+  },
+  "attacks": {
+    "AT3": {
+      "runs": 100,
+      "evaluated_windows": 200,
+      "detection_rate": {
+        "V_only": 1.0,
+        "I_only": 1.0,
+        "combined": 1.0,
+        "B2_with_probe": 1.0
+      },
+      "median_gain": {
+        "V": -0.009416030980511192,
+        "I": -0.005103616606672228
+      },
+      "gain_samples": {
+        "V": 200,
+        "I": 200
+      }
+    },
+    "AT4": {
+      "runs": 100,
+      "evaluated_windows": 359,
+      "detection_rate": {
+        "V_only": 0.0,
+        "I_only": 0.03,
+        "combined": 0.03,
+        "B2_with_probe": 0.29
+      },
+      "median_gain": {
+        "V": 1.0436003368558913,
+        "I": 0.9997572338165657
+      },
+      "gain_samples": {
+        "V": 359,
+        "I": 359
+      }
+    },
+    "AT6": {
+      "runs": 100,
+      "evaluated_windows": 359,
+      "detection_rate": {
+        "V_only": 0.0,
+        "I_only": 0.03,
+        "combined": 0.03,
+        "B2_with_probe": 0.22
+      },
+      "median_gain": {
+        "V": 1.0020899163432577,
+        "I": 1.0004087113146314
+      },
+      "gain_samples": {
+        "V": 359,
+        "I": 359
+      }
+    }
+  },
+  "amplitude_sweep": {
+    "amplitudes_pct": [
+      0.5,
+      1.0,
+      2.0,
+      3.0,
+      4.0,
+      5.0,
+      6.0,
+      7.0,
+      8.0
+    ],
+    "calibration_seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "attack_seeds": [
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39
+    ],
+    "calibration": {
+      "0.5": {
+        "g_min_V": -3.989269649058672,
+        "g_min_I": 0.9293935653925227,
+        "selected_quantile_average": 0.01625,
+        "minimum_quantile": 0.0075,
+        "target_per_challenge": 0.03333333333333333,
+        "measured_false_alarms_per_hour": 0.2,
+        "clean_windows": 120
+      },
+      "1": {
+        "g_min_V": -1.5133742935842802,
+        "g_min_I": 0.9645522834761054,
+        "selected_quantile_average": 0.01625,
+        "minimum_quantile": 0.0075,
+        "target_per_challenge": 0.03333333333333333,
+        "measured_false_alarms_per_hour": 0.2,
+        "clean_windows": 120
+      },
+      "2": {
+        "g_min_V": -0.2948814487740564,
+        "g_min_I": 0.9822158350711546,
+        "selected_quantile_average": 0.01625,
+        "minimum_quantile": 0.0075,
+        "target_per_challenge": 0.03333333333333333,
+        "measured_false_alarms_per_hour": 0.2,
+        "clean_windows": 120
+      },
+      "3": {
+        "g_min_V": 0.08595098477815184,
+        "g_min_I": 0.9881129434105367,
+        "selected_quantile_average": 0.01625,
+        "minimum_quantile": 0.0075,
+        "target_per_challenge": 0.03333333333333333,
+        "measured_false_alarms_per_hour": 0.2,
+        "clean_windows": 120
+      },
+      "4": {
+        "g_min_V": 0.33585917013324995,
+        "g_min_I": 0.99,
+        "selected_quantile_average": 0.0225,
+        "minimum_quantile": 0.015,
+        "target_per_challenge": 0.03333333333333333,
+        "measured_false_alarms_per_hour": 0.2,
+        "clean_windows": 120
+      },
+      "5": {
+        "g_min_V": 0.4710151030622334,
+        "g_min_I": 0.99,
+        "selected_quantile_average": 0.03,
+        "minimum_quantile": 0.03,
+        "target_per_challenge": 0.03333333333333333,
+        "measured_false_alarms_per_hour": 0.2,
+        "clean_windows": 120
+      },
+      "6": {
+        "g_min_V": 0.5361137990155276,
+        "g_min_I": 0.99,
+        "selected_quantile_average": 0.03,
+        "minimum_quantile": 0.03,
+        "target_per_challenge": 0.03333333333333333,
+        "measured_false_alarms_per_hour": 0.2,
+        "clean_windows": 120
+      },
+      "7": {
+        "g_min_V": 0.5645158831936559,
+        "g_min_I": 0.99,
+        "selected_quantile_average": 0.03,
+        "minimum_quantile": 0.03,
+        "target_per_challenge": 0.03333333333333333,
+        "measured_false_alarms_per_hour": 0.2,
+        "clean_windows": 120
+      },
+      "8": {
+        "g_min_V": 0.5846830086545985,
+        "g_min_I": 0.99,
+        "selected_quantile_average": 0.03,
+        "minimum_quantile": 0.03,
+        "target_per_challenge": 0.03333333333333333,
+        "measured_false_alarms_per_hour": 0.2,
+        "clean_windows": 120
+      }
+    },
+    "results": {
+      "AT3": {
+        "0.5": {
+          "runs": 20,
+          "evaluated_windows": 38,
+          "detection_rate": {
+            "V_only": 0.0,
+            "I_only": 1.0,
+            "combined": 1.0,
+            "B2_with_probe": 1.0
+          },
+          "median_gain": {
+            "V": 0.39136446336672515,
+            "I": -0.0793989195635166
+          },
+          "gain_samples": {
+            "V": 38,
+            "I": 38
+          }
+        },
+        "1": {
+          "runs": 20,
+          "evaluated_windows": 38,
+          "detection_rate": {
+            "V_only": 0.05,
+            "I_only": 1.0,
+            "combined": 1.0,
+            "B2_with_probe": 1.0
+          },
+          "median_gain": {
+            "V": 0.19568223168337623,
+            "I": -0.0396994597817583
+          },
+          "gain_samples": {
+            "V": 38,
+            "I": 38
+          }
+        },
+        "2": {
+          "runs": 20,
+          "evaluated_windows": 38,
+          "detection_rate": {
+            "V_only": 0.4,
+            "I_only": 1.0,
+            "combined": 1.0,
+            "B2_with_probe": 1.0
+          },
+          "median_gain": {
+            "V": 0.09784111584169149,
+            "I": -0.01984972989087915
+          },
+          "gain_samples": {
+            "V": 38,
+            "I": 38
+          }
+        },
+        "3": {
+          "runs": 20,
+          "evaluated_windows": 38,
+          "detection_rate": {
+            "V_only": 0.8,
+            "I_only": 1.0,
+            "combined": 1.0,
+            "B2_with_probe": 1.0
+          },
+          "median_gain": {
+            "V": 0.05256575824994633,
+            "I": -0.013233153260586113
+          },
+          "gain_samples": {
+            "V": 38,
+            "I": 38
+          }
+        },
+        "4": {
+          "runs": 20,
+          "evaluated_windows": 38,
+          "detection_rate": {
+            "V_only": 1.0,
+            "I_only": 1.0,
+            "combined": 1.0,
+            "B2_with_probe": 1.0
+          },
+          "median_gain": {
+            "V": 0.039424318687462045,
+            "I": -0.009924864945439576
+          },
+          "gain_samples": {
+            "V": 38,
+            "I": 38
+          }
+        },
+        "5": {
+          "runs": 20,
+          "evaluated_windows": 38,
+          "detection_rate": {
+            "V_only": 1.0,
+            "I_only": 1.0,
+            "combined": 1.0,
+            "B2_with_probe": 1.0
+          },
+          "median_gain": {
+            "V": 0.0315394549499675,
+            "I": -0.007939891956351657
+          },
+          "gain_samples": {
+            "V": 38,
+            "I": 38
+          }
+        },
+        "6": {
+          "runs": 20,
+          "evaluated_windows": 38,
+          "detection_rate": {
+            "V_only": 1.0,
+            "I_only": 1.0,
+            "combined": 1.0,
+            "B2_with_probe": 1.0
+          },
+          "median_gain": {
+            "V": 0.02628287912497384,
+            "I": -0.006616576630293056
+          },
+          "gain_samples": {
+            "V": 38,
+            "I": 38
+          }
+        },
+        "7": {
+          "runs": 20,
+          "evaluated_windows": 38,
+          "detection_rate": {
+            "V_only": 1.0,
+            "I_only": 1.0,
+            "combined": 1.0,
+            "B2_with_probe": 1.0
+          },
+          "median_gain": {
+            "V": 0.022528182107118502,
+            "I": -0.005671351397394046
+          },
+          "gain_samples": {
+            "V": 38,
+            "I": 38
+          }
+        },
+        "8": {
+          "runs": 20,
+          "evaluated_windows": 38,
+          "detection_rate": {
+            "V_only": 1.0,
+            "I_only": 1.0,
+            "combined": 1.0,
+            "B2_with_probe": 1.0
+          },
+          "median_gain": {
+            "V": 0.01971215934373069,
+            "I": -0.004962432472719788
+          },
+          "gain_samples": {
+            "V": 38,
+            "I": 38
+          }
+        }
+      },
+      "AT4": {
+        "0.5": {
+          "runs": 20,
+          "evaluated_windows": 73,
+          "detection_rate": {
+            "V_only": 0.0,
+            "I_only": 0.1,
+            "combined": 0.1,
+            "B2_with_probe": 0.35
+          },
+          "median_gain": {
+            "V": 0.8106000545821427,
+            "I": 0.9964175912348006
+          },
+          "gain_samples": {
+            "V": 73,
+            "I": 73
+          }
+        },
+        "1": {
+          "runs": 20,
+          "evaluated_windows": 73,
+          "detection_rate": {
+            "V_only": 0.0,
+            "I_only": 0.1,
+            "combined": 0.1,
+            "B2_with_probe": 0.35
+          },
+          "median_gain": {
+            "V": 0.9308053661959872,
+            "I": 0.998020250111653
+          },
+          "gain_samples": {
+            "V": 73,
+            "I": 73
+          }
+        },
+        "2": {
+          "runs": 20,
+          "evaluated_windows": 73,
+          "detection_rate": {
+            "V_only": 0.0,
+            "I_only": 0.1,
+            "combined": 0.1,
+            "B2_with_probe": 0.35
+          },
+          "median_gain": {
+            "V": 0.9909273843794281,
+            "I": 0.9991849713760327
+          },
+          "gain_samples": {
+            "V": 73,
+            "I": 73
+          }
+        },
+        "3": {
+          "runs": 20,
+          "evaluated_windows": 73,
+          "detection_rate": {
+            "V_only": 0.0,
+            "I_only": 0.1,
+            "combined": 0.1,
+            "B2_with_probe": 0.4
+          },
+          "median_gain": {
+            "V": 1.0106949625437673,
+            "I": 0.9993336353214252
+          },
+          "gain_samples": {
+            "V": 73,
+            "I": 73
+          }
+        },
+        "4": {
+          "runs": 20,
+          "evaluated_windows": 73,
+          "detection_rate": {
+            "V_only": 0.0,
+            "I_only": 0.05,
+            "combined": 0.05,
+            "B2_with_probe": 0.4
+          },
+          "median_gain": {
+            "V": 1.0206194846086742,
+            "I": 0.9995101083860027
+          },
+          "gain_samples": {
+            "V": 73,
+            "I": 73
+          }
+        },
+        "5": {
+          "runs": 20,
+          "evaluated_windows": 73,
+          "detection_rate": {
+            "V_only": 0.0,
+            "I_only": 0.0,
+            "combined": 0.0,
+            "B2_with_probe": 0.45
+          },
+          "median_gain": {
+            "V": 1.0264814479191173,
+            "I": 0.9994948555836914
+          },
+          "gain_samples": {
+            "V": 73,
+            "I": 73
+          }
+        },
+        "6": {
+          "runs": 20,
+          "evaluated_windows": 73,
+          "detection_rate": {
+            "V_only": 0.0,
+            "I_only": 0.0,
+            "combined": 0.0,
+            "B2_with_probe": 0.45
+          },
+          "median_gain": {
+            "V": 1.0305776216056974,
+            "I": 0.9997279469088444
+          },
+          "gain_samples": {
+            "V": 73,
+            "I": 73
+          }
+        },
+        "7": {
+          "runs": 20,
+          "evaluated_windows": 73,
+          "detection_rate": {
+            "V_only": 0.0,
+            "I_only": 0.0,
+            "combined": 0.0,
+            "B2_with_probe": 0.45
+          },
+          "median_gain": {
+            "V": 1.0333426944577149,
+            "I": 0.9997184390531838
+          },
+          "gain_samples": {
+            "V": 73,
+            "I": 73
+          }
+        },
+        "8": {
+          "runs": 20,
+          "evaluated_windows": 73,
+          "detection_rate": {
+            "V_only": 0.0,
+            "I_only": 0.0,
+            "combined": 0.0,
+            "B2_with_probe": 0.4
+          },
+          "median_gain": {
+            "V": 1.035578669741234,
+            "I": 0.9998215404024509
+          },
+          "gain_samples": {
+            "V": 73,
+            "I": 73
+          }
+        }
+      }
+    }
+  },
+  "overhead": {
+    "paired_runs": 20,
+    "means": {
+      "delta_peak_T_c": 0.01182314286490289,
+      "delta_end_T_c": 0.002016722124304948,
+      "delta_charge_time_s": 1.25,
+      "delta_efficiency_percentage_points": -0.0001366583935236143
+    },
+    "per_seed": [
+      {
+        "delta_peak_T_c": 0.007448420969531355,
+        "delta_end_T_c": -0.0839413501146069,
+        "delta_charge_time_s": 0.0,
+        "delta_efficiency_percentage_points": 0.0028915897681836
+      },
+      {
+        "delta_peak_T_c": 0.0033559542193728475,
+        "delta_end_T_c": 0.003239338776459988,
+        "delta_charge_time_s": 2.0,
+        "delta_efficiency_percentage_points": -0.0003454798587210206
+      },
+      {
+        "delta_peak_T_c": 0.014182107039232505,
+        "delta_end_T_c": -0.07921014367711621,
+        "delta_charge_time_s": 1.0,
+        "delta_efficiency_percentage_points": 0.0015251866304244466
+      },
+      {
+        "delta_peak_T_c": 0.006386463677635845,
+        "delta_end_T_c": 0.004197222743968609,
+        "delta_charge_time_s": 1.0,
+        "delta_efficiency_percentage_points": 9.158271424558606e-05
+      },
+      {
+        "delta_peak_T_c": 0.013090724530094633,
+        "delta_end_T_c": 0.0025987396465296797,
+        "delta_charge_time_s": 1.0,
+        "delta_efficiency_percentage_points": 3.728138773251288e-05
+      },
+      {
+        "delta_peak_T_c": 0.017650268186152118,
+        "delta_end_T_c": 0.0015585136877689365,
+        "delta_charge_time_s": 1.0,
+        "delta_efficiency_percentage_points": -0.00024387409722770315
+      },
+      {
+        "delta_peak_T_c": 0.013624153491925028,
+        "delta_end_T_c": 0.002662248041268356,
+        "delta_charge_time_s": 1.0,
+        "delta_efficiency_percentage_points": -0.00018887080983631677
+      },
+      {
+        "delta_peak_T_c": 0.025872460516353613,
+        "delta_end_T_c": 0.0015171077164453095,
+        "delta_charge_time_s": 1.0,
+        "delta_efficiency_percentage_points": -0.0004710840042831954
+      },
+      {
+        "delta_peak_T_c": 0.018285680264781945,
+        "delta_end_T_c": 0.002331528486109846,
+        "delta_charge_time_s": 2.0,
+        "delta_efficiency_percentage_points": 6.490332140618449e-05
+      },
+      {
+        "delta_peak_T_c": 0.004302763575154245,
+        "delta_end_T_c": 0.0037172556748288343,
+        "delta_charge_time_s": 2.0,
+        "delta_efficiency_percentage_points": -0.0005364509777727733
+      },
+      {
+        "delta_peak_T_c": 0.010226189512700046,
+        "delta_end_T_c": 0.0026897741191689306,
+        "delta_charge_time_s": 1.0,
+        "delta_efficiency_percentage_points": -0.0003026772685599255
+      },
+      {
+        "delta_peak_T_c": 0.008895725284119749,
+        "delta_end_T_c": -0.0008824891422776204,
+        "delta_charge_time_s": 1.0,
+        "delta_efficiency_percentage_points": -0.00012141009076982456
+      },
+      {
+        "delta_peak_T_c": 0.012093681164344616,
+        "delta_end_T_c": 0.004407760010941786,
+        "delta_charge_time_s": 2.0,
+        "delta_efficiency_percentage_points": -0.0001624418255574689
+      },
+      {
+        "delta_peak_T_c": 0.00544786355204252,
+        "delta_end_T_c": 0.003587983263237504,
+        "delta_charge_time_s": 2.0,
+        "delta_efficiency_percentage_points": -0.0003841624722888959
+      },
+      {
+        "delta_peak_T_c": 0.014928546350553518,
+        "delta_end_T_c": 0.003669347251005206,
+        "delta_charge_time_s": 2.0,
+        "delta_efficiency_percentage_points": -7.556864484170589e-05
+      },
+      {
+        "delta_peak_T_c": 0.006312378593179346,
+        "delta_end_T_c": 0.005157476697583263,
+        "delta_charge_time_s": 1.0,
+        "delta_efficiency_percentage_points": -3.79151385954124e-05
+      },
+      {
+        "delta_peak_T_c": 0.010155927403829423,
+        "delta_end_T_c": 0.019486091914394876,
+        "delta_charge_time_s": 1.0,
+        "delta_efficiency_percentage_points": -0.00042920566825088713
+      },
+      {
+        "delta_peak_T_c": 0.012369581364701787,
+        "delta_end_T_c": 0.002261717447865408,
+        "delta_charge_time_s": 1.0,
+        "delta_efficiency_percentage_points": -0.00010770408647164942
+      },
+      {
+        "delta_peak_T_c": 0.012272675396516775,
+        "delta_end_T_c": 0.13826627720519724,
+        "delta_charge_time_s": 1.0,
+        "delta_efficiency_percentage_points": -0.0037456561160387203
+      },
+      {
+        "delta_peak_T_c": 0.019561292205835912,
+        "delta_end_T_c": 0.003020042737325923,
+        "delta_charge_time_s": 1.0,
+        "delta_efficiency_percentage_points": -0.00019121063324911702
+      }
+    ],
+    "efficiency_definition": "eta-weighted nominal OCV energy stored divided by simulated V_true*I_cmd input energy"
+  },
+  "oracle_note": "AT6 receives true actuator current including the probe and is the explicit A2 limit case."
+}

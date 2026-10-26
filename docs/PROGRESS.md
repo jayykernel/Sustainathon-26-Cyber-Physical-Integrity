@@ -3,7 +3,7 @@
 Living log. Update after each task and phase so the current implementation state and evidence stay visible.
 
 ## Current status
-- Current phase: P3 (P2 complete)
+- Current phase: P5 active verification (P4 complete)
 - Event clock at last update: 2026-10-26 (start time = 2026-10-26 00:00 local)
 - Last green `make check`: 2026-10-26
 - Tags: none
@@ -17,7 +17,7 @@ Living log. Update after each task and phase so the current implementation state
 | P2 Passive detection | complete | 3.5 h | | `make check`; `make calibrate`; `make eval-passive` | Validation 0.1200 FA/h meets target; held-out test 0.2101 FA/h is reported above target without retuning. |
 | P3 Attack engine | complete | 3 h | | `make check`; `make stealth-report`; `attacks-frozen` tag | AT1–AT6 and seven scenarios implemented; all SPEC 6 stealth criteria pass on validation seeds 0–99. |
 | P4 Localization | complete | 2 h | | `make localization-report`; localization unit tests; `make check` | Validation threshold and dominance ratio calibrated; AT1 and AT2 confusion matrices recorded on seeds 0–99. |
-| P5 Active verification | todo | 3.5 h | | | |
+| P5 Active verification | complete with AT4 limitation | 3.5 h | | `make probe-report`; probe tests; `make check` | Fresh keyed probes, safe amplitude clipping, gain detectors, validation calibration, sweep, overhead, and AT6 oracle results recorded. AT3 is exposed; active verification does not improve on B2 for AT4 and its reported-current input is the suspected cause. |
 | P6 Guard/response | todo | 3 h | | | |
 | P7 Evaluation | todo | 3 h | | | |
 | P8 API | todo | 3 h | | | |
@@ -82,8 +82,16 @@ Living log. Update after each task and phase so the current implementation state
 - Synthetic voltage-only and temperature-only sensor steps both localized to the correct channel. Tests cover multi, command override, unknown, none, reset behavior, scalar EKF updates, and confusion scoring.
 - P4 verification: 51 backend tests passed; Ruff and strict mypy passed; frontend test, lint, typecheck, and production build passed.
 
+## P5 implementation and evidence
+- Added keyed, nonce-fresh balanced PRBS probe generation, safe clipping against current, voltage, and thermal bounds, periodic and continuous scheduling, and gain estimators for voltage-only, current-only, and combined evidence.
+- Calibrated on 600 attack-free windows from seeds 0–99. The combined threshold is `g_min_V=0.37245`, `g_min_I=0.99`; measured combined false alarms are 0.19/hour (target 0.20/hour). The calibration records and checks the unchanged P2 config hash `6d079b3bd6bc4947`.
+- At the default 4% probe amplitude on 100 validation seeds: AT3 is detected 100% by V-only, I-only, and combined gain; median V/I gains are -0.0094/-0.0051. AT4 is detected 0%/3%/3%; median gains are 1.0436/0.99976. B2-with-probe detects 29% of AT4 runs, versus the existing no-probe B2 rate of 27%, so active verification does not meaningfully beat B2 on AT4. AT6 oracle detection is 0%/3%/3%, showing the expected limit.
+- Diagnosis: P3 AT4 estimates voltage from attacker-visible `I_rep`; the probe is present in that channel, so the private twin reproduces its voltage effect and yields gain near one. Resolving this requires changing the frozen P3 AT4 knowledge/model contract. P5 reports the limitation without silently changing the frozen attack.
+- Mean paired overhead across 20 runs: peak temperature +0.0118 °C, final temperature +0.0020 °C, time to 90% SOC +1.25 s, estimated efficiency change −0.000137 percentage points. The sweep uses 20 clean calibration seeds and 20 separate attack seeds per amplitude; each point meets 0.20 false alarms/hour. AT3 combined detection is 100% throughout; AT4 combined detection is 10% at 0.5–3% amplitude and 0% at 5–8%, below B2. See `data/results/probe_report.json` and `data/results/probe_amplitude_sweep.svg`.
+- Probe tests and the full backend test suite pass. Ruff passes for backend source/tests and the new report script; strict mypy passes for all 28 backend source files. Frontend Vitest (1), ESLint, TypeScript, and production build pass.
+
 ## Exact continuation point
-- Next: begin P5 active verification.
+- Next: begin P6 guard/response.
 - P0 was pushed in ten commits and P1 in eight focused commits; P2 was committed in five focused commits. P3 freeze is recorded by the `attacks-frozen` tag.
 
 ## Measured numbers log
@@ -106,9 +114,13 @@ Living log. Update after each task and phase so the current implementation state
 `P4 | make localization-report | threshold / dominance ratio | 3.8950 / 3.0 (threshold q99.5; ratio ties on tuning accuracy) | clean 0–99, tune 0–49 | 6d079b3bd6bc4947`
 `P4 | make localization-report | AT1 temp localization | 100/100 correct | 0–99 | 6d079b3bd6bc4947`
 `P4 | make localization-report | AT2 temp localization | 85/100 correct; 5 unknown; 10 none | 0–99 | 6d079b3bd6bc4947`
+`P5 | make probe-report | combined validation false alarms | 0.19/h (600 clean windows) | 0–99 | 6d079b3bd6bc4947`
+`P5 | make probe-report | AT3 V/I/combined detection | 100% / 100% / 100% | 0–99 | 6d079b3bd6bc4947`
+`P5 | make probe-report | AT4 V/I/combined detection; B2 with probe | 0% / 3% / 3%; 29% | 0–99 | 6d079b3bd6bc4947`
+`P5 | make probe-report | AT6 oracle V/I/combined detection | 0% / 3% / 3% | 0–99 | 6d079b3bd6bc4947`
 
 ## Ideas parked
 - Remediate npm audit advisories in a dedicated dependency update with compatibility checks.
 
 ## Blockers / needs from user
-- No active blockers. P2 test false alarms are slightly above target and are documented without retuning; NASA P1b remains unavailable and unsupported.
+- AT4 active verification limitation is documented above; P3 attack is frozen. P2 held-out false alarms are slightly above target and remain documented without retuning; NASA P1b remains unavailable and unsupported.

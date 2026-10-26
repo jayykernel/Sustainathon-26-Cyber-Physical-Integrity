@@ -96,9 +96,9 @@ Tasks:
 - Amplitude sweep experiment (detection vs amplitude) and overhead measurement experiment.
 - A2 oracle run to demonstrate the limit.
 
-Tests: probe never violates limits; same key+nonce reproduces probe, different nonce differs; authentic telemetry gives ĝ near 1 on validation; AT3/AT4 give ĝ near 0; replay of an old probe window fails.
+Tests: probe never violates limits; same key+nonce reproduces probe, different nonce differs; authentic telemetry gives ĝ near 1 on validation; AT3 replay gives ĝ near 0; measure and report AT4 separately because its attacker-visible current channel may expose the probe; replay of an old probe window fails.
 
-Gate: measured detection of AT3 and AT4 (V-only and combined) on validation, FA budget respected; sweep and overhead tables generated. If the active test does not beat B2 on AT4, **report that**, then diagnose (amplitude, window length), tune on validation only.
+Gate: measure AT3 and AT4 (V-only and combined) on validation, respect the FA budget, and generate sweep and overhead tables. If active verification does not beat B2 on AT4, **report that** and diagnose amplitude/window and attacker observability; tune on validation only. Record an unresolved frozen-attack limitation instead of changing P3 attack knowledge silently.
 
 ---
 
