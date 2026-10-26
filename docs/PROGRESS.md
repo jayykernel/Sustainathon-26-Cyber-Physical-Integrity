@@ -15,7 +15,7 @@ Living log. Update after each task and phase so the current implementation state
 | P0 Bootstrap | complete | 0.75 h | | `make setup && make check`; `make dev`; fresh source-copy setup/check; committed-tree `make check` | 14 backend tests and 1 frontend test passed at P0 completion; P0 reverified after push. |
 | P1 Plant/twin | complete | 3 h | | `make check`; `make fit-twin`; `make plot-nominal`; user reviewed figure | 22 backend tests and 1 frontend test pass; all MUST criteria met. NASA P1b unavailable and unsupported. |
 | P2 Passive detection | complete | 3.5 h | | `make check`; `make calibrate`; `make eval-passive` | Validation 0.1200 FA/h meets target; held-out test 0.2101 FA/h is reported above target without retuning. |
-| P3 Attack engine | todo | 3 h | | | |
+| P3 Attack engine | complete | 3 h | | `make check`; `make stealth-report`; `attacks-frozen` tag | AT1–AT6 and seven scenarios implemented; all SPEC 6 stealth criteria pass on validation seeds 0–99. |
 | P4 Localization | todo | 2 h | | | |
 | P5 Active verification | todo | 3.5 h | | | |
 | P6 Guard/response | todo | 3 h | | | |
@@ -63,10 +63,20 @@ Living log. Update after each task and phase so the current implementation state
 ## Deviations, risks, and cuts
 - The P0 clean-room verification used a fresh source copy with generated environments/dependencies/build outputs excluded, not a Git clone, because project implementation files are untracked user work.
 - `npm ci` advisory counts are unchanged; dependency remediation remains parked for a compatibility-focused update.
+- AT4 private-twin input uses the attacker-visible reported current channel and adds no second sensor-noise draw to it. A model driven only by its nominal current estimate caused 97% B2 catches on validation seeds; the corrected telemetry-only estimator produced a 27% catch rate, while never receiving actuator-command or probe fields. This is recorded before the P3 freeze.
+
+## P3 implementation and evidence
+- Implemented AT1 spike bursts, AT2 slow temperature drift, AT3 replay plus a 2.5× cooling-resistance fault, AT4 model synthesis with 5% private-twin R0 error and no command/probe access, AT5 150 A CV/SOC-triggered requests, and AT6 oracle limit case. Added scenario catalog and story ladder.
+- Added configurable physical cooling degradation to the stateful plant and an undefended attack runner that reports true state, forged telemetry, requests, and B0/B1/B2 alarms.
+- `make stealth-report` completed 600 simulations across validation seeds 0–99 (100 per attack), using unchanged P2 thresholds and config hash `6d079b3bd6bc4947`.
+- Detection rates: AT1 B0/B1/B2 100%/100%/100%; AT2 0%/32%/90% (B2 median delay 1165.5 s); AT3 3%/96%/100%; AT4 0%/2%/27%; AT5 100%/2%/4%; AT6 0%/5%/21%. Rates and delays are in `data/results/stealth_report.json`.
+- Hazard reachability is covered by the held-at-30°C thermal test and 150 A CV command test; the AT5 attack runner also crosses voltage or SOC hazard on validation seed 17. Static bounds applicable to AT1–AT5 and the AT4 knowledge boundary are covered in `backend/tests/test_attacks.py`.
+- Backend: 43 tests passed; Ruff and strict mypy passed. Frontend: 1 test passed; ESLint, TypeScript, and production build passed.
+- P3 attack config is frozen at commit/tag `attacks-frozen`; parameter changes now require a logged deviation and user approval.
 
 ## Exact continuation point
-- Next: begin P3 attack engine.
-- P0 was pushed in ten commits and P1 in eight focused commits. P2 work is uncommitted; no new tag was created.
+- Next: begin P4 localization.
+- P0 was pushed in ten commits and P1 in eight focused commits; P2 was committed in five focused commits. P3 freeze is recorded by the `attacks-frozen` tag.
 
 ## Measured numbers log
 `P0 | make check | backend tests | 14 passed | — | 87950a9351118e47`
@@ -79,6 +89,12 @@ Living log. Update after each task and phase so the current implementation state
 `P2 | make calibrate | validation combined FA/hour | 0.1200/h (12 episodes / 99.97 h) | 0–99 | 6d079b3bd6bc4947`
 `P2 | make eval-passive | held-out test combined FA/hour | 0.2101/h (21 episodes / 99.97 h) | 100–199 | 6d079b3bd6bc4947`
 `P2 | synthetic linear EKF | mean NIS / mean NEES | 1.998 / 2.883 (99% chi-square bounds) | 20261026 | —`
+`P3 | make stealth-report | B0/B1/B2 rates for AT1 | 100% / 100% / 100% | 0–99 | 6d079b3bd6bc4947`
+`P3 | make stealth-report | B0/B1/B2 rates for AT2 | 0% / 32% / 90%; B2 median delay 1165.5 s | 0–99 | 6d079b3bd6bc4947`
+`P3 | make stealth-report | B0/B1/B2 rates for AT3 | 3% / 96% / 100% | 0–99 | 6d079b3bd6bc4947`
+`P3 | make stealth-report | B0/B1/B2 rates for AT4 | 0% / 2% / 27% | 0–99 | 6d079b3bd6bc4947`
+`P3 | make stealth-report | B0/B1/B2 rates for AT5 | 100% / 2% / 4% | 0–99 | 6d079b3bd6bc4947`
+`P3 | make stealth-report | B0/B1/B2 rates for AT6 | 0% / 5% / 21% | 0–99 | 6d079b3bd6bc4947`
 
 ## Ideas parked
 - Remediate npm audit advisories in a dedicated dependency update with compatibility checks.

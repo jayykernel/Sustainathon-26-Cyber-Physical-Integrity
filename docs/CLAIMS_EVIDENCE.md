@@ -9,11 +9,11 @@ Rule: if evidence does not exist at P11, the claim is softened or removed. Do no
 | 1 | Digital twin of battery electrical and thermal behavior | `backend/src/physiguard/twin.py`, tests | unverified | |
 | 2 | Twin calibrated and evaluated on public datasets (NASA/CALCE) | `data/raw/nasa/` absent; no public-dataset validation output | unsupported | No NASA PCoE file was supplied. Do not claim public-dataset validation; the twin was fitted and checked only against synthetic plant-generated validation data. |
 | 3 | EKF with innovation-based chi-square testing | `ekf.py`, `detectors/nis.py`, NIS QQ diagnostic | unverified | Thresholds are empirical; chi-square is a diagnostic. Word it that way. |
-| 4 | CUSUM catches gradual drift | `results.json` AT2 B1 vs B2 rows | unverified | |
+| 4 | CUSUM catches gradual drift | `data/results/stealth_report.json` AT2 B1 vs B2 | supported | On validation seeds 0–99, B1 caught 32% and B2 caught 90%; B2 median delay among detections was 1165.5 s. |
 | 5 | Residual signatures localize the suspected channel | confusion matrix in `results.json` | unverified | State accuracy and ambiguous cases. |
 | 6 | Thresholds calibrated on attack-free validation data; false alarms measured on separate test data | `configs/detection.yaml`, `data/results/passive_fa_validation.json`, `data/results/passive_fa_test.json` | softened | Thresholds were calibrated on seeds 0–99. Held-out seeds 100–199 produced 0.2101 false alarms/hour, slightly above the 0.20/hour target; do not claim the test target was met. |
 | 7 | Active random probe exposes replay and model-aware attacks that passive monitoring misses | AT3/AT4 rows for B2 vs B3; probe-amplitude curve | unverified | Only keep if B3 detection exceeds B2 with CI that does not overlap, or soften to the measured result. |
-| 8 | We test against model-aware attackers | AT4 definition in `configs/attacks.yaml`; stealth report | unverified | |
+| 8 | We test against model-aware attackers | AT4 definition in `configs/attacks.yaml`; `data/results/stealth_report.json` | supported | AT4 is a no-command/no-probe model-synthesis attacker; B2 caught 27% on validation seeds 0–99. |
 | 9 | Virtual sensor estimates and conservative charging reduce simulated hazard | defended vs undefended rows in `results.json` | unverified | State per-scenario reduction, including scenarios with none. |
 | 10 | Malicious but valid commands are blocked | AT5 rows; `command_guard.py` tests | unverified | |
 | 11 | Reproducible red-team vs blue-team experiments | `make eval` repeatability test; `meta.json` | unverified | |

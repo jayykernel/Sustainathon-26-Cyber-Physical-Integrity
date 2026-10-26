@@ -1,0 +1,45 @@
+scenarios:
+  - id: baseline
+    title: Honest charging
+    description: Attack-free CC/CV charging with seeded sensor noise and cell variation.
+    attack: null
+  - id: spike
+    title: Telemetry spikes
+    description: Brief temperature and voltage telemetry glitches.
+    attack: AT1
+  - id: drift
+    title: Slow temperature drift
+    description: Reported temperature drifts down slowly while the true plant heats.
+    attack: AT2
+  - id: replay
+    title: Cooling fault with replay
+    description: Old telemetry is replayed while physical cooling degrades.
+    attack: AT3
+  - id: model_synthesis
+    title: Model-aware synthesis
+    description: A private twin synthesizes telemetry without access to I_cmd or probes.
+    attack: AT4
+  - id: malicious_command
+    title: Malicious CV request
+    description: The upstream request is forced to 150 A after the CV/SOC trigger.
+    attack: AT5
+  - id: oracle_limit
+    title: Oracle attacker limit
+    description: AT4 synthesis is driven by true I_cmd, an explicit out-of-scope oracle.
+    attack: AT6
+
+story_ladder:
+  - scenario_id: baseline
+    caption: Establish the honest charging trajectory and its noise floor.
+  - scenario_id: spike
+    caption: Brief glitches test range checks and fast passive alarms.
+  - scenario_id: drift
+    caption: Gradual telemetry drift challenges cumulative detection.
+  - scenario_id: replay
+    caption: Replayed signals conceal a real cooling degradation.
+  - scenario_id: model_synthesis
+    caption: A model-aware attacker forges coherent telemetry without probe knowledge.
+  - scenario_id: malicious_command
+    caption: A valid-looking request overrides the upstream CV taper.
+  - scenario_id: oracle_limit
+    caption: An oracle attacker shows the explicit limit of telemetry-only defenses.

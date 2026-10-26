@@ -32,14 +32,14 @@ Unticked items at a phase gate block the phase unless a cut is logged in PROGRES
 - [x] NIS QQ diagnostic data exported — evidence: `data/results/nis_qq.json` → observed validation quantiles and chi-square df=2 comparison
 
 ## P3 Attack engine
-- [ ] AT1–AT6 implemented with documented knowledge level
-- [ ] AT4 test: never reads probe or `I_cmd` (enforced by interface, not convention)
-- [ ] AT1–AT5 outputs within static range limits where specified (test)
-- [ ] Each attack's hazard reachable undefended (test)
-- [ ] Stealth report: B0/B1/B2 detection rates per attack printed
-- [ ] SPEC 6 stealth requirements satisfied, or attacks fixed and logged
-- [ ] `configs/attacks.yaml` frozen; tag `attacks-frozen` created
-- [ ] `configs/scenarios.yaml` includes `story_ladder`
+- [x] AT1–AT6 implemented with documented knowledge level — evidence: `configs/attacks.yaml`, `backend/src/physiguard/attacks/`
+- [x] AT4 test: never reads probe or `I_cmd` (enforced by interface, not convention) — evidence: separate `AttackContext` and `TruthState` types plus forbidden-field test
+- [x] AT1–AT5 outputs within static range limits where specified (test) — evidence: `backend/tests/test_attacks.py`; AT1 spikes are intentionally allowed to cross the B0 temperature limit and AT5 can create honest overvoltage
+- [x] Hazard reachable undefended — evidence: existing under-reported-temperature and 150 A CV hazard tests in `backend/tests/test_pipeline.py`, plus AT5 attack-run hazard test
+- [x] Stealth report: B0/B1/B2 detection rates per attack printed — evidence: `make stealth-report`, `data/results/stealth_report.json`, validation seeds 0–99
+- [x] SPEC 6 stealth requirements satisfied; AT4 attack model fixed and logged — evidence: AT4 B2 catch rate 27% (≤90%), AT2 B1 32% vs B2 90%, AT1 B2 100%
+- [x] `configs/attacks.yaml` frozen; tag `attacks-frozen` created — phase-gate commit/tag
+- [x] `configs/scenarios.yaml` includes `story_ladder`
 
 ## P4 Localization
 - [ ] Single-channel fault unit tests pass

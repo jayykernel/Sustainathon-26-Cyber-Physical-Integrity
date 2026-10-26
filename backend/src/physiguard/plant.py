@@ -62,6 +62,7 @@ def plant_step(
     config: Config,
     ambient_c: float | None = None,
     dt_s: float | None = None,
+    thermal_resistance_multiplier: float = 1.0,
 ) -> tuple[float, float, float, float]:
     """Advance SOC, RC polarization, and temperature for one time step."""
     if ambient_c is None:
@@ -70,6 +71,8 @@ def plant_step(
         dt_s = config.simulation.dt
 
     p = config.plant
+    if not np.isfinite(thermal_resistance_multiplier) or thermal_resistance_multiplier <= 0:
+        raise ValueError("thermal_resistance_multiplier must be finite and positive")
     r0 = resistance_r0(config, temperature_c)
     soc_new = max(0.0, soc + p.eta * current_a * dt_s / (3600.0 * p.Q))
 
@@ -80,7 +83,7 @@ def plant_step(
 
     heat_w = current_a**2 * (r0 + p.R1 + p.R2)
     temperature_new = temperature_c + dt_s / p.C_th * (
-        heat_w - (temperature_c - ambient_c) / p.R_th
+        heat_w - (temperature_c - ambient_c) / (p.R_th * thermal_resistance_multiplier)
     )
     return float(soc_new), float(v1_new), float(v2_new), float(temperature_new)
 
@@ -186,6 +189,7 @@ class Plant:
         self.v2 = 0.0
         self.temperature_c = 0.0
         self.current_a = 0.0
+        self.thermal_resistance_multiplier = 1.0
         self.reset()
 
     def reset(self) -> None:
@@ -199,6 +203,13 @@ class Plant:
         self.v1 = 0.0
         self.v2 = 0.0
         self.current_a = 0.0
+        self.thermal_resistance_multiplier = 1.0
+
+    def set_cooling_degradation(self, thermal_resistance_multiplier: float) -> None:
+        """Set a persistent cooling fault as a multiplier on thermal resistance."""
+        if not np.isfinite(thermal_resistance_multiplier) or thermal_resistance_multiplier < 1.0:
+            raise ValueError("cooling degradation multiplier must be finite and at least 1")
+        self.thermal_resistance_multiplier = thermal_resistance_multiplier
 
     def step(self, current_a: float, ambient_c: float | None = None) -> PlantStep:
         """Advance by one step and return true state and terminal voltage."""
@@ -212,6 +223,7 @@ class Plant:
             current_a,
             self.config,
             ambient_c,
+            thermal_resistance_multiplier=self.thermal_resistance_multiplier,
         )
         self.current_a = current_a
         return {

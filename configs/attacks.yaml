@@ -1,0 +1,53 @@
+# Attack parameters are frozen at the P3 gate. All random choices use the run seed.
+onset_range_s: [600, 1500]
+attacks:
+  AT1:
+    name: spike
+    knowledge_level: telemetry_only
+    onset_s: null
+    duration_s: 300
+    parameters:
+      temperature_spike_c: 12.0
+      voltage_glitch_v: 0.015
+      pulse_duration_s: 5
+      pulse_period_s: 60
+  AT2:
+    name: slow_drift
+    knowledge_level: telemetry_only
+    onset_s: null
+    duration_s: null
+    parameters:
+      temperature_drift_c_per_min: 0.5
+  AT3:
+    name: replay
+    knowledge_level: recorded_telemetry_replay
+    onset_s: null
+    duration_s: null
+    parameters:
+      replay_delay_s: 300
+      cooling_Rth_factor: 2.5
+  AT4:
+    name: model_synthesis
+    knowledge_level: model_aware_A1_no_probe_or_I_cmd
+    onset_s: null
+    duration_s: null
+    parameters:
+      model_R0_error_pct: 5.0
+      cooling_Rth_factor: 2.5
+  AT5:
+    name: malicious_command
+    knowledge_level: upstream_request_control_telemetry_honest
+    onset_s: null
+    duration_s: null
+    parameters:
+      forced_current_a: 150.0
+      soc_trigger: 0.85
+      max_delay_s: 120
+  AT6:
+    name: oracle
+    knowledge_level: oracle_A2_true_I_cmd_and_probe
+    onset_s: null
+    duration_s: null
+    parameters:
+      model_R0_error_pct: 0.0
+      cooling_Rth_factor: 2.5

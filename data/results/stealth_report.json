@@ -1,0 +1,241 @@
+{
+  "split": "validation",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99
+  ],
+  "duration_s": 3600,
+  "config_hash": "6d079b3bd6bc4947",
+  "calibration_config_hash": "6d079b3bd6bc4947",
+  "thresholds": {
+    "NIS_threshold": 93.14514607067309,
+    "NIS_window": 30,
+    "CUSUM_h": 3.4674695144128567,
+    "CUSUM_kappa": 0.5
+  },
+  "detection": {
+    "AT1": {
+      "B0": {
+        "detections": 100,
+        "runs": 100,
+        "rate": 1.0,
+        "median_delay_s": 0.0
+      },
+      "B1": {
+        "detections": 100,
+        "runs": 100,
+        "rate": 1.0,
+        "median_delay_s": 0.0
+      },
+      "B2": {
+        "detections": 100,
+        "runs": 100,
+        "rate": 1.0,
+        "median_delay_s": 0.0
+      }
+    },
+    "AT2": {
+      "B0": {
+        "detections": 0,
+        "runs": 100,
+        "rate": 0.0,
+        "median_delay_s": null
+      },
+      "B1": {
+        "detections": 32,
+        "runs": 100,
+        "rate": 0.32,
+        "median_delay_s": 1435.0
+      },
+      "B2": {
+        "detections": 90,
+        "runs": 100,
+        "rate": 0.9,
+        "median_delay_s": 1165.5
+      }
+    },
+    "AT3": {
+      "B0": {
+        "detections": 3,
+        "runs": 100,
+        "rate": 0.03,
+        "median_delay_s": 1.0
+      },
+      "B1": {
+        "detections": 96,
+        "runs": 100,
+        "rate": 0.96,
+        "median_delay_s": 0.0
+      },
+      "B2": {
+        "detections": 100,
+        "runs": 100,
+        "rate": 1.0,
+        "median_delay_s": 0.0
+      }
+    },
+    "AT4": {
+      "B0": {
+        "detections": 0,
+        "runs": 100,
+        "rate": 0.0,
+        "median_delay_s": null
+      },
+      "B1": {
+        "detections": 2,
+        "runs": 100,
+        "rate": 0.02,
+        "median_delay_s": 1466.5
+      },
+      "B2": {
+        "detections": 27,
+        "runs": 100,
+        "rate": 0.27,
+        "median_delay_s": 2.0
+      }
+    },
+    "AT5": {
+      "B0": {
+        "detections": 100,
+        "runs": 100,
+        "rate": 1.0,
+        "median_delay_s": 392.5
+      },
+      "B1": {
+        "detections": 2,
+        "runs": 100,
+        "rate": 0.02,
+        "median_delay_s": 344.5
+      },
+      "B2": {
+        "detections": 4,
+        "runs": 100,
+        "rate": 0.04,
+        "median_delay_s": 439.5
+      }
+    },
+    "AT6": {
+      "B0": {
+        "detections": 0,
+        "runs": 100,
+        "rate": 0.0,
+        "median_delay_s": null
+      },
+      "B1": {
+        "detections": 5,
+        "runs": 100,
+        "rate": 0.05,
+        "median_delay_s": 379.0
+      },
+      "B2": {
+        "detections": 21,
+        "runs": 100,
+        "rate": 0.21,
+        "median_delay_s": 3.0
+      }
+    }
+  },
+  "gate": {
+    "AT4_B2_not_over_90_percent": true,
+    "AT2_B1_missed_more_often_than_B2": true,
+    "AT1_B2_detected": true
+  }
+}
