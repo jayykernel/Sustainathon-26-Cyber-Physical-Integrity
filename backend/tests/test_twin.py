@@ -2,6 +2,7 @@
 
 import numpy as np
 import pytest
+from scipy.stats import chi2
 
 from physiguard.config import Config
 from physiguard.plant import ocv_lookup
@@ -64,3 +65,49 @@ def test_compute_nis_restores_filter_state() -> None:
     assert innovation.shape == (2,)
     np.testing.assert_array_equal(ekf.x, state_before)
     np.testing.assert_array_equal(ekf.P, covariance_before)
+
+
+def test_ekf_nis_and_nees_are_consistent_on_a_synthetic_linear_system() -> None:
+    """Linear OCV makes the battery EKF a known linear Gaussian filter here."""
+    config = Config()
+    config.twin.OCV_n = np.linspace(3.0, 4.2, 11).tolist()
+    config.twin.T_amb_hat = 0.0
+    config.sensors.V_sigma = 0.01
+    config.sensors.T_sigma = 0.1
+    rng = np.random.default_rng(20261026)
+    ekf = EKF(config)
+    process_noise = ekf.Q.copy()
+    decay_v1 = np.exp(-config.simulation.dt / config.twin.tau1_n)
+    decay_temp = 1.0 - config.simulation.dt / (
+        config.twin.C_th_n * config.twin.R_th_n
+    )
+    transition = np.diag([1.0, decay_v1, decay_temp])
+    state = np.array([0.4, 0.05, 0.3], dtype=np.float64)
+
+    initial_measurement = 3.0 + 1.2 * state[0] + state[1]
+    ekf.initialize(
+        initial_measurement + rng.normal(0.0, config.sensors.V_sigma),
+        state[2] + rng.normal(0.0, config.sensors.T_sigma),
+    )
+    nis_values: list[float] = []
+    nees_values: list[float] = []
+    burn_in = 500
+    for index in range(2500):
+        state = transition @ state + rng.multivariate_normal(np.zeros(3), process_noise)
+        ekf.predict(0.0)
+        voltage = 3.0 + 1.2 * state[0] + state[1]
+        voltage += rng.normal(0.0, config.sensors.V_sigma)
+        temperature = state[2] + rng.normal(0.0, config.sensors.T_sigma)
+        result = ekf.update(voltage, temperature, 0.0, I_meas=0.0)
+        if index >= burn_in:
+            error = state - result["x_updated"]
+            nees = float(error @ np.linalg.solve(result["P_updated"], error))
+            nis_values.append(result["NIS"])
+            nees_values.append(nees)
+
+    samples = len(nis_values)
+    for values, degrees_of_freedom in ((nis_values, 2), (nees_values, 3)):
+        total = float(np.sum(values))
+        lower = chi2.ppf(0.005, degrees_of_freedom * samples)
+        upper = chi2.ppf(0.995, degrees_of_freedom * samples)
+        assert lower <= total <= upper

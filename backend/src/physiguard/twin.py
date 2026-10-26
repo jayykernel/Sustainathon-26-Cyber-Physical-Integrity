@@ -12,9 +12,15 @@ import numpy as np
 from numpy.typing import NDArray
 
 from .config import Config, get_config
-from .plant import ocv_lookup
 
 logger = logging.getLogger(__name__)
+
+
+def twin_ocv_lookup(soc: float, config: Config) -> float:
+    """Interpolate the twin's configured OCV table at a bounded SOC."""
+    ocv_values = np.asarray(config.twin.OCV_n, dtype=np.float64)
+    soc_points = np.linspace(0.0, 1.0, ocv_values.size)
+    return float(np.interp(np.clip(soc, 0.0, 1.0), soc_points, ocv_values))
 
 
 class EKFUpdate(TypedDict):
@@ -23,6 +29,7 @@ class EKFUpdate(TypedDict):
     x_updated: NDArray[np.float64]
     P_updated: NDArray[np.float64]
     nu: NDArray[np.float64]
+    innovation_std: NDArray[np.float64]
     NIS: float
     r_I: float
 
@@ -65,7 +72,7 @@ class Twin:
         )
         self.x = np.array([soc_new, v1_new, temperature_new], dtype=np.float64)
 
-        voltage = float(ocv_lookup(soc_new)) + current_a * p.R0_n + v1_new
+        voltage = twin_ocv_lookup(soc_new, self.config) + current_a * p.R0_n + v1_new
         return np.array([voltage, temperature_new], dtype=np.float64)
 
 
@@ -149,7 +156,7 @@ class EKF:
         soc, v1, temperature_c = self.x
         p = self.config.twin
         predicted = np.array(
-            [float(ocv_lookup(soc)) + I_cmd * p.R0_n + v1, temperature_c],
+            [twin_ocv_lookup(soc, self.config) + I_cmd * p.R0_n + v1, temperature_c],
             dtype=np.float64,
         )
         measurement = np.array([V_meas, T_meas], dtype=np.float64)
@@ -173,13 +180,14 @@ class EKF:
         self.x = self.x + gain @ innovation
 
         if I_meas is None:
-            I_meas = (V_meas - float(ocv_lookup(self.x[0])) - self.x[1]) / p.R0_n
+            I_meas = (V_meas - twin_ocv_lookup(self.x[0], self.config) - self.x[1]) / p.R0_n
         current_residual = float(I_meas - I_cmd)
         self.r_I_history.append(current_residual)
         return {
             "x_updated": self.x.copy(),
             "P_updated": self.P.copy(),
             "nu": innovation,
+            "innovation_std": np.sqrt(np.diag(S)),
             "NIS": nis,
             "r_I": current_residual,
         }
@@ -191,7 +199,10 @@ class EKF:
         upper = min(1.0, soc + delta)
         if upper == lower:
             return 0.0
-        return float((ocv_lookup(upper) - ocv_lookup(lower)) / (upper - lower))
+        return float(
+            (twin_ocv_lookup(upper, self.config) - twin_ocv_lookup(lower, self.config))
+            / (upper - lower)
+        )
 
     def compute_NIS(self, V_meas: float, T_meas: float, I_cmd: float) -> tuple[float, NDArray[np.float64]]:
         """Return an NIS diagnostic while restoring the filter state afterward."""
