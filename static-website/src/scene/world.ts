@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { SIMULATION } from "../config";
 import type { TimelineSample } from "../sim/timeline";
 import { COLORS, colorForClassification } from "../tokens";
 import { BatteryRig } from "./battery";
@@ -177,7 +176,7 @@ export class SimulationWorld {
       speedKmh: sample.speedKmh,
       classification: sample.classification,
       alarm: sample.alarm,
-      rest: sample.t >= SIMULATION.restAt_s,
+      rest: sample.t >= (sample.duration_s ?? 3600) - 60,
       scrollVelocity,
       elapsed,
       dt,

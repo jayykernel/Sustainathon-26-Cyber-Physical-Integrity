@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { SIMULATION } from "../config";
 import type { TimelineSample } from "../sim/timeline";
 import { COLORS } from "../tokens";
 
@@ -129,8 +128,8 @@ export class HackerNode {
   }
 
   update(sample: TimelineSample, elapsed: number, reducedMotion: boolean): void {
-    const attacking = sample.t >= 120 && sample.t < SIMULATION.restAt_s;
-    const decoying = sample.twinResponding && sample.fakePackets > 0;
+    const attacking = sample.attackActive ?? false;
+    const decoying = sample.twinActive;
     const pulse = reducedMotion ? 1 : 0.5 + 0.5 * Math.sin(elapsed * 4.4);
 
     this.screenMaterial.emissiveIntensity = attacking ? 0.55 + pulse * 1.5 : 0.12;
