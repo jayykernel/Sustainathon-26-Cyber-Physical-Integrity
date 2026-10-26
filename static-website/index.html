@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="A scrollable 3D simulation of an electric vehicle battery hijack, EKF detection, 1RC digital twin deception, and rest mode."
+      content="A live 3D view of backend cyber-physical battery simulations and defense telemetry."
     />
     <meta name="theme-color" content="#ECEFF1" />
     <link
@@ -15,14 +15,14 @@
     <title>PhysiGuard — Battery integrity bench</title>
   </head>
   <body>
-    <a class="skip-link" href="#stage-0">Skip to the simulation</a>
+    <a class="skip-link" href="#runbar">Skip to the simulation controls</a>
 
     <div class="boot" id="boot" role="status" aria-live="polite">
       <div class="boot__inner">
         <p class="boot__kicker">PhysiGuard</p>
         <p class="boot__title">Battery integrity bench</p>
         <p class="boot__text" id="boot-text">
-          Building the deterministic attack timeline and the 3D scene.
+          Connecting to the PhysiGuard simulation backend.
         </p>
         <div class="boot__bar" aria-hidden="true"><span></span></div>
       </div>
@@ -45,8 +45,8 @@
           <strong class="readout__value" id="clock">00:00</strong>
         </div>
         <div class="readout">
-          <span class="readout__label">Speed</span>
-          <strong class="readout__value" id="speed">72 km/h</strong>
+          <span class="readout__label">Current</span>
+          <strong class="readout__value" id="speed">— A</strong>
         </div>
         <div class="readout">
           <span class="readout__label">State</span>
@@ -60,156 +60,92 @@
         </div>
         <div class="readout readout--mode">
           <span class="readout__label">Mode</span>
-          <strong class="readout__value">Simulated</strong>
+          <strong class="readout__value" id="connection-state">Connecting</strong>
         </div>
       </div>
     </header>
 
+    <section class="runbar" id="runbar" aria-label="Live simulation controls" tabindex="-1">
+      <label>Scenario<select id="scenario-select" disabled><option>Loading scenarios…</option></select></label>
+      <label>Seed<input id="seed-input" type="number" min="0" max="4294967295" value="4242" /></label>
+      <label>Speed<select id="speed-select"><option value="1">1×</option><option value="5">5×</option><option value="20" selected>20×</option><option value="60">60×</option></select></label>
+      <button class="button" id="start-run" type="button" disabled>Start live run</button>
+      <button class="button button--quiet" id="pause-run" type="button" disabled>Pause</button>
+      <label class="runbar__inject">Inject<select id="attack-select"><option>AT1</option><option>AT2</option><option>AT3</option><option>AT4</option><option>AT5</option><option>AT6</option></select></label>
+      <button class="button button--quiet" id="inject-run" type="button" disabled>Inject attack</button>
+      <span class="runbar__status" id="run-status" role="status">Checking backend…</span>
+    </section>
 
-    <main class="story" id="story">
-      <h1 class="sr-only">Electric vehicle battery hijack simulation</h1>
-
+    <main class="story" id="simulation" aria-label="Live battery simulation">
+      <h1 class="sr-only">PhysiGuard live battery integrity simulation</h1>
       <section class="stage" id="stage-0" data-stage="0" aria-labelledby="stage-0-title" data-tone="nominal">
         <div class="brief">
           <p class="brief__eyebrow">01 / Normal drive</p>
-          <h2 class="brief__title" id="stage-0-title">A normal drive.</h2>
-          <p class="brief__body">
-            The pack holds its thermal margin. The one-RC model predicts cell temperature
-            from current and ambient conditions, and the filter agrees with the sensors.
-          </p>
-          <p class="brief__note">
-            Simulated telemetry. Speeds and temperatures are generated, not measured.
-          </p>
-          <p class="brief__cue">Scroll to begin</p>
+          <h2 class="brief__title" id="stage-0-title">Start a live run.</h2>
+          <p class="brief__body">Choose a backend scenario and start it. Temperature, state estimates, detection evidence, and response state update from the live session.</p>
+          <p class="brief__note">The selected seed makes the backend simulation reproducible.</p>
+          <p class="brief__cue">Start from the run bar</p>
         </div>
       </section>
-
       <section class="stage" id="stage-1" data-stage="1" aria-labelledby="stage-1-title" data-tone="caution">
         <div class="brief">
           <p class="brief__eyebrow">02 / Intrusion</p>
-          <h2 class="brief__title" id="stage-1-title">A forged command reaches the bus.</h2>
-          <p class="brief__body">
-            The attacker spoofs the battery telemetry channel. The car accelerates under
-            commands the driver never asked for, and reported temperature begins to drift
-            away from the physical model.
-          </p>
-          <p class="brief__note">
-            Attack model: thermal sensor spoofing plus a manipulated current request.
-          </p>
+          <h2 class="brief__title" id="stage-1-title">The selected scenario begins.</h2>
+          <p class="brief__body">The backend runs the selected attack model and streams protected, unprotected, reported, and estimated battery values into this scene.</p>
+          <p class="brief__note">Use the scenario selector and attack controls to explore the API session.</p>
         </div>
       </section>
-
       <section class="stage" id="stage-2" data-stage="2" aria-labelledby="stage-2-title" data-tone="hazard">
         <div class="brief">
           <p class="brief__eyebrow">03 / Vehicle response</p>
-          <h2 class="brief__title" id="stage-2-title">The cabin turns red.</h2>
-          <p class="brief__body">
-            Internal alarms fire once the filter raises suspicion. The vehicle derates
-            traction and isolates the suspect telemetry channel.
-          </p>
-          <p class="brief__note">
-            Red alarms follow the EKF verdict, not the spoofed reading. Warning is simulated
-            at 50 °C and hazard at 55 °C.
-          </p>
+          <h2 class="brief__title" id="stage-2-title">Evidence accumulates.</h2>
+          <p class="brief__body">The HUD uses estimator and detector values sent by the backend. Scene color follows its live response state.</p>
+          <p class="brief__note">Temperature limits and margins come from the configured backend run.</p>
         </div>
       </section>
-
       <section class="stage" id="stage-3" data-stage="3" aria-labelledby="stage-3-title" data-tone="protected">
         <div class="brief">
-          <p class="brief__eyebrow">04 / EKF</p>
-          <h2 class="brief__title" id="stage-3-title">The filter sees the lie.</h2>
-          <p class="brief__body">
-            The extended Kalman filter compares reported temperature with its physical
-            prediction. Innovation persists until the classifier moves from safe to suspect
-            to confirmed malware.
-          </p>
-          <p class="brief__note">
-            Classification uses a rolling window of innovations, not a single spike.
-          </p>
+          <p class="brief__eyebrow">04 / Detection</p>
+          <h2 class="brief__title" id="stage-3-title">The defense responds.</h2>
+          <p class="brief__body">Passive evidence, active probes, and the command guard contribute to the backend's detection and response state.</p>
+          <p class="brief__note">The event log lists backend events as they arrive.</p>
         </div>
       </section>
-
       <section class="stage" id="stage-4" data-stage="4" aria-labelledby="stage-4-title" data-tone="protected">
         <div class="brief">
           <p class="brief__eyebrow">05 / Digital twin</p>
-          <h2 class="brief__title" id="stage-4-title">A twin takes the wheel.</h2>
-          <p class="brief__body">
-            A one-RC digital twin is initialised from validated parameters. It can answer
-            the attacker without exposing the real pack.
-          </p>
-          <p class="brief__note">
-            Twin state: state of charge, polarization voltage, and cell temperature.
-          </p>
+          <h2 class="brief__title" id="stage-4-title">Follow the protected estimate.</h2>
+          <p class="brief__body">The wireframe marks the protected estimator and response state during a confirmed event.</p>
+          <p class="brief__note">Estimate values and control mode update from live frames.</p>
         </div>
       </section>
-
       <section class="stage" id="stage-5" data-stage="5" aria-labelledby="stage-5-title" data-tone="caution">
         <div class="brief">
-          <p class="brief__eyebrow">06 / Deception</p>
-          <h2 class="brief__title" id="stage-5-title">Poisoned answers.</h2>
-          <p class="brief__body">
-            The twin returns fabricated temperature and state of charge. The attacker
-            believes the pack is healthy. Then the channel goes dark.
-          </p>
-          <p class="brief__note">
-            A bounded set of fabricated packets is sent, then the twin stops responding.
-          </p>
+          <p class="brief__eyebrow">06 / Response</p>
+          <h2 class="brief__title" id="stage-5-title">The backend contains unsafe requests.</h2>
+          <p class="brief__body">When its guard enters safe mode, the backend constrains charging current and continues to report the simulation state.</p>
+          <p class="brief__note">Current request, guarded command, and safety margin are available in the live session.</p>
         </div>
       </section>
-
       <section class="stage" id="stage-6" data-stage="6" aria-labelledby="stage-6-title" data-tone="nominal">
         <div class="brief">
-          <p class="brief__eyebrow">07 / Rest mode</p>
-          <h2 class="brief__title" id="stage-6-title">The vehicle comes to rest.</h2>
-          <p class="brief__body">
-            Traction stops, contactors open, and the simulation settles. The real pack was
-            never exposed to the forged channel.
-          </p>
-          <p class="brief__note">End of the simulated scenario.</p>
+          <p class="brief__eyebrow">07 / Review</p>
+          <h2 class="brief__title" id="stage-6-title">Review and repeat the run.</h2>
+          <p class="brief__body">Backend frames drive the chart and event log. Start again with the same seed or choose another scenario.</p>
+          <p class="brief__note">All values are simulated; this prototype is not connected to a real vehicle.</p>
         </div>
       </section>
-
       <footer class="footer" id="end" aria-labelledby="footer-title">
         <div class="footer__inner">
           <p class="brief__eyebrow">End of run</p>
           <h2 class="footer__title" id="footer-title">What the simulation showed.</h2>
-          <p class="footer__lede">
-            A forged thermal channel moved a reported temperature away from the physics of
-            the pack. A model-based filter caught the disagreement, a digital twin answered
-            the attacker with fabricated data, and the vehicle stopped.
-          </p>
+          <p class="footer__lede">Backend-generated telemetry, detection evidence, and response state drive the 3D scene. The chart and event log use the same live session frames.</p>
           <div class="footer__grid">
-            <section>
-              <h3>Detection</h3>
-              <p>
-                The EKF tracks state of charge, polarization voltage, and temperature. The
-                classifier needs sustained strong residuals against the independent one-RC
-                prediction before it confirms an attack.
-              </p>
-            </section>
-            <section>
-              <h3>Response</h3>
-              <p>
-                Confirmation seeds a one-RC twin from the filter estimate. The twin serves 12
-                fabricated packets, then goes silent. Rest mode follows at 11:00 simulated.
-              </p>
-            </section>
-            <section>
-              <h3>Limits</h3>
-              <p>
-                This is a teaching model, not a vehicle interface. Parameters mirror
-                configs/default.yaml. No hardware is connected and no real telemetry is read.
-              </p>
-            </section>
+            <section><h3>Detection</h3><p>A state estimator checks battery telemetry against its physical model. Passive evidence and keyed active probes contribute to detection.</p></section>
+            <section><h3>Response</h3><p>The command guard constrains unsafe current requests and enters safe mode after sufficient evidence.</p></section>
+            <section><h3>Limits</h3><p>This is a simulated research prototype, not a vehicle interface. No hardware is connected and no real telemetry is read.</p></section>
           </div>
-          <div class="footer__actions">
-            <button class="button" id="restart" type="button">Run the scenario again</button>
-            <a class="link" href="#stage-0">Back to the start</a>
-          </div>
-          <p class="footer__fine">
-            Static, offline-friendly demonstration built with Three.js. Timeline, EKF, and
-            1RC twin all run in the browser from a fixed seed.
-          </p>
+          <p class="footer__fine">Three.js scene driven by live frames from the PhysiGuard backend API.</p>
         </div>
       </footer>
     </main>
@@ -234,7 +170,7 @@
             <span class="metric__value" id="reported-temp">35.0 °C</span>
           </div>
           <div class="metric">
-            <span class="metric__label">1RC model</span>
+            <span class="metric__label">Model estimate</span>
             <span class="metric__value" id="model-temp">35.0 °C</span>
           </div>
           <div class="metric">
@@ -262,24 +198,24 @@
       <section class="panel hud__chart">
         <div class="panel__head">
           <span>Cell temperature</span>
-          <span class="panel__meta" id="chart-time">00:00 / 12:00</span>
+          <span class="panel__meta" id="chart-time">00:00 / 60:00</span>
         </div>
         <canvas
           id="chart"
           role="img"
-          aria-label="Simulated cell temperature over twelve minutes. The trace reveals as the scenario scrolls."
+          aria-label="Live backend cell temperature history."
         ></canvas>
         <ul class="legend">
           <li><i class="swatch swatch--true"></i>True</li>
           <li><i class="swatch swatch--reported"></i>Reported</li>
-          <li><i class="swatch swatch--model"></i>1RC model</li>
+          <li><i class="swatch swatch--model"></i>Model estimate</li>
         </ul>
       </section>
 
       <section class="panel hud__twin" id="twin-panel" data-engaged="false">
         <div class="panel__head">
-          <span>1RC digital twin</span>
-          <span class="panel__meta" id="twin-state">Not engaged</span>
+          <span>Protected estimate</span>
+          <span class="panel__meta" id="twin-state">Monitoring</span>
         </div>
         <div class="twin-metrics">
           <div class="metric">
@@ -291,20 +227,20 @@
             <span class="metric__value" id="twin-soc">—</span>
           </div>
           <div class="metric">
-            <span class="metric__label">Fake packets</span>
-            <span class="metric__value" id="fake-packets">0 / 12</span>
+            <span class="metric__label">Command guard</span>
+            <span class="metric__value" id="fake-packets">Monitoring</span>
           </div>
           <div class="metric">
-            <span class="metric__label">Uplink</span>
+            <span class="metric__label">Control mode</span>
             <span class="metric__value" id="twin-uplink">Idle</span>
           </div>
         </div>
       </section>
 
-      <section class="terminal" aria-label="Attacker channel log">
+      <section class="terminal" aria-label="Backend event log">
         <div class="terminal__head">
-          <span>Attacker channel</span>
-          <span class="terminal__status" id="terminal-status">idle</span>
+          <span>Backend events</span>
+          <span class="terminal__status" id="terminal-status">waiting</span>
         </div>
         <ol class="terminal__lines" id="terminal-lines"></ol>
       </section>
