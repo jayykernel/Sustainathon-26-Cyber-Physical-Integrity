@@ -1,0 +1,46 @@
+.PHONY: all setup dev test test-quick lint typecheck calibrate eval build serve demo-data check clean
+
+PYTHON ?= python
+ifeq ($(OS),Windows_NT)
+VENV_PYTHON = backend/.venv/Scripts/python.exe
+else
+VENV_PYTHON = backend/.venv/bin/python
+endif
+
+all: setup
+
+setup:
+	$(PYTHON) -m venv backend/.venv
+	$(VENV_PYTHON) -m pip install -r backend/requirements.lock
+	$(VENV_PYTHON) -m pip install --no-deps -e backend
+	npm ci --prefix frontend
+
+dev: setup
+	$(VENV_PYTHON) scripts/dev.py
+
+test:
+	$(VENV_PYTHON) -m pytest backend/tests/ -v --tb=short
+	npm --prefix frontend test
+
+test-quick:
+	$(VENV_PYTHON) -m pytest backend/tests/ -v --tb=short -m "not slow and not integration"
+
+lint:
+	$(VENV_PYTHON) -m ruff check backend/src/ backend/tests/ --config backend/pyproject.toml
+	npm --prefix frontend run lint
+
+typecheck:
+	$(VENV_PYTHON) -m mypy backend/src/ --strict --config-file backend/pyproject.toml
+	npm --prefix frontend run typecheck
+
+calibrate eval serve demo-data:
+	$(VENV_PYTHON) -c "import sys; print('not implemented in this phase: $@', file=sys.stderr); sys.exit(2)"
+
+build:
+	npm --prefix frontend run build
+
+check: lint typecheck test build
+	@echo All checks passed.
+
+clean:
+	$(PYTHON) scripts/clean.py
