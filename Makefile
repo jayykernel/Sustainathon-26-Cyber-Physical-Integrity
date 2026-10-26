@@ -1,4 +1,4 @@
-.PHONY: all setup dev test test-quick lint typecheck fit-twin plot-nominal calibrate eval-passive stealth-report localization-report probe-report guard-report eval eval-repeatability build serve demo-data check clean
+.PHONY: all setup dev serve demo-data test test-quick lint typecheck fit-twin plot-nominal calibrate eval-passive stealth-report localization-report probe-report guard-report eval eval-repeatability build check clean
 
 PYTHON ?= python
 ifeq ($(OS),Windows_NT)
@@ -63,8 +63,11 @@ eval:
 eval-repeatability:
 	$(VENV_PYTHON) -m pytest backend/tests/test_evaluation.py -q
 
-serve demo-data:
-	$(VENV_PYTHON) -c "import sys; print('not implemented in this phase: $@', file=sys.stderr); sys.exit(2)"
+serve:
+	$(VENV_PYTHON) scripts/dev.py
+
+demo-data:
+	$(VENV_PYTHON) scripts/demo_data.py
 
 build:
 	npm --prefix frontend run build

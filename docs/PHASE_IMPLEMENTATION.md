@@ -136,6 +136,16 @@ Tests: REST validation errors, WS happy path, inject mid-run reproducibility (sa
 
 Gate: `make check` green; a scripted WebSocket client runs all scenarios at 60× with zero errors; demo-runs recorded.
 
+P8 implementation evidence (2026-10-26):
+- FastAPI serves health, the validated seven-scenario catalog and story captions, validated session creation/status/deletion, real P7 benchmark artifacts, and the threat-model/limitations payload. Development CORS is enabled only by the local dev launcher; a built frontend is served at `/` when present.
+- Sessions run the paired defended/undefended traces with the same deterministic seed, cap at four active sessions, expire after 15 idle minutes, and clean up their tasks at shutdown. WebSocket playback supports pause/resume, speed selection (1/5/20/60), seeded reset, parameter-validated mid-run injection, and an operator-reset replay that preserves the clean-window acceptance rule. Malformed JSON and invalid commands return error frames without closing the socket.
+- The frame stream includes paired truth, reported telemetry, EKF estimates and innovations, NIS/CUSUM evidence, probe results, response state, localization, control, hazard margins, and attack timing. Batches are limited to ten output frames and paced at no more than ten per second.
+- `scripts/demo_data.py` completed all seven scenarios at 60× with zero error frames. Each output has 600 decimated frames spanning simulated seconds 0–3599 under `frontend/public/demo-runs/`. Outputs are locally generated and ignored by Git so the command can recreate them for offline replay.
+- Verification passed: backend pytest (77 passed), Ruff, strict mypy, frontend Vitest (1 passed), ESLint, TypeScript, and Vite production build. A built-app smoke returned HTTP 200 for `/` and `/api/health`. GNU Make is unavailable on the Windows host, so the `demo-data` script and each `make check` component were run directly.
+- API contract tests are in `backend/tests/test_api.py`; session playback and frame evidence are implemented in `backend/src/physiguard/api/sessions.py`; app routes and error mapping are in `backend/src/physiguard/api/app.py`.
+
+Gate: [x] REST/WebSocket/error and session lifecycle tests pass; [x] all seven 60× runs complete with zero error frames; [x] recorded data exists for every scenario. The `serve` and `demo-data` Make targets are available for systems with GNU Make.
+
 ---
 
 ## P9 — Frontend (budget 8 h, MUST for 9a–9d, SHOULD for 9e–9f)

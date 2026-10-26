@@ -22,7 +22,7 @@ from ..pipeline import run_pipeline
 from ..plant import Plant, vary_unit_config
 from ..response import ResponseEvent, ResponseManager, VirtualSensor
 from ..sensors import Sensors
-from ..twin import EKF
+from ..twin import EKF, twin_ocv_lookup
 from .base import (
     AttackBase,
     AttackContext,
@@ -64,6 +64,20 @@ class AttackTrajectory(TypedDict):
     probe_delta: NDArray[np.float64]
     B3_alarm: NDArray[np.bool_]
     probe_gain_alarm: NDArray[np.bool_]
+    nis: NDArray[np.float64]
+    nis_window_sum: NDArray[np.float64]
+    innovation_v: NDArray[np.float64]
+    innovation_i: NDArray[np.float64]
+    innovation_t: NDArray[np.float64]
+    estimate_soc: NDArray[np.float64]
+    estimate_voltage: NDArray[np.float64]
+    estimate_temperature: NDArray[np.float64]
+    attack_onset_s: int | None
+    cusum_v_score: NDArray[np.float64]
+    cusum_i_score: NDArray[np.float64]
+    cusum_t_score: NDArray[np.float64]
+    probe_gain_v: list[float | None]
+    probe_gain_i: list[float | None]
 
 
 def run_attack_scenario(
@@ -73,6 +87,7 @@ def run_attack_scenario(
     duration_s: int | None = None,
     attack_config_path: str | None = None,
     defended: bool = False,
+    operator_reset_at: float | None = None,
 ) -> AttackTrajectory:
     """Simulate one attack run, optionally adding command guard and response."""
     base_config = config or get_config()
@@ -139,6 +154,19 @@ def run_attack_scenario(
     probe_active_values: list[bool] = []
     probe_delta_values: list[float] = []
     probe_gain_alarm_values: list[bool] = []
+    nis_values: list[float] = []
+    nis_window_values: list[float] = []
+    innovation_v_values: list[float] = []
+    innovation_i_values: list[float] = []
+    innovation_t_values: list[float] = []
+    estimate_soc_values: list[float] = []
+    estimate_voltage_values: list[float] = []
+    estimate_temperature_values: list[float] = []
+    cusum_score_values: dict[str, list[float]] = {channel: [] for channel in ("V", "I", "T")}
+    probe_gain_v_values: list[float | None] = []
+    probe_gain_i_values: list[float | None] = []
+    latest_probe_gain_v: float | None = None
+    latest_probe_gain_i: float | None = None
     b3_values: list[bool] = []
     probe_scheduler = ProbeScheduler(run_config, seed + 2) if defended else None
     gain_thresholds = load_gain_thresholds(base_config) if defended else None
@@ -154,9 +182,7 @@ def run_attack_scenario(
             "V_true": plant.get_terminal_voltage(),
             "T_true": plant.temperature_c,
         }
-        raw: Telemetry = sensors.read(
-            truth["V_true"], previous_current_a, truth["T_true"]
-        )
+        raw: Telemetry = sensors.read(truth["V_true"], previous_current_a, truth["T_true"])
         if attack_id == "AT6":
             attack_context: AttackContext = OracleContext(I_cmd=previous_current_a)
         elif replay_ctx is not None:
@@ -164,11 +190,11 @@ def run_attack_scenario(
         else:
             attack_context = AttackContext()
         reported = (
-            attack.apply(t_s, truth, raw, attack.rng, attack_context)
-            if attack is not None
-            else raw
+            attack.apply(t_s, truth, raw, attack.rng, attack_context) if attack is not None else raw
         )
 
+        update = None
+        decision = None
         if index == 0:
             ekf.initialize(reported["V_rep"], reported["T_rep"])
             passive_alarms: set[str] = set()
@@ -193,6 +219,8 @@ def run_attack_scenario(
 
         for channel in cusum_values:
             cusum_values[channel].append(f"CUSUM_{channel}" in passive_alarms)
+            detector = monitor.cusum[channel]
+            cusum_score_values[channel].append(max(detector.positive, detector.negative))
 
         requested = profile.request(reported["V_rep"])
         if attack is not None:
@@ -223,7 +251,10 @@ def run_attack_scenario(
             ):
                 window_start = active_challenge_start
                 delta_window = np.asarray(probe_delta_values[window_start:index], dtype=np.float64)
-                if delta_window.size == window_samples and float(delta_window @ delta_window) > 1e-10:
+                if (
+                    delta_window.size == window_samples
+                    and float(delta_window @ delta_window) > 1e-10
+                ):
                     voltage_window = np.asarray(
                         [*samples["V_rep"][window_start + 1 : index], reported["V_rep"]],
                         dtype=np.float64,
@@ -244,6 +275,8 @@ def run_attack_scenario(
                     probe_failed = gain_decision.detected_combined
                     probe_gain_alarm = probe_failed
                     probe_challenge_completed = True
+                    latest_probe_gain_v = float(gain_decision.voltage.gain)
+                    latest_probe_gain_i = float(gain_decision.current.gain)
             flagged_channels = {
                 channel
                 for channel, alarm in (("V", "CUSUM_V"), ("T", "CUSUM_T"))
@@ -277,11 +310,16 @@ def run_attack_scenario(
                 command_unsafe=command_unsafe,
                 prediction_violation=guard_result.violation,
                 clean_challenge=(
-                    probe_challenge_completed
-                    and not evidence_classes
-                    and not command_unsafe
+                    probe_challenge_completed and not evidence_classes and not command_unsafe
                 ),
             )
+            if (
+                operator_reset_at is not None
+                and t_s >= operator_reset_at
+                and response.state == "SAFE_MODE"
+            ):
+                response.request_operator_reset(t_s)
+                operator_reset_at = None
             if snapshot.safe_mode:
                 guard_result = command_guard.evaluate(
                     requested, virtual_sensor.state, worst_case=True
@@ -302,11 +340,7 @@ def run_attack_scenario(
                 if probe_active:
                     challenge_index = probe_scheduler.window_index(t_s, "NORMAL")
                     challenge_start = int(
-                        round(
-                            challenge_index
-                            * run_config.probe.period
-                            / run_config.simulation.dt
-                        )
+                        round(challenge_index * run_config.probe.period / run_config.simulation.dt)
                     )
                     if (
                         active_challenge is None
@@ -332,9 +366,7 @@ def run_attack_scenario(
                         probe_delta = float(active_challenge.delta_I[offset])
             else:
                 probe_active = True
-                window_samples = int(
-                    round(run_config.probe.window / run_config.simulation.dt)
-                )
+                window_samples = int(round(run_config.probe.window / run_config.simulation.dt))
                 if (
                     active_challenge is None
                     or active_challenge_mode != probe_mode
@@ -390,6 +422,26 @@ def run_attack_scenario(
         b2_values.append(b2_alarm)
         b3_values.append(defended and response_state != "NORMAL")
         probe_gain_alarm_values.append(probe_gain_alarm)
+        probe_gain_v_values.append(latest_probe_gain_v)
+        probe_gain_i_values.append(latest_probe_gain_i)
+        nis_values.append(float(update["NIS"]) if update is not None else 0.0)
+        nis_window_values.append(
+            float(decision["nis_window_sum"])
+            if decision is not None and decision["nis_window_sum"] is not None
+            else 0.0
+        )
+        innovation_v_values.append(float(update["nu"][0]) if update is not None else 0.0)
+        innovation_t_values.append(float(update["nu"][1]) if update is not None else 0.0)
+        innovation_i_values.append(float(update["r_I"]) if update is not None else 0.0)
+        estimate_soc_values.append(float(ekf.x[0]))
+        estimate_temperature_values.append(float(ekf.x[2]))
+        estimate_voltage_values.append(
+            float(
+                twin_ocv_lookup(float(ekf.x[0]), run_config)
+                + previous_current_a * run_config.twin.R0_n
+                + ekf.x[1]
+            )
+        )
 
         plant.step(applied)
         previous_current_a = applied
@@ -415,6 +467,20 @@ def run_attack_scenario(
             "probe_delta": np.asarray(probe_delta_values, dtype=np.float64),
             "B3_alarm": np.asarray(b3_values, dtype=np.bool_),
             "probe_gain_alarm": np.asarray(probe_gain_alarm_values, dtype=np.bool_),
+            "nis": np.asarray(nis_values, dtype=np.float64),
+            "nis_window_sum": np.asarray(nis_window_values, dtype=np.float64),
+            "innovation_v": np.asarray(innovation_v_values, dtype=np.float64),
+            "innovation_i": np.asarray(innovation_i_values, dtype=np.float64),
+            "innovation_t": np.asarray(innovation_t_values, dtype=np.float64),
+            "estimate_soc": np.asarray(estimate_soc_values, dtype=np.float64),
+            "estimate_voltage": np.asarray(estimate_voltage_values, dtype=np.float64),
+            "estimate_temperature": np.asarray(estimate_temperature_values, dtype=np.float64),
+            "attack_onset_s": attack.onset_s if attack is not None else None,
+            "cusum_v_score": np.asarray(cusum_score_values["V"], dtype=np.float64),
+            "cusum_i_score": np.asarray(cusum_score_values["I"], dtype=np.float64),
+            "cusum_t_score": np.asarray(cusum_score_values["T"], dtype=np.float64),
+            "probe_gain_v": probe_gain_v_values,
+            "probe_gain_i": probe_gain_i_values,
         },
     )
 
@@ -425,6 +491,7 @@ def run_paired_scenario(
     config: Config | None = None,
     duration_s: int | None = None,
     attack_config_path: str | None = None,
+    operator_reset_at: float | None = None,
 ) -> tuple[AttackTrajectory, AttackTrajectory]:
     """Run undefended and defended plants from identical seed and attack inputs."""
     undefended = run_attack_scenario(
@@ -442,5 +509,6 @@ def run_paired_scenario(
         duration_s=duration_s,
         attack_config_path=attack_config_path,
         defended=True,
+        operator_reset_at=operator_reset_at,
     )
     return undefended, defended

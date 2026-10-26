@@ -72,14 +72,14 @@ Unticked items at a phase gate block the phase unless a cut is logged in PROGRES
 - [x] Results committed to `data/results/`
 
 ## P8 API and sessions
-- [ ] REST validation and error shape tests
-- [ ] WebSocket protocol tests including malformed messages
-- [ ] Inject mid-run reproducible (same seed + same inject time gives identical frames)
-- [ ] 4 concurrent sessions OK; 5th rejected with clear error
-- [ ] Idle sessions cleaned up
-- [ ] Scripted client runs all scenarios at 60× with zero errors
-- [ ] `/api/benchmarks` and `/api/limits` serve real content
-- [ ] `make demo-data` recorded all scenarios
+- [x] REST validation and error shape tests — `backend/tests/test_api.py`
+- [x] WebSocket protocol tests including malformed messages that keep the connection open — `backend/tests/test_api.py`
+- [x] Inject mid-run reproducible (same seed + same inject time gives identical frames) — `backend/tests/test_api.py`
+- [x] Four concurrent sessions accepted; fifth rejected with a clear error — `backend/tests/test_api.py`; all-scenario 60× recorder ran four sessions concurrently
+- [x] Idle sessions cleaned up — 15-minute expiry covered by `backend/tests/test_api.py` and the app cleanup loop
+- [x] Scripted client runs all scenarios at 60× with zero errors — `scripts/demo_data.py`; seven scenarios completed with 600 frames each
+- [x] `/api/benchmarks` and `/api/limits` serve real content — `backend/tests/test_api.py`
+- [x] `make demo-data` records all scenarios — target implemented; on this Windows host the script was run directly because GNU Make is unavailable; output is `frontend/public/demo-runs/`
 
 ## P9 Frontend
 - [ ] 9a: tokens, shell, API client, WS hook with backoff, store, error boundary

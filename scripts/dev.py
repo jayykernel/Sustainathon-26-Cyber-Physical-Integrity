@@ -46,9 +46,12 @@ def _stop(processes: list[subprocess.Popen[bytes]]) -> None:
 
 def main() -> int:
     """Start services, verify both local endpoints, and supervise until interrupted."""
+    environment = os.environ.copy()
+    environment["PHYSIGUARD_DEV_CORS"] = "1"
     backend = subprocess.Popen(
         [sys.executable, "-m", "uvicorn", "physiguard.api.app:app", "--host", "127.0.0.1", "--port", "8000"],
         cwd=BACKEND,
+        env=environment,
     )
     processes = [backend]
 
