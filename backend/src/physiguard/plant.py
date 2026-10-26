@@ -7,6 +7,7 @@ current in amperes, voltage in volts, and resistance in ohms.
 from __future__ import annotations
 
 import logging
+from copy import deepcopy
 from typing import TypedDict
 
 import numpy as np
@@ -36,10 +37,12 @@ class PlantStep(TypedDict):
 PlantTrajectory = dict[str, NDArray[np.float64]]
 
 
-def ocv_lookup(soc: float | NDArray[np.float64]) -> float | NDArray[np.float64]:
+def ocv_lookup(
+    soc: float | NDArray[np.float64], offset_v: float = 0.0
+) -> float | NDArray[np.float64]:
     """Return piecewise-linear open-circuit voltage for SOC in [0, 1]."""
     soc_clipped = np.clip(soc, 0.0, 1.0)
-    voltage = np.interp(soc_clipped, _SOC_POINTS, _OCV_TABLE)
+    voltage = np.interp(soc_clipped, _SOC_POINTS, _OCV_TABLE) + offset_v
     if np.isscalar(soc):
         return float(voltage)
     return np.asarray(voltage, dtype=np.float64)
@@ -137,7 +140,7 @@ def plant_advance(
         v2_traj[index] = v2
         temperature_traj[index] = temperature_c
         voltage_traj[index] = (
-            float(ocv_lookup(soc))
+            float(ocv_lookup(soc, config.plant.OCV_offset))
             + float(current_a) * resistance_r0(config, temperature_c)
             + v1
             + v2
@@ -226,8 +229,22 @@ class Plant:
     def get_terminal_voltage(self) -> float:
         """Return terminal voltage in volts at the current plant state."""
         return float(
-            ocv_lookup(self.soc)
+            ocv_lookup(self.soc, self.config.plant.OCV_offset)
             + self.current_a * resistance_r0(self.config, self.temperature_c)
             + self.v1
             + self.v2
         )
+
+
+def vary_unit_config(config: Config, seed: int) -> Config:
+    """Return a reproducible plant config with configured unit-to-unit variation."""
+    varied = deepcopy(config)
+    rng = np.random.default_rng(seed)
+    p = varied.plant
+    p.Q *= 1.0 + rng.uniform(-p.Q_var_pct, p.Q_var_pct) / 100.0
+    p.R0_ref *= 1.0 + rng.uniform(-p.R0_var_pct, p.R0_var_pct) / 100.0
+    p.R1 *= 1.0 + rng.uniform(-p.R1_var_pct, p.R1_var_pct) / 100.0
+    p.R_th *= 1.0 + rng.uniform(-p.R_th_var_pct, p.R_th_var_pct) / 100.0
+    p.OCV_offset = rng.uniform(-p.OCV_offset_mV, p.OCV_offset_mV) / 1000.0
+    varied._config_hash = varied.config_hash()
+    return varied

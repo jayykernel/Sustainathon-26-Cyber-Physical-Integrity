@@ -80,6 +80,7 @@ class PlantConfig(BaseModel):
     R1_var_pct: float = Field(10.0, ge=0, description="R1 variation ±%")
     R_th_var_pct: float = Field(10.0, ge=0, description="R_th variation ±%")
     OCV_offset_mV: float = Field(10.0, ge=0, description="OCV table offset ±mV")
+    OCV_offset: float = Field(0.0, description="Per-unit OCV offset in volts")
     # Limits
     T_hazard: float = Field(55.0, description="Thermal hazard temperature in °C")
     T_warn: float = Field(50.0, description="Warning temperature in °C")
