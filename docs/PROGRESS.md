@@ -3,7 +3,7 @@
 Living log. Update after each task and phase so the current implementation state and evidence stay visible.
 
 ## Current status
-- Current phase: P7 evaluation harness (P6 complete)
+- Current phase: P7 evaluation harness (implemented; <10 min runtime gate outstanding)
 - Event clock at last update: 2026-10-26 (start time = 2026-10-26 00:00 local)
 - Last green `make check`: 2026-10-26
 - Tags: none
@@ -19,7 +19,7 @@ Living log. Update after each task and phase so the current implementation state
 | P4 Localization | complete | 2 h | | `make localization-report`; localization unit tests; `make check` | Validation threshold and dominance ratio calibrated; AT1 and AT2 confusion matrices recorded on seeds 0–99. |
 | P5 Active verification | complete with AT4 limitation | 3.5 h | | `make probe-report`; probe tests; `make check` | Fresh keyed probes, safe amplitude clipping, gain detectors, validation calibration, sweep, overhead, and AT6 oracle results recorded. AT3 is exposed; active verification does not improve on B2 for AT4 and its reported-current input is the suspected cause. |
 | P6 Guard/response | complete | 3 h | | `make guard-report`; response and guard tests; `make check` | Pessimistic command guard, virtual sensor, hysteretic response, and paired validation implemented. On seeds 0–9, AT3 hazard rate fell 30%→0 and AT5 100%→0; AT2/AT4 had no hazards in either arm. |
-| P7 Evaluation | todo | 3 h | | | |
+| P7 Evaluation | incomplete: runtime gate | 3 h | | Full 1,400-run evaluation, schema, repeatability | 1,802.4 s on 12 workers; results expose B3 alarm burden |
 | P8 API | todo | 3 h | | | |
 | P9 Frontend | todo | 8 h | | | |
 | P10 Hardening | todo | 4 h | | | |
@@ -97,8 +97,15 @@ Living log. Update after each task and phase so the current implementation state
 - `make guard-report` ran paired undefended/defended AT2, AT3, AT4, and AT5 scenarios on validation seeds 0–9 for 3600 seconds each. Peak temperature and voltage decreased in every paired defended run for all four attacks. Hazard-event rates were AT2 0%→0%, AT3 30%→0%, AT4 0%→0%, and AT5 100%→0%. Full paired per-seed metrics and event streams are in `data/results/p6_closed_loop_report.json`; the summary table is `data/results/p6_closed_loop_summary.md`.
 - Full backend tests pass; Ruff and strict mypy pass; frontend test, lint, typecheck, and production build pass. Response tests cover confirmation hysteresis, two-probe confirmation, safe-mode persistence, operator reset, trust degradation/recovery, and the guard horizon against repeated twin simulation.
 
+## P7 implementation and evidence
+- Added deterministic multiprocessing evaluation over baseline and AT1–AT6 with per-run seed control, progress, detector metrics, Wilson intervals, false-alarm rate intervals, delays, safety margins, hazard changes, and localization confusion matrices. Reports include JSON, CSV, Markdown, metadata, and five SVG figures.
+- Full test split: seeds 1000–1199, 200 runs per scenario, 3,600 seconds per run, 12 workers. Completed in 1,802.4 seconds (30 minutes); the required <10-minute gate is missed. On this Windows host, `make` is not installed, so the Makefile target recipe was invoked directly with `python -m physiguard.eval.cli`.
+- B0/B1/B2 detection rates (Wilson 95% intervals) are in `data/results/tables.md`. AT4 B2 detects 27.5%, consistent with the P5 frozen-attack observability limitation. B3 preempts all 200 AT5 attack activations, so its attack detection rate is undefined there; this is reported as preemption, not detection.
+- B3 has a serious alarm burden: 1.000 episodes/hour on baseline and 3.356/hour in attacked scenarios. Pre-onset alarm episodes are not credited as detections when the alarm persists through attack onset. B3 still reduces peak temperature and voltage in paired runs, but it also causes routine attack-free interventions; this held-out limitation is documented without tuning. S1 was skipped because the earlier gates did not pass and runtime was exhausted.
+- Reduced repeatability test passes; a regression test confirms test seeds 1000–1199 do not overlap calibration seeds 0–99. The report validates against its Pydantic schema. All 59 backend tests pass; Ruff and strict mypy pass. Code commits: `55db8e0` and `014acc3`; result/report and phase documentation follow in the next commit.
+
 ## Exact continuation point
-- Next: begin P7 evaluation harness.
+- Next: finish P7 checks, commit the complete evaluation artifacts, and optimize the evaluation runtime before P8.
 - P0 was pushed in ten commits and P1 in eight focused commits; P2 was committed in five focused commits. P3 freeze is recorded by the `attacks-frozen` tag.
 
 ## Measured numbers log

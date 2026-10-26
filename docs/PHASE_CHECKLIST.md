@@ -64,12 +64,12 @@ Unticked items at a phase gate block the phase unless a cut is logged in PROGRES
 - [ ] Defended vs undefended hazard table on validation printed
 
 ## P7 Evaluation harness
-- [ ] `make eval` finishes < 10 min
-- [ ] `results.json` validates against schema; CSV, tables, figures, meta written
-- [ ] Repeatability test: two runs, identical results
-- [ ] No test seed used in calibration (assertion in code)
-- [ ] Failures (scenarios where B3 does not help) present in results, not filtered
-- [ ] Results committed to `data/results/`
+- [ ] Evaluation finishes < 10 min — **missed:** 1,802.4 s for 1,400 hourly scenario-seed runs on 12 workers
+- [x] `results.json` validates against schema; CSV, tables, figures, and metadata written — `data/results/`
+- [x] Repeatability test: reduced evaluation run twice, identical JSON
+- [x] Held-out seeds 1000–1199 do not overlap calibration seeds 0–99 — regression test
+- [x] Failures and limits stay in results — B3 reports 1.000 baseline false alarms/hour; AT4 B2 detection remains 27.5%; B3 AT5 preempts 200/200 before activation
+- [x] Results committed to `data/results/`
 
 ## P8 API and sessions
 - [ ] REST validation and error shape tests

@@ -113,15 +113,17 @@ Gate: closed-loop summary table on validation seeds (peak T, peak V, hazard-even
 
 ---
 
-## P7 — Evaluation harness (budget 3 h, MUST) — **CURRENT PHASE / TODO**
+## P7 — Evaluation harness (budget 3 h, MUST) — **IMPLEMENTED; RUNTIME GATE MISSED**
 
 Tasks:
 - `eval/runner.py` (multiprocessing, deterministic per-run seed, progress), `eval/metrics.py` (Wilson CI, delay stats, margins, hazard reduction, confusion), `eval/report.py` (results.json with pydantic schema, CSV, markdown tables, SVG figures: detector ladder bars, delay distributions, detection vs probe amplitude, confusion matrix, probe overhead).
-- `make eval` on test seeds. `meta.json` with git hash, config hash, seeds, runtime.
+- Full hourly evaluation ran on test seeds 1000–1199 (200 runs each across baseline and AT1–AT6). `meta.json` records the base git hash, source fingerprint, config hash, seeds, worker count, and runtime.
 - Repeatability test: run a reduced eval twice, compare JSON equality.
 - S1 residual learner: **only if all earlier gates pass and time remains (COULD)**; with ablation.
 
-Gate: `make eval` < 10 min; results validate against schema; repeatability test passes; results committed under `data/results/`.
+Gate: results validate against schema and the reduced repeatability test passes. **The 1,400-run evaluation took 1,802.4 s (30 min) with 12 workers, so the <10 min runtime gate is not met.** The system Make utility is unavailable on this Windows host; the Makefile target's command was run directly as `python -m physiguard.eval.cli`. Results and all report artifacts are under `data/results/`.
+
+Held-out findings: B0/B1/B2 show the expected attack-specific behavior, while B3 has a high false-alarm burden (1.000 episodes/hour on baseline and 3.356/hour on attack scenarios). Because pre-onset B3 alarms remain open across attack onset, they are not credited as detections. B3 preempted all 200 AT5 scenarios before activation; detector detection rate is therefore undefined for those runs. B3 lowers paired peak temperature and voltage across all scenarios, but incurs routine interventions on attack-free runs. No held-out thresholds were tuned. See `data/results/tables.md` for all rates, confidence intervals, delays, and safety metrics.
 
 ---
 
