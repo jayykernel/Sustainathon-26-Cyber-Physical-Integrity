@@ -210,9 +210,9 @@ def create_app() -> FastAPI:
         await websocket_session(websocket, app.state.session_manager, session_id)
 
     project_root = Path(__file__).resolve().parents[4]
-    frontend_dist = project_root / "frontend" / "dist"
-    if frontend_dist.is_dir():
-        app.mount("/", StaticFiles(directory=frontend_dist, html=True), name="frontend")
+    website_dist = project_root / "static-website" / "dist"
+    if website_dist.is_dir():
+        app.mount("/", StaticFiles(directory=website_dist, html=True), name="static-website")
     return app
 
 
