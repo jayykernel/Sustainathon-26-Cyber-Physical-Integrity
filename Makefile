@@ -1,4 +1,4 @@
-.PHONY: all setup dev test test-quick lint typecheck calibrate eval build serve demo-data check clean
+.PHONY: all setup dev test test-quick lint typecheck fit-twin calibrate eval build serve demo-data check clean
 
 PYTHON ?= python
 ifeq ($(OS),Windows_NT)
@@ -32,6 +32,9 @@ lint:
 typecheck:
 	$(VENV_PYTHON) -m mypy backend/src/ --strict --config-file backend/pyproject.toml
 	npm --prefix frontend run typecheck
+
+fit-twin:
+	$(VENV_PYTHON) scripts/fit_twin.py --write
 
 calibrate eval serve demo-data:
 	$(VENV_PYTHON) -c "import sys; print('not implemented in this phase: $@', file=sys.stderr); sys.exit(2)"

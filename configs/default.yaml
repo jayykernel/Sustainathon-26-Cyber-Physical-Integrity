@@ -34,8 +34,8 @@ plant:
 twin:
   Q_n: 60.0
   R0_n: 0.0012
-  R1_n: 0.0011               # Lumped R1+R2
-  tau1_n: 60.0               # Fitted in P1
+  R1_n: 0.001083371522               # Lumped R1+R2; attack-free validation seed 10000
+  tau1_n: 55.23743011               # Seconds; polarization RMSE 0.00228423 V
   C_th_n: 800.0
   R_th_n: 2.5
   T_amb_hat: 35.0
