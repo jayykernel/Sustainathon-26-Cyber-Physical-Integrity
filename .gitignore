@@ -48,3 +48,9 @@ Thumbs.db
 # Demo runs
 frontend/public/demo-runs/*.json
 !frontend/public/demo-runs/.gitkeep
+
+#Openspec
+.opencode
+openspec
+.agents
+undefined
