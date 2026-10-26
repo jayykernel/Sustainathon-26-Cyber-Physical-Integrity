@@ -11,9 +11,14 @@ from collections.abc import Sequence
 from datetime import UTC, datetime
 from pathlib import Path
 
-from ..config import get_config
-from .report import RESULTS_DIR, write_report
-from .runner import run_evaluation
+# The CLI imports NumPy-backed evaluation modules below. Set worker library
+# thread limits before that import so spawn-based pools inherit them on Windows.
+for _thread_variable in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS"):
+    os.environ[_thread_variable] = "1"
+
+from ..config import get_config  # noqa: E402
+from .report import RESULTS_DIR, write_report  # noqa: E402
+from .runner import run_evaluation  # noqa: E402
 
 
 def _git_revision(root: Path) -> str:
@@ -90,8 +95,12 @@ def _git_dirty(root: Path) -> bool:
 def main(argv: Sequence[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--start-seed", type=int, default=1000)
-    parser.add_argument("--runs", type=int, default=200, help="Runs per scenario; SPEC default is 200")
-    parser.add_argument("--duration", type=int, default=None, help="Override simulated seconds per run")
+    parser.add_argument(
+        "--runs", type=int, default=200, help="Runs per scenario; SPEC default is 200"
+    )
+    parser.add_argument(
+        "--duration", type=int, default=None, help="Override simulated seconds per run"
+    )
     parser.add_argument("--workers", type=int, default=min(8, os.cpu_count() or 1))
     parser.add_argument("--output-dir", type=Path, default=RESULTS_DIR)
     args = parser.parse_args(argv)

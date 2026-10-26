@@ -118,12 +118,15 @@ class EKF:
         )
         if self.Q.shape != (3, 3):
             raise ValueError("Q_ekf must have shape (3, 3)")
-        self.R = np.diag(
-            [
-                self.config.sensors.V_sigma**2,
-                self.config.sensors.T_sigma**2,
-            ]
-        ).astype(np.float64) * R_ekf_inflation
+        self.R = (
+            np.diag(
+                [
+                    self.config.sensors.V_sigma**2,
+                    self.config.sensors.T_sigma**2,
+                ]
+            ).astype(np.float64)
+            * R_ekf_inflation
+        )
         self.P = np.diag([0.25**2, 0.1**2, 2.0**2]).astype(np.float64)
         self.x = np.zeros(3, dtype=np.float64)
         self.initialized = False
@@ -137,9 +140,7 @@ class EKF:
         self.x = np.array([soc, 0.0, T_meas], dtype=np.float64)
         self.initialized = True
 
-    def predict(
-        self, current_a: float, ambient_hat_c: float | None = None
-    ) -> NDArray[np.float64]:
+    def predict(self, current_a: float, ambient_hat_c: float | None = None) -> NDArray[np.float64]:
         """Propagate the state and covariance by one time step."""
         if not self.initialized:
             raise ModelError("EKF is not initialized; call initialize() first")
@@ -158,11 +159,13 @@ class EKF:
         )
         self.x = np.array([soc_new, v1_new, temperature_new], dtype=np.float64)
 
-        transition = np.diag(
-            [1.0, decay, 1.0 - dt_s / (p.C_th_n * p.R_th_n)]
-        ).astype(np.float64)
-        self.P = transition @ self.P @ transition.T + self.Q
-        self.P = 0.5 * (self.P + self.P.T)
+        transition_diagonal = np.array(
+            [1.0, decay, 1.0 - dt_s / (p.C_th_n * p.R_th_n)], dtype=np.float64
+        )
+        # F is diagonal, so elementwise scaling is exactly F P Fᵀ without two
+        # general-purpose matrix multiplications for this 3-state filter.
+        self.P *= np.outer(transition_diagonal, transition_diagonal)
+        self.P += self.Q
         return self.x.copy()
 
     def update(
@@ -188,17 +191,43 @@ class EKF:
             [[self._d_ocv_d_soc(soc), 1.0, 0.0], [0.0, 0.0, 1.0]],
             dtype=np.float64,
         )
-        S = H @ self.P @ H.T + self.R
-        try:
-            solved_innovation = np.linalg.solve(S, innovation)
-            gain = np.linalg.solve(S, H @ self.P).T
-        except np.linalg.LinAlgError as exc:
-            raise NumericalError("Innovation covariance is singular") from exc
+        # The observation matrix has rows [h, 1, 0] and [0, 0, 1], so form
+        # its 2x2 innovation covariance directly and solve it without LAPACK
+        # setup overhead on every simulated second.
+        h = float(H[0, 0])
+        p00, p01, p02 = (float(value) for value in self.P[0])
+        p11, p12 = float(self.P[1, 1]), float(self.P[1, 2])
+        p22 = float(self.P[2, 2])
+        s00 = h * h * p00 + 2.0 * h * p01 + p11 + float(self.R[0, 0])
+        s01 = h * p02 + p12
+        s11 = p22 + float(self.R[1, 1])
+        determinant = s00 * s11 - s01 * s01
+        if not np.isfinite(determinant) or determinant <= 0.0:
+            raise NumericalError("Innovation covariance is singular")
+        inv00, inv01, inv11 = s11 / determinant, -s01 / determinant, s00 / determinant
+        solved_innovation = np.array(
+            [
+                inv00 * innovation[0] + inv01 * innovation[1],
+                inv01 * innovation[0] + inv11 * innovation[1],
+            ],
+            dtype=np.float64,
+        )
+        hp = np.array(
+            [[h * p00 + p01, h * p01 + p11, h * p02 + p12], [p02, p12, p22]],
+            dtype=np.float64,
+        )
+        gain = np.array(
+            [
+                [hp[0, row] * inv00 + hp[1, row] * inv01, hp[0, row] * inv01 + hp[1, row] * inv11]
+                for row in range(3)
+            ],
+            dtype=np.float64,
+        )
 
         nis = float(innovation @ solved_innovation)
-        identity = np.eye(3, dtype=np.float64)
-        residual_map = identity - gain @ H
-        self.P = residual_map @ self.P @ residual_map.T + gain @ self.R @ gain.T
+        # For the optimal Kalman gain, the Joseph form simplifies to P-KHP.
+        # Symmetrizing retains the same numerical guard used by the full form.
+        self.P -= gain @ hp
         self.P = 0.5 * (self.P + self.P.T)
         self.x = self.x + gain @ innovation
 
@@ -210,14 +239,12 @@ class EKF:
             "x_updated": self.x.copy(),
             "P_updated": self.P.copy(),
             "nu": innovation,
-            "innovation_std": np.sqrt(np.diag(S)),
+            "innovation_std": np.sqrt(np.array([s00, s11], dtype=np.float64)),
             "NIS": nis,
             "r_I": current_residual,
         }
 
-    def update_channel(
-        self, channel: str, measurement: float, I_cmd: float
-    ) -> tuple[float, float]:
+    def update_channel(self, channel: str, measurement: float, I_cmd: float) -> tuple[float, float]:
         """Update one measurement channel for cross-prediction EKF banks."""
         if not self.initialized:
             raise ModelError("EKF is not initialized; call initialize() first")
@@ -261,7 +288,9 @@ class EKF:
             / (upper - lower)
         )
 
-    def compute_NIS(self, V_meas: float, T_meas: float, I_cmd: float) -> tuple[float, NDArray[np.float64]]:
+    def compute_NIS(
+        self, V_meas: float, T_meas: float, I_cmd: float
+    ) -> tuple[float, NDArray[np.float64]]:
         """Return an NIS diagnostic while restoring the filter state afterward."""
         state = self.x.copy()
         covariance = self.P.copy()

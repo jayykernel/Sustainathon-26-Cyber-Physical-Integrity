@@ -51,6 +51,33 @@ def test_ekf_updates_state_and_keeps_covariance_symmetric() -> None:
     np.testing.assert_allclose(ekf.P, ekf.P.T, atol=1e-12)
 
 
+def test_ekf_fixed_size_update_matches_joseph_reference() -> None:
+    """The scalar 2x2 solve preserves the generic Joseph update numerically."""
+    config = Config()
+    ekf = EKF(config)
+    ekf.initialize(3.6, 35.0)
+    ekf.predict(10.0)
+    prior_x = ekf.x.copy()
+    prior_p = ekf.P.copy()
+    soc, v1, temperature = prior_x
+    h = ekf._d_ocv_d_soc(float(soc))
+    observation = np.array([[h, 1.0, 0.0], [0.0, 0.0, 1.0]])
+    prediction = np.array(
+        [twin_ocv_lookup(float(soc), config) + 10.0 * config.twin.R0_n + v1, temperature]
+    )
+    innovation = np.array([3.61, 35.05]) - prediction
+    covariance = observation @ prior_p @ observation.T + ekf.R
+    gain = np.linalg.solve(covariance, observation @ prior_p).T
+    residual_map = np.eye(3) - gain @ observation
+    expected_p = residual_map @ prior_p @ residual_map.T + gain @ ekf.R @ gain.T
+    expected_x = prior_x + gain @ innovation
+
+    result = ekf.update(3.61, 35.05, 10.0, I_meas=10.1)
+
+    np.testing.assert_allclose(result["x_updated"], expected_x, rtol=1e-12, atol=1e-12)
+    np.testing.assert_allclose(ekf.P, expected_p, rtol=1e-11, atol=1e-12)
+
+
 def test_ekf_singular_innovation_covariance_raises_typed_error() -> None:
     """Singular innovation covariance does not fall back to an unstable pseudoinverse."""
     ekf = EKF(Config())
@@ -88,9 +115,7 @@ def test_ekf_nis_and_nees_are_consistent_on_a_synthetic_linear_system() -> None:
     ekf = EKF(config)
     process_noise = ekf.Q.copy()
     decay_v1 = np.exp(-config.simulation.dt / config.twin.tau1_n)
-    decay_temp = 1.0 - config.simulation.dt / (
-        config.twin.C_th_n * config.twin.R_th_n
-    )
+    decay_temp = 1.0 - config.simulation.dt / (config.twin.C_th_n * config.twin.R_th_n)
     transition = np.diag([1.0, decay_v1, decay_temp])
     state = np.array([0.4, 0.05, 0.3], dtype=np.float64)
 
