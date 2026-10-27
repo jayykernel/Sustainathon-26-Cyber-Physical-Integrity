@@ -2,7 +2,6 @@ import { BATTERY, SIMULATION } from "../config";
 import { stageIndexForSimTime } from "../stages";
 import { AttackClassifier, type Classification, type ClassifierEvidence } from "./classifier";
 import { Ekf } from "./ekf";
-import { FakeDataInjector, type FakeTelemetry } from "./fakeData";
 import { OneRcTwin, clamp } from "./twin";
 
 export interface TimelineSample {
@@ -38,16 +37,8 @@ export interface TimelineSample {
   evidence: ClassifierEvidence;
   /** Whether the digital twin has been engaged. */
   twinActive: boolean;
-  /** Twin cell temperature in degrees Celsius. */
-  twinTempC: number;
-  /** Twin state of charge as a fraction. */
-  twinSoc: number;
-  /** Number of fabricated packets sent so far. */
-  fakePackets: number;
-  /** Most recent fabricated packet, if any. */
-  lastFake: FakeTelemetry | null;
-  /** Whether the twin still answers the attacker. */
-  twinResponding: boolean;
+  /** Whether safe-mode twin protection is active. */
+  twinProtecting: boolean;
   /** Simulated vehicle speed in kilometres per hour. */
   speedKmh: number;
   /** Whether the red alarm state is active. */
@@ -58,6 +49,28 @@ export interface TimelineSample {
   duration_s?: number;
   channel?: string;
   controlMode?: string;
+  backend?: {
+    undefendedTempC: number;
+    requestedCurrentA: number;
+    commandedCurrentA: number;
+    safeCurrentA: number;
+    nisThreshold: number;
+    cusumTemp: number;
+    cusumVoltage: number;
+    cusumCurrent: number;
+    cusumThreshold: number;
+    probeActive: boolean;
+    probeGainVoltage: number | null;
+    probeGainCurrent: number | null;
+    probeFailed: boolean;
+    commandGuardIntervened: boolean;
+    commandTampered: boolean;
+    localizationConfidence: number;
+    temperatureMarginC: number;
+    voltageMarginV: number;
+    attackName: string;
+    attackOnsetS: number | null;
+  };
 }
 
 export interface Timeline {
@@ -128,10 +141,8 @@ export function buildTimeline(): Timeline {
   const shadowTwin = new OneRcTwin();
   const ekf = new Ekf();
   const classifier = new AttackClassifier();
-  const fakeData = new FakeDataInjector();
   let activeTwin: OneRcTwin | null = null;
   let twinActive = false;
-  let lastFake: FakeTelemetry | null = null;
   const samples: TimelineSample[] = [];
 
   for (let t = 0; t <= SIMULATION.totalDuration_s; t += 1) {
@@ -169,17 +180,7 @@ export function buildTimeline(): Timeline {
       });
     }
 
-    const twinOutput = activeTwin ? activeTwin.step(currentA) : null;
-
-    if (
-      twinActive &&
-      t >= 600 &&
-      t < SIMULATION.restAt_s &&
-      t % SIMULATION.fakePacketInterval_s === 0
-    ) {
-      lastFake = fakeData.request(t);
-    }
-    if (t >= SIMULATION.restAt_s) fakeData.stopResponding();
+    if (activeTwin) activeTwin.step(currentA);
 
     samples.push({
       t,
@@ -198,11 +199,7 @@ export function buildTimeline(): Timeline {
       classification,
       evidence: classifier.evidence,
       twinActive,
-      twinTempC: twinOutput?.tempC ?? shadowOutput.tempC,
-      twinSoc: twinOutput?.state.soc ?? shadowOutput.state.soc,
-      fakePackets: fakeData.packetCount,
-      lastFake,
-      twinResponding: twinActive && fakeData.isResponding,
+      twinProtecting: twinActive,
       speedKmh: speedAt(t),
       // Internal alarms follow the EKF verdict, not the reported temperature:
       // the spoofed channel is exactly what the vehicle cannot trust. Alarms

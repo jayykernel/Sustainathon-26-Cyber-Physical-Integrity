@@ -67,8 +67,6 @@ export const SIMULATION = {
   /** Per-stage durations in seconds. Seven stages. */
   stageDurations_s: [120, 120, 120, 120, 120, 60, 60],
   /** Sensor samples are taken every simulated second. */
-  fakePacketInterval_s: 5,
-  maxFakePackets: 12,
   /** Simulated seconds at which rest mode begins and alarms clear. */
   restAt_s: 660,
 } as const;
