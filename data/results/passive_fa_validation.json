@@ -102,9 +102,9 @@
     98,
     99
   ],
-  "config_hash": "6d079b3bd6bc4947",
+  "config_hash": "f56e499aeb4d481e",
   "calibration_date": "2026-10-26",
-  "NIS_threshold": 93.14514607067309,
+  "NIS_threshold": 93.14514607067301,
   "NIS_window": 30,
   "CUSUM_h": 3.4674695144128567,
   "FA_target_per_hour": 0.2,
