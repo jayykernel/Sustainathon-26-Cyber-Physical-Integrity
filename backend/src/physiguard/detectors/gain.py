@@ -12,6 +12,8 @@ from numpy.typing import ArrayLike, NDArray
 from ..config import CONFIG_DIR, Config, get_config
 from ..twin import twin_ocv_lookup
 
+GAIN_CONFIDENCE_Z = 1.96
+
 
 @dataclass(frozen=True)
 class GainEstimate:
@@ -155,6 +157,9 @@ def evaluate_gain_window(
     current = estimate_gain(
         current_reported, current_expected, cfg.sensors.I_sigma, config=cfg
     )
-    detected_v = voltage.gain < v_threshold
-    detected_i = current.gain < i_threshold
+    # A point estimate below threshold is not enough when the probe was clipped
+    # or the observed response is noisy. Require the 95% upper confidence bound
+    # to remain below the calibrated authentic-gain floor.
+    detected_v = voltage.gain + GAIN_CONFIDENCE_Z * voltage.standard_error < v_threshold
+    detected_i = current.gain + GAIN_CONFIDENCE_Z * current.standard_error < i_threshold
     return GainDecision(voltage, current, detected_v, detected_i, detected_v or detected_i)

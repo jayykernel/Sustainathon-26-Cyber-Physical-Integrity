@@ -1,4 +1,7 @@
 source: attack-free validation windows
+probe_schedule: continuous 120-second challenge windows (period equals challenge window);
+  conservative calibration for SUSPECT/CONFIRMED/SAFE_MODE operation
+gain_statistic: "gain + 1.96 \xD7 standard error (95% two-sided confidence upper bound)"
 seeds:
 - 0
 - 1
@@ -100,17 +103,16 @@ seeds:
 - 97
 - 98
 - 99
-gain_windows: 600
+gain_windows: 2900
 target_combined_FA_per_hour: 0.2
-selected_channel_quantile_average: 0.025
-minimum_channel_quantile: 0.02
-target_combined_FA_per_challenge: 0.03333333333333333
-g_min_V: 0.37245410890066405
+selected_channel_quantile_average: 0.017499999999999998
+minimum_channel_quantile: 0.005
+target_combined_FA_per_challenge: 0.006666666666666667
+g_min_V: 0.5998104014243688
 g_min_I: 0.99
 measured_false_alarms:
-  V_only_per_hour: 0.12
-  I_only_per_hour: 0.07
-  combined_per_hour: 0.19
-  combined_per_challenge: 0.03166666666666667
+  combined_false_alarm_windows: 15
+  combined_per_hour: 0.15
 combined_FA_budget_met: true
-config_hash: 6d079b3bd6bc4947
+config_hash: f56e499aeb4d481e
+calibration_schedule_period_s: 120
