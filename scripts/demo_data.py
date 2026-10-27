@@ -12,7 +12,7 @@ from physiguard.api.app import create_app
 from physiguard.attacks.scenarios import load_scenarios
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-OUTPUT_DIR = PROJECT_ROOT / "frontend" / "public" / "demo-runs"
+OUTPUT_DIR = PROJECT_ROOT / "static-website" / "public" / "demo-runs"
 DEMO_SEED = 4242
 
 
