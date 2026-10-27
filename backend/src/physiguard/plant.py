@@ -201,6 +201,9 @@ class Plant:
     def __init__(self, config: Config | None = None, seed: int | None = None) -> None:
         self.config = config or get_config()
         self.seed = seed
+        self._dt_s = float(self.config.simulation.dt)
+        self._decay1 = _decay(self._dt_s, float(self.config.plant.tau1))
+        self._decay2 = _decay(self._dt_s, float(self.config.plant.tau2))
         self.soc = 0.0
         self.v1 = 0.0
         self.v2 = 0.0
@@ -232,15 +235,17 @@ class Plant:
         """Advance by one step and return true state and terminal voltage."""
         if ambient_c is None:
             ambient_c = self.config.plant.T_amb
-        self.soc, self.v1, self.v2, self.temperature_c = plant_step(
-            self.soc,
-            self.v1,
-            self.v2,
-            self.temperature_c,
-            current_a,
-            self.config,
-            ambient_c,
-            thermal_resistance_multiplier=self.thermal_resistance_multiplier,
+        p = self.config.plant
+        dt_s = self._dt_s
+        r0 = p.R0_ref * (1.0 + p.a_R * (25.0 - self.temperature_c))
+        self.soc = max(0.0, self.soc + p.eta * current_a * dt_s / (3600.0 * p.Q))
+        self.v1 = self.v1 * self._decay1 + p.R1 * (1.0 - self._decay1) * current_a
+        self.v2 = self.v2 * self._decay2 + p.R2 * (1.0 - self._decay2) * current_a
+        heat_w = current_a**2 * (r0 + p.R1 + p.R2)
+        self.temperature_c += dt_s / p.C_th * (
+            heat_w
+            - (self.temperature_c - ambient_c)
+            / (p.R_th * self.thermal_resistance_multiplier)
         )
         self.current_a = current_a
         return {

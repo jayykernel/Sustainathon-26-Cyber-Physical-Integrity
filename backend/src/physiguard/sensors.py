@@ -37,4 +37,4 @@ class Sensors:
 
     @staticmethod
     def _quantize(value: float, resolution: float) -> float:
-        return float(np.round(value / resolution) * resolution)
+        return float(round(value / resolution) * resolution)
