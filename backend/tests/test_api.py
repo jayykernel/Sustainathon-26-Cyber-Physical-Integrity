@@ -71,6 +71,52 @@ def test_rest_contract_and_error_envelope(short_config: Config) -> None:
         assert unknown.json()["error"]["code"] == "session_error"
 
 
+@pytest.mark.parametrize("detection_contents", [None, "- invalid\n", "CUSUM_h: 6.0\n"])
+def test_unavailable_calibration_degrades_health_and_blocks_sessions(
+    tmp_path: Any,
+    short_config: Config,
+    monkeypatch: pytest.MonkeyPatch,
+    detection_contents: str | None,
+) -> None:
+    monkeypatch.setattr("physiguard.config.CONFIG_DIR", tmp_path)
+    if detection_contents is not None:
+        (tmp_path / "detection.yaml").write_text(detection_contents, encoding="utf-8")
+
+    with TestClient(create_app()) as client:
+        health = client.get("/api/health").json()
+        assert health["status"] == "degraded"
+        assert health["thresholds_loaded"] is False
+        assert health["detection_error"]
+
+        response = client.post("/api/sessions", json={"scenario_id": "baseline"})
+        assert response.status_code == 503
+        assert response.json()["error"]["code"] == "detection_config_unavailable"
+
+
+def test_missing_benchmark_artifacts_return_actionable_error(
+    tmp_path: Any, short_config: Config, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr("physiguard.api.app.RESULTS_DIR", tmp_path)
+    with TestClient(create_app()) as client:
+        response = client.get("/api/benchmarks")
+    assert response.status_code == 404
+    assert response.json()["error"]["code"] == "benchmarks_missing"
+    assert "Run the P7 evaluation" in response.json()["error"]["message"]
+
+
+def test_invalid_benchmark_artifact_returns_actionable_error(
+    tmp_path: Any, short_config: Config, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr("physiguard.api.app.RESULTS_DIR", tmp_path)
+    (tmp_path / "results.json").write_text("{invalid json", encoding="utf-8")
+    (tmp_path / "meta.json").write_text("{}", encoding="utf-8")
+
+    with TestClient(create_app()) as client:
+        response = client.get("/api/benchmarks")
+    assert response.status_code == 503
+    assert response.json()["error"]["code"] == "benchmarks_invalid"
+
+
 def test_cors_is_enabled_only_for_the_local_development_mode(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -121,6 +167,8 @@ def test_websocket_errors_keep_connection_open_and_streams_frames(
             assert set(frame["truth"]) == {"soc", "v", "i", "temp"}
             assert set(frame["truth_undefended"]) == {"soc", "v", "i", "temp"}
             assert math.isfinite(frame["predicted"]["temp"])
+            assert isinstance(frame["evidence"]["cmd_unsafe"], bool)
+            assert isinstance(frame["evidence"]["command_tampered"], bool)
 
 
 def test_injection_repeats_for_same_seed_and_simulated_injection_time(

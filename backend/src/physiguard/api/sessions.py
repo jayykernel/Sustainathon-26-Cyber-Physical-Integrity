@@ -351,6 +351,7 @@ class SessionManager:
                     "failed": bool(defended["probe_gain_alarm"][index]),
                 },
                 "cmd_unsafe": bool(defended["command_unsafe"][index]),
+                "command_tampered": bool(defended["command_tampered"][index]),
             },
             "state": str(defended["response_state"][index]),
             "localization": (
@@ -576,7 +577,7 @@ def _localize_trace(trace: AttackTrajectory, attack_id: str) -> list[dict[str, A
             float(trace["T_rep"][index]),
             float(trace["I_cmd"][index]),
             bool(trace["B3_alarm"][index]),
-            command_unsafe=bool(trace["command_unsafe"][index]),
+            command_tampered=bool(trace["command_tampered"][index]),
         )
         results.append({"channel": output["channel"], "confidence": output["confidence"]})
     return results

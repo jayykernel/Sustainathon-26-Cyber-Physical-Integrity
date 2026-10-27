@@ -9,17 +9,19 @@ import os
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from pathlib import Path
-from typing import Any, cast
+from typing import Any, Literal, cast
 
+import yaml
 from fastapi import FastAPI, HTTPException, Request, Response, WebSocket
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
+from pydantic import BaseModel, ConfigDict, Field
 
 from physiguard.attacks.base import load_attack_definitions
 from physiguard.attacks.scenarios import load_scenarios
-from physiguard.config import get_config, setup_logging
+from physiguard.config import get_config, load_detection_config, setup_logging
 from physiguard.eval.report import RESULTS_DIR
 
 from .sessions import (
@@ -31,6 +33,22 @@ from .sessions import (
 )
 
 logger = logging.getLogger(__name__)
+
+
+class IncidentAlertRequest(BaseModel):
+    """Minimal, privacy-conscious alert record for the local prototype monitor."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    alert_id: str = Field(min_length=8, max_length=64)
+    created_at: str = Field(min_length=1, max_length=48)
+    vehicle_type: Literal["car", "two_wheeler"]
+    state: Literal["suspect", "confirmed"]
+    suspected_path: str = Field(min_length=1, max_length=160)
+    simulation_time_s: float = Field(ge=0)
+    force: Literal[True]
+
+
 LIMITS: dict[str, Any] = {
     "threat_model": {
         "protected_assets": [
@@ -61,6 +79,9 @@ LIMITS: dict[str, Any] = {
         "The evaluation is a simulated prototype and does not establish real-cell safety.",
         "False alarms remain material in the held-out evaluation and are reported without retuning.",
         "The S1 learned residual model was not implemented in this phase.",
+        "Probe-key provisioning, protected storage, rotation, and vehicle-side integration are not implemented; deterministic fallback keys are for simulation reproducibility only.",
+        "Driver alerts are acknowledged only by the local prototype backend; there is no authenticated persistent remote alert channel or emergency-service integration.",
+        "The API has no production identity, authorization, or transport-security configuration and must not be exposed as a vehicle service.",
     ],
 }
 
@@ -93,6 +114,7 @@ def create_app() -> FastAPI:
             cast(SessionManager, app.state.session_manager).close()
 
     app = FastAPI(title="PhysiGuard", version="0.1.0", lifespan=lifespan)
+    app.state.received_incident_alert_ids = set()
     if os.environ.get("PHYSIGUARD_DEV_CORS") == "1":
         app.add_middleware(
             CORSMiddleware,
@@ -131,11 +153,13 @@ def create_app() -> FastAPI:
     @app.get("/api/health")
     async def health() -> dict[str, str | bool]:
         config = get_config()
+        detection_error = _detection_config_error()
         return {
-            "status": "ok",
+            "status": "ok" if detection_error is None else "degraded",
             "version": "0.1.0",
             "config_hash": config.config_hash_short,
-            "thresholds_loaded": bool(config.detection.NIS_threshold),
+            "thresholds_loaded": detection_error is None,
+            "detection_error": detection_error or "",
         }
 
     @app.get("/api/scenarios")
@@ -158,8 +182,34 @@ def create_app() -> FastAPI:
 
     @app.post("/api/sessions", status_code=202)
     async def create_session(body: CreateSessionRequest) -> dict[str, str]:
+        if _detection_config_error() is not None:
+            raise HTTPException(
+                status_code=503,
+                detail={
+                    "code": "detection_config_unavailable",
+                    "message": "Calibrated detection thresholds are unavailable or invalid. Restore configs/detection.yaml and verify its calibration hash.",
+                },
+            )
         session = await app.state.session_manager.create(body)
         return {"session_id": session.session_id}
+
+    @app.post("/api/incident-alerts", status_code=202)
+    async def receive_incident_alert(body: IncidentAlertRequest) -> dict[str, bool]:
+        """Acknowledge a queued driver alert in the local prototype backend."""
+        received_ids: set[str] = app.state.received_incident_alert_ids
+        if body.alert_id in received_ids:
+            return {"received": True, "duplicate": True}
+        received_ids.add(body.alert_id)
+        logger.warning(
+            "driver_emergency_alert_received alert_id=%s vehicle_type=%s state=%s path=%s sim_time_s=%.3f force=%s",
+            body.alert_id,
+            body.vehicle_type,
+            body.state,
+            body.suspected_path,
+            body.simulation_time_s,
+            body.force,
+        )
+        return {"received": True, "duplicate": False}
 
     @app.get("/api/sessions/{session_id}")
     async def get_session(session_id: str) -> dict[str, Any]:
@@ -220,6 +270,17 @@ async def _session_cleanup(manager: SessionManager) -> None:
     while True:
         await asyncio.sleep(30)
         manager.cleanup_idle()
+
+
+def _detection_config_error() -> str | None:
+    """Return a configuration problem that prevents calibrated sessions."""
+    try:
+        detection = load_detection_config(base_config=get_config())
+    except (OSError, ValueError, yaml.YAMLError):
+        return "Calibrated detection thresholds are unavailable or invalid."
+    if not detection.calibration_config_hash or not detection.calibration_date:
+        return "Calibrated detection thresholds lack calibration metadata."
+    return None
 
 
 app = create_app()
