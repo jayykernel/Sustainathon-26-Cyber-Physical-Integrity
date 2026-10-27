@@ -1,0 +1,58 @@
+{
+  "dataset": "CALCE CS2_33 to CS2_34 cell-held-out voltage-model experiment",
+  "sources": {
+    "training": "https://web.calce.umd.edu/batteries/data/CS2_33.zip",
+    "testing": "https://web.calce.umd.edu/batteries/data/CS2_34.zip",
+    "dataset_description": "https://calce.umd.edu/data"
+  },
+  "archive_sha256": {
+    "CS2_33": "ce375e3826e840ff0986ceade0d324ba6515f0446697c947353aca097f232505",
+    "CS2_34": "229dcdc836f140f746c26316569c357b346994fddd3be1223b1e457805c484b4"
+  },
+  "method": "Fit one-RC voltage model and monotone OCV curve on at most 150 evenly sampled cycles from the first 70% of CS2_33; evaluate every usable CS2_34 cycle, which is a separate physical cell.",
+  "protocol": "Both are 1.1 Ah LiCoO2 CS2 cells listed by CALCE as constant-current 0.5C cells; this does not represent an EV pack or vehicle workload.",
+  "reference_soc": "Each cycle's logged discharge capacity normalized by its own delivered capacity; reference throughput, not an online SOC estimate.",
+  "training_cell": {
+    "cell_id": "CS2_33",
+    "fitted_cycles": 150,
+    "chronological_fit_pool_cycles": 577
+  },
+  "held_out_cell": {
+    "cell_id": "CS2_34",
+    "discharge_cycles": 775,
+    "first_cycle_date": "2010-08-17",
+    "last_cycle_date": "2011-03-07"
+  },
+  "scope_limitations": [
+    "Two small lab cells of one chemistry and one nominal cycling rate; not a pack or vehicle.",
+    "No temperature time series, cyberattack labels, BMS/CAN traces, or safety-response ground truth.",
+    "Measured throughput used to construct reference SOC is unavailable as online ground truth.",
+    "No deployment acceptance thresholds were defined; this result is characterization, not qualification."
+  ],
+  "fit": {
+    "r0_ohm": 0.007266622417334525,
+    "r1_ohm": 0.4195719412791135,
+    "tau_s": 1046.358789946088,
+    "ocv_nodes_v": [
+      3.3350012885164158,
+      3.8350012885164158,
+      3.8526500307475597,
+      3.8934125705346543,
+      3.914807054147682,
+      3.9464791404055846,
+      3.984070720633045,
+      4.028396665829035,
+      4.070792848023987,
+      4.0936963911949436,
+      4.093696391259673
+    ],
+    "train_cycles": 150,
+    "train_samples": 14929,
+    "train_rmse_v": 0.056345752504068015,
+    "test_cycles": 775,
+    "test_samples": 77435,
+    "test_rmse_v": 0.09186873358329062,
+    "test_mae_v": 0.06909555914006937,
+    "test_p95_abs_error_v": 0.17614426684613294
+  }
+}
