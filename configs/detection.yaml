@@ -4,7 +4,7 @@ CUSUM_kappa: 0.5
 CUSUM_h: 3.4674695144128567
 CUSUM_deadband: 0.5
 dTdt_limit: 0.5
-NIS_threshold: 93.14514607067309
+NIS_threshold: 93.14514607067301
 calibration_seeds:
 - 0
 - 1
@@ -106,5 +106,5 @@ calibration_seeds:
 - 97
 - 98
 - 99
-calibration_config_hash: 6d079b3bd6bc4947
+calibration_config_hash: f56e499aeb4d481e
 calibration_date: '2026-10-26'

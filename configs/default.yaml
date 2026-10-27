@@ -130,7 +130,7 @@ response:
     - "passive_NIS"
     - "CUSUM"
     - "probe_gain"
-    - "command_unsafe"
+    - "command_tampering"
 
 simulation:
   dt: 1.0
