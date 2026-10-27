@@ -18,7 +18,7 @@ from .config import Config, get_config
 logger = logging.getLogger(__name__)
 
 
-_OCV_GRID_CACHE: dict[int, tuple[list[float], NDArray[np.float64]]] = {}
+_OCV_GRID_CACHE: dict[int, tuple[list[float], tuple[float, ...]]] = {}
 
 
 @lru_cache(maxsize=64)
@@ -31,17 +31,15 @@ def twin_ocv_lookup(soc: float, config: Config) -> float:
     values = config.twin.OCV_n
     cached = _OCV_GRID_CACHE.get(id(values))
     if cached is None or cached[0] is not values:
-        table = np.asarray(values, dtype=np.float64)
-        table.setflags(write=False)
-        cached = (values, table)
+        cached = (values, tuple(float(value) for value in values))
         _OCV_GRID_CACHE[id(values)] = cached
     _, ocv_values = cached
     scalar_soc = float(soc)
     if isnan(scalar_soc):
         return float("nan")
     bounded_soc = min(1.0, max(0.0, scalar_soc))
-    position = bounded_soc * (ocv_values.size - 1)
-    lower = min(int(position), ocv_values.size - 2)
+    position = bounded_soc * (len(ocv_values) - 1)
+    lower = min(int(position), len(ocv_values) - 2)
     fraction = position - lower
     return float(ocv_values[lower] + fraction * (ocv_values[lower + 1] - ocv_values[lower]))
 
@@ -127,6 +125,15 @@ class EKF:
             ).astype(np.float64)
             * R_ekf_inflation
         )
+        dt_s = float(self.config.simulation.dt)
+        decay = _decay(dt_s, float(self.config.twin.tau1_n))
+        thermal_decay = 1.0 - dt_s / (
+            self.config.twin.C_th_n * self.config.twin.R_th_n
+        )
+        transition = np.array([1.0, decay, thermal_decay], dtype=np.float64)
+        self._transition_outer = np.outer(transition, transition)
+        self._dt_s = dt_s
+        self._decay = decay
         self.P = np.diag([0.25**2, 0.1**2, 2.0**2]).astype(np.float64)
         self.x = np.zeros(3, dtype=np.float64)
         self.initialized = False
@@ -147,24 +154,19 @@ class EKF:
         if ambient_hat_c is None:
             ambient_hat_c = float(self.config.twin.T_amb_hat)
 
-        dt_s = float(self.config.simulation.dt)
         p = self.config.twin
         soc, v1, temperature_c = self.x
-        decay = _decay(dt_s, float(p.tau1_n))
+        decay = self._decay
+        dt_s = self._dt_s
         soc_new = soc + self.config.plant.eta * current_a * dt_s / (3600.0 * p.Q_n)
         v1_new = v1 * decay + p.R1_n * (1.0 - decay) * current_a
         heat_w = current_a**2 * (p.R0_n + p.R1_n)
         temperature_new = temperature_c + dt_s / p.C_th_n * (
             heat_w - (temperature_c - ambient_hat_c) / p.R_th_n
         )
-        self.x = np.array([soc_new, v1_new, temperature_new], dtype=np.float64)
-
-        transition_diagonal = np.array(
-            [1.0, decay, 1.0 - dt_s / (p.C_th_n * p.R_th_n)], dtype=np.float64
-        )
-        # F is diagonal, so elementwise scaling is exactly F P Fᵀ without two
-        # general-purpose matrix multiplications for this 3-state filter.
-        self.P *= np.outer(transition_diagonal, transition_diagonal)
+        self.x[0], self.x[1], self.x[2] = soc_new, v1_new, temperature_new
+        # The transition matrix is diagonal and constant for this configuration.
+        self.P *= self._transition_outer
         self.P += self.Q
         return self.x.copy()
 
@@ -181,20 +183,11 @@ class EKF:
 
         soc, v1, temperature_c = self.x
         p = self.config.twin
-        predicted = np.array(
-            [twin_ocv_lookup(soc, self.config) + I_cmd * p.R0_n + v1, temperature_c],
-            dtype=np.float64,
-        )
-        measurement = np.array([V_meas, T_meas], dtype=np.float64)
-        innovation = measurement - predicted
-        H = np.array(
-            [[self._d_ocv_d_soc(soc), 1.0, 0.0], [0.0, 0.0, 1.0]],
-            dtype=np.float64,
-        )
+        innovation_v = V_meas - (twin_ocv_lookup(soc, self.config) + I_cmd * p.R0_n + v1)
+        innovation_t = T_meas - temperature_c
+        h = self._d_ocv_d_soc(soc)
         # The observation matrix has rows [h, 1, 0] and [0, 0, 1], so form
-        # its 2x2 innovation covariance directly and solve it without LAPACK
-        # setup overhead on every simulated second.
-        h = float(H[0, 0])
+        # its 2x2 covariance and solve it without allocating matrix objects.
         p00, p01, p02 = (float(value) for value in self.P[0])
         p11, p12 = float(self.P[1, 1]), float(self.P[1, 2])
         p22 = float(self.P[2, 2])
@@ -205,31 +198,32 @@ class EKF:
         if not np.isfinite(determinant) or determinant <= 0.0:
             raise NumericalError("Innovation covariance is singular")
         inv00, inv01, inv11 = s11 / determinant, -s01 / determinant, s00 / determinant
-        solved_innovation = np.array(
-            [
-                inv00 * innovation[0] + inv01 * innovation[1],
-                inv01 * innovation[0] + inv11 * innovation[1],
-            ],
-            dtype=np.float64,
-        )
-        hp = np.array(
-            [[h * p00 + p01, h * p01 + p11, h * p02 + p12], [p02, p12, p22]],
-            dtype=np.float64,
-        )
-        gain = np.array(
-            [
-                [hp[0, row] * inv00 + hp[1, row] * inv01, hp[0, row] * inv01 + hp[1, row] * inv11]
-                for row in range(3)
-            ],
-            dtype=np.float64,
-        )
+        solved_v = inv00 * innovation_v + inv01 * innovation_t
+        solved_t = inv01 * innovation_v + inv11 * innovation_t
+        hp00, hp01, hp02 = h * p00 + p01, h * p01 + p11, h * p02 + p12
+        hp10, hp11, hp12 = p02, p12, p22
+        k00, k01 = hp00 * inv00 + hp10 * inv01, hp00 * inv01 + hp10 * inv11
+        k10, k11 = hp01 * inv00 + hp11 * inv01, hp01 * inv01 + hp11 * inv11
+        k20, k21 = hp02 * inv00 + hp12 * inv01, hp02 * inv01 + hp12 * inv11
+        nis = innovation_v * solved_v + innovation_t * solved_t
 
-        nis = float(innovation @ solved_innovation)
-        # For the optimal Kalman gain, the Joseph form simplifies to P-KHP.
-        # Symmetrizing retains the same numerical guard used by the full form.
-        self.P -= gain @ hp
-        self.P = 0.5 * (self.P + self.P.T)
-        self.x = self.x + gain @ innovation
+        # P-KHP is algebraically equivalent to the Joseph update for this
+        # optimal gain. Update its six independent entries directly.
+        new_p00 = p00 - (k00 * hp00 + k01 * hp10)
+        new_p01 = p01 - (k00 * hp01 + k01 * hp11)
+        new_p02 = p02 - (k00 * hp02 + k01 * hp12)
+        new_p11 = p11 - (k10 * hp01 + k11 * hp11)
+        new_p12 = p12 - (k10 * hp02 + k11 * hp12)
+        new_p22 = p22 - (k20 * hp02 + k21 * hp12)
+        self.P[0, 0] = new_p00
+        self.P[0, 1] = self.P[1, 0] = new_p01
+        self.P[0, 2] = self.P[2, 0] = new_p02
+        self.P[1, 1] = new_p11
+        self.P[1, 2] = self.P[2, 1] = new_p12
+        self.P[2, 2] = new_p22
+        self.x[0] = soc + k00 * innovation_v + k01 * innovation_t
+        self.x[1] = v1 + k10 * innovation_v + k11 * innovation_t
+        self.x[2] = temperature_c + k20 * innovation_v + k21 * innovation_t
 
         if I_meas is None:
             I_meas = (V_meas - twin_ocv_lookup(self.x[0], self.config) - self.x[1]) / p.R0_n
@@ -238,8 +232,8 @@ class EKF:
         return {
             "x_updated": self.x.copy(),
             "P_updated": self.P.copy(),
-            "nu": innovation,
-            "innovation_std": np.sqrt(np.array([s00, s11], dtype=np.float64)),
+            "nu": np.array([innovation_v, innovation_t], dtype=np.float64),
+            "innovation_std": np.array([np.sqrt(s00), np.sqrt(s11)], dtype=np.float64),
             "NIS": nis,
             "r_I": current_residual,
         }
@@ -256,25 +250,37 @@ class EKF:
         soc, v1, temperature_c = self.x
         if channel == "V":
             p = self.config.twin
-            predicted = float(twin_ocv_lookup(soc, self.config) + I_cmd * p.R0_n + v1)
-            H = np.array([[self._d_ocv_d_soc(soc), 1.0, 0.0]], dtype=np.float64)
+            h = self._d_ocv_d_soc(soc)
+            predicted = twin_ocv_lookup(soc, self.config) + I_cmd * p.R0_n + v1
             variance = float(self.R[0, 0])
+            p00, p01, p02 = (float(value) for value in self.P[0])
+            p11, p12 = float(self.P[1, 1]), float(self.P[1, 2])
+            p22 = float(self.P[2, 2])
+            ph0, ph1, ph2 = h * p00 + p01, h * p01 + p11, h * p02 + p12
+            innovation = measurement - predicted
+            covariance = h * ph0 + ph1 + variance
         else:
-            predicted = float(temperature_c)
-            H = np.array([[0.0, 0.0, 1.0]], dtype=np.float64)
+            predicted = temperature_c
             variance = float(self.R[1, 1])
-
-        innovation = measurement - predicted
-        S = float((H @ self.P @ H.T)[0, 0] + variance)
-        if not np.isfinite(S) or S <= 0:
+            p00, p01, p02 = (float(value) for value in self.P[0])
+            p11, p12 = float(self.P[1, 1]), float(self.P[1, 2])
+            p22 = float(self.P[2, 2])
+            ph0, ph1, ph2 = p02, p12, p22
+            innovation = measurement - predicted
+            covariance = ph2 + variance
+        if not np.isfinite(covariance) or covariance <= 0:
             raise NumericalError("Single-channel innovation covariance is invalid")
-        gain = (self.P @ H.T)[:, 0] / S
-        identity = np.eye(3, dtype=np.float64)
-        residual_map = identity - np.outer(gain, H[0])
-        self.P = residual_map @ self.P @ residual_map.T + np.outer(gain, gain) * variance
-        self.P = 0.5 * (self.P + self.P.T)
-        self.x = self.x + gain * innovation
-        return float(innovation), float(np.sqrt(S))
+        gain0, gain1, gain2 = ph0 / covariance, ph1 / covariance, ph2 / covariance
+        self.P[0, 0] = p00 - gain0 * ph0
+        self.P[0, 1] = self.P[1, 0] = p01 - gain0 * ph1
+        self.P[0, 2] = self.P[2, 0] = p02 - gain0 * ph2
+        self.P[1, 1] = p11 - gain1 * ph1
+        self.P[1, 2] = self.P[2, 1] = p12 - gain1 * ph2
+        self.P[2, 2] = p22 - gain2 * ph2
+        self.x[0] = soc + gain0 * innovation
+        self.x[1] = v1 + gain1 * innovation
+        self.x[2] = temperature_c + gain2 * innovation
+        return float(innovation), float(np.sqrt(covariance))
 
     def _d_ocv_d_soc(self, soc: float) -> float:
         """Estimate dOCV/dSOC with a bounded central or one-sided difference."""
