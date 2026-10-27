@@ -1,0 +1,6177 @@
+{
+  "config_hash": "6d079b3bd6bc4947",
+  "details": {
+    "AT1": [
+      {
+        "detectors": {
+          "B0": {
+            "attack_activated": true,
+            "delay_s": 0.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.2175,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 45.85235091242131,
+            "peak_voltage_v": 4.19673113610869,
+            "preempted_before_activation": false,
+            "safety_margin": 10.487775131734132
+          },
+          "B1": {
+            "attack_activated": true,
+            "delay_s": 0.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.2175,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 45.85235091242131,
+            "peak_voltage_v": 4.19673113610869,
+            "preempted_before_activation": false,
+            "safety_margin": 10.487775131734132
+          },
+          "B2": {
+            "attack_activated": true,
+            "delay_s": 0.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.2175,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 45.85235091242131,
+            "peak_voltage_v": 4.19673113610869,
+            "preempted_before_activation": false,
+            "safety_margin": 10.487775131734132
+          },
+          "B2_probe_present": {
+            "attack_activated": true,
+            "delay_s": 0.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.2175,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 45.860111781091334,
+            "peak_voltage_v": 4.197539849873366,
+            "preempted_before_activation": false,
+            "safety_margin": 10.485286778935354
+          },
+          "B3": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 1,
+            "false_alarm_hours": 0.2175,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 43.75197791747931,
+            "peak_voltage_v": 3.8366963408696835,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          }
+        },
+        "localization": {
+          "accuracy_excluding_ambiguous": 0.13555555555555557,
+          "ambiguous_multi": 0,
+          "counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              300,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              8,
+              0,
+              0,
+              2804,
+              0,
+              488
+            ]
+          ],
+          "labels": [
+            "v",
+            "i",
+            "temp",
+            "multi",
+            "command",
+            "unknown",
+            "none"
+          ],
+          "samples": 3600
+        },
+        "paired_safety": {
+          "defended_hazard": false,
+          "hazard_improvement": false,
+          "peak_temperature_reduction_c": 2.100372994941999,
+          "peak_voltage_reduction_v": 0.36003479523900683,
+          "preempted_before_activation": false,
+          "undefended_hazard": false
+        },
+        "scenario": "AT1",
+        "seed": 1000
+      },
+      {
+        "detectors": {
+          "B0": {
+            "attack_activated": true,
+            "delay_s": 0.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.3925,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 45.987815324627164,
+            "peak_voltage_v": 4.181684506626511,
+            "preempted_before_activation": false,
+            "safety_margin": 9.406169344862931
+          },
+          "B1": {
+            "attack_activated": true,
+            "delay_s": 0.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.3925,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 45.987815324627164,
+            "peak_voltage_v": 4.181684506626511,
+            "preempted_before_activation": false,
+            "safety_margin": 9.406169344862931
+          },
+          "B2": {
+            "attack_activated": true,
+            "delay_s": 0.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.3925,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 45.987815324627164,
+            "peak_voltage_v": 4.181684506626511,
+            "preempted_before_activation": false,
+            "safety_margin": 9.406169344862931
+          },
+          "B2_probe_present": {
+            "attack_activated": true,
+            "delay_s": 0.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.3925,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 45.999556799166214,
+            "peak_voltage_v": 4.181247894005964,
+            "preempted_before_activation": false,
+            "safety_margin": 9.404044532551275
+          },
+          "B3": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 1,
+            "false_alarm_hours": 0.3925,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 43.742110922724066,
+            "peak_voltage_v": 3.8282942211671553,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          }
+        },
+        "localization": {
+          "accuracy_excluding_ambiguous": 0.145,
+          "ambiguous_multi": 0,
+          "counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              300,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              2778,
+              0,
+              522
+            ]
+          ],
+          "labels": [
+            "v",
+            "i",
+            "temp",
+            "multi",
+            "command",
+            "unknown",
+            "none"
+          ],
+          "samples": 3600
+        },
+        "paired_safety": {
+          "defended_hazard": false,
+          "hazard_improvement": false,
+          "peak_temperature_reduction_c": 2.2457044019030974,
+          "peak_voltage_reduction_v": 0.3533902854593558,
+          "preempted_before_activation": false,
+          "undefended_hazard": false
+        },
+        "scenario": "AT1",
+        "seed": 1001
+      },
+      {
+        "detectors": {
+          "B0": {
+            "attack_activated": true,
+            "delay_s": 0.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.31777777777777777,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 45.93321110239909,
+            "peak_voltage_v": 4.182799613734823,
+            "preempted_before_activation": false,
+            "safety_margin": 9.654341578971653
+          },
+          "B1": {
+            "attack_activated": true,
+            "delay_s": 0.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.31777777777777777,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 45.93321110239909,
+            "peak_voltage_v": 4.182799613734823,
+            "preempted_before_activation": false,
+            "safety_margin": 9.654341578971653
+          },
+          "B2": {
+            "attack_activated": true,
+            "delay_s": 0.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.31777777777777777,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 45.93321110239909,
+            "peak_voltage_v": 4.182799613734823,
+            "preempted_before_activation": false,
+            "safety_margin": 9.654341578971653
+          },
+          "B2_probe_present": {
+            "attack_activated": true,
+            "delay_s": 0.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.31777777777777777,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 45.94233182427536,
+            "peak_voltage_v": 4.182483740248169,
+            "preempted_before_activation": false,
+            "safety_margin": 9.651557567711706
+          },
+          "B3": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 1,
+            "false_alarm_hours": 0.31777777777777777,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 43.76468191129649,
+            "peak_voltage_v": 3.8346643490022054,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          }
+        },
+        "localization": {
+          "accuracy_excluding_ambiguous": 0.13416666666666666,
+          "ambiguous_multi": 0,
+          "counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              300,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              9,
+              0,
+              0,
+              2808,
+              0,
+              483
+            ]
+          ],
+          "labels": [
+            "v",
+            "i",
+            "temp",
+            "multi",
+            "command",
+            "unknown",
+            "none"
+          ],
+          "samples": 3600
+        },
+        "paired_safety": {
+          "defended_hazard": false,
+          "hazard_improvement": false,
+          "peak_temperature_reduction_c": 2.1685291911026,
+          "peak_voltage_reduction_v": 0.3481352647326177,
+          "preempted_before_activation": false,
+          "undefended_hazard": false
+        },
+        "scenario": "AT1",
+        "seed": 1002
+      },
+      {
+        "detectors": {
+          "B0": {
+            "attack_activated": true,
+            "delay_s": 0.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.24083333333333334,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 45.99952288873067,
+            "peak_voltage_v": 4.181372642382483,
+            "preempted_before_activation": false,
+            "safety_margin": 10.231424266603398
+          },
+          "B1": {
+            "attack_activated": true,
+            "delay_s": 0.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.24083333333333334,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 45.99952288873067,
+            "peak_voltage_v": 4.181372642382483,
+            "preempted_before_activation": false,
+            "safety_margin": 10.231424266603398
+          },
+          "B2": {
+            "attack_activated": true,
+            "delay_s": 0.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.24083333333333334,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 45.99952288873067,
+            "peak_voltage_v": 4.181372642382483,
+            "preempted_before_activation": false,
+            "safety_margin": 10.231424266603398
+          },
+          "B2_probe_present": {
+            "attack_activated": true,
+            "delay_s": 0.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.24083333333333334,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 46.00729626334369,
+            "peak_voltage_v": 4.188716973482089,
+            "preempted_before_activation": false,
+            "safety_margin": 10.22785906920965
+          },
+          "B3": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 1,
+            "false_alarm_hours": 0.24083333333333334,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 43.75434849875421,
+            "peak_voltage_v": 3.8484595542038473,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          }
+        },
+        "localization": {
+          "accuracy_excluding_ambiguous": 0.1386111111111111,
+          "ambiguous_multi": 0,
+          "counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              300,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              2801,
+              0,
+              499
+            ]
+          ],
+          "labels": [
+            "v",
+            "i",
+            "temp",
+            "multi",
+            "command",
+            "unknown",
+            "none"
+          ],
+          "samples": 3600
+        },
+        "paired_safety": {
+          "defended_hazard": false,
+          "hazard_improvement": false,
+          "peak_temperature_reduction_c": 2.245174389976455,
+          "peak_voltage_reduction_v": 0.3329130881786355,
+          "preempted_before_activation": false,
+          "undefended_hazard": false
+        },
+        "scenario": "AT1",
+        "seed": 1003
+      }
+    ],
+    "AT2": [
+      {
+        "detectors": {
+          "B0": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.2175,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 53.556998876776255,
+            "peak_voltage_v": 4.185894679666223,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B1": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.2175,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 53.556998876776255,
+            "peak_voltage_v": 4.185894679666223,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2": {
+            "attack_activated": true,
+            "delay_s": 1423.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.2175,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 53.556998876776255,
+            "peak_voltage_v": 4.185894679666223,
+            "preempted_before_activation": false,
+            "safety_margin": 2.09066184574818
+          },
+          "B2_probe_present": {
+            "attack_activated": true,
+            "delay_s": 1423.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.2175,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 53.55702892795526,
+            "peak_voltage_v": 4.185740612069775,
+            "preempted_before_activation": false,
+            "safety_margin": 2.090629814110258
+          },
+          "B3": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 1,
+            "false_alarm_hours": 0.2175,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 43.75197791747931,
+            "peak_voltage_v": 3.8366963408696835,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          }
+        },
+        "localization": {
+          "accuracy_excluding_ambiguous": 0.13555555555555557,
+          "ambiguous_multi": 0,
+          "counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              2817,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              8,
+              0,
+              0,
+              287,
+              0,
+              488
+            ]
+          ],
+          "labels": [
+            "v",
+            "i",
+            "temp",
+            "multi",
+            "command",
+            "unknown",
+            "none"
+          ],
+          "samples": 3600
+        },
+        "paired_safety": {
+          "defended_hazard": false,
+          "hazard_improvement": false,
+          "peak_temperature_reduction_c": 9.805020959296947,
+          "peak_voltage_reduction_v": 0.3491983387965396,
+          "preempted_before_activation": false,
+          "undefended_hazard": false
+        },
+        "scenario": "AT2",
+        "seed": 1000
+      },
+      {
+        "detectors": {
+          "B0": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.3925,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 51.475977480191474,
+            "peak_voltage_v": 4.192550697851186,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B1": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.3925,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 51.475977480191474,
+            "peak_voltage_v": 4.192550697851186,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2": {
+            "attack_activated": true,
+            "delay_s": 1207.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.3925,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 51.475977480191474,
+            "peak_voltage_v": 4.192550697851186,
+            "preempted_before_activation": false,
+            "safety_margin": 3.5464271279480926
+          },
+          "B2_probe_present": {
+            "attack_activated": true,
+            "delay_s": 1207.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.3925,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 51.47657751471189,
+            "peak_voltage_v": 4.192296777454754,
+            "preempted_before_activation": false,
+            "safety_margin": 3.5458279357703972
+          },
+          "B3": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 1,
+            "false_alarm_hours": 0.3925,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 43.742110922724066,
+            "peak_voltage_v": 3.8282942211671553,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          }
+        },
+        "localization": {
+          "accuracy_excluding_ambiguous": 0.145,
+          "ambiguous_multi": 0,
+          "counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              2187,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              891,
+              0,
+              522
+            ]
+          ],
+          "labels": [
+            "v",
+            "i",
+            "temp",
+            "multi",
+            "command",
+            "unknown",
+            "none"
+          ],
+          "samples": 3600
+        },
+        "paired_safety": {
+          "defended_hazard": false,
+          "hazard_improvement": false,
+          "peak_temperature_reduction_c": 7.733866557467408,
+          "peak_voltage_reduction_v": 0.36425647668403105,
+          "preempted_before_activation": false,
+          "undefended_hazard": false
+        },
+        "scenario": "AT2",
+        "seed": 1001
+      },
+      {
+        "detectors": {
+          "B0": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.31777777777777777,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 52.22629738095413,
+            "peak_voltage_v": 4.184269841461221,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B1": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.31777777777777777,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 52.22629738095413,
+            "peak_voltage_v": 4.184269841461221,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2": {
+            "attack_activated": true,
+            "delay_s": 1310.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.31777777777777777,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 52.22629738095413,
+            "peak_voltage_v": 4.184269841461221,
+            "preempted_before_activation": false,
+            "safety_margin": 2.7907919678831945
+          },
+          "B2_probe_present": {
+            "attack_activated": true,
+            "delay_s": 1310.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.31777777777777777,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 52.22756082707382,
+            "peak_voltage_v": 4.18400764764116,
+            "preempted_before_activation": false,
+            "safety_margin": 2.789529818248546
+          },
+          "B3": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 1,
+            "false_alarm_hours": 0.31777777777777777,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 43.76468191129649,
+            "peak_voltage_v": 3.8346643490022054,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          }
+        },
+        "localization": {
+          "accuracy_excluding_ambiguous": 0.13416666666666666,
+          "ambiguous_multi": 0,
+          "counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              2456,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              9,
+              0,
+              0,
+              652,
+              0,
+              483
+            ]
+          ],
+          "labels": [
+            "v",
+            "i",
+            "temp",
+            "multi",
+            "command",
+            "unknown",
+            "none"
+          ],
+          "samples": 3600
+        },
+        "paired_safety": {
+          "defended_hazard": false,
+          "hazard_improvement": false,
+          "peak_temperature_reduction_c": 8.461615469657637,
+          "peak_voltage_reduction_v": 0.34960549245901573,
+          "preempted_before_activation": false,
+          "undefended_hazard": false
+        },
+        "scenario": "AT2",
+        "seed": 1002
+      },
+      {
+        "detectors": {
+          "B0": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.24083333333333334,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 53.19222442869698,
+            "peak_voltage_v": 4.192084405818818,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B1": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.24083333333333334,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 53.19222442869698,
+            "peak_voltage_v": 4.192084405818818,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2": {
+            "attack_activated": true,
+            "delay_s": 1284.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.24083333333333334,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 53.19222442869698,
+            "peak_voltage_v": 4.192084405818818,
+            "preempted_before_activation": false,
+            "safety_margin": 2.9162897819250944
+          },
+          "B2_probe_present": {
+            "attack_activated": true,
+            "delay_s": 1284.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.24083333333333334,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 53.19326111715379,
+            "peak_voltage_v": 4.191913534478403,
+            "preempted_before_activation": false,
+            "safety_margin": 2.914358825100706
+          },
+          "B3": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 1,
+            "false_alarm_hours": 0.24083333333333334,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 43.75434849875421,
+            "peak_voltage_v": 3.8484595542038473,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          }
+        },
+        "localization": {
+          "accuracy_excluding_ambiguous": 0.1386111111111111,
+          "ambiguous_multi": 0,
+          "counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              2733,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              368,
+              0,
+              499
+            ]
+          ],
+          "labels": [
+            "v",
+            "i",
+            "temp",
+            "multi",
+            "command",
+            "unknown",
+            "none"
+          ],
+          "samples": 3600
+        },
+        "paired_safety": {
+          "defended_hazard": false,
+          "hazard_improvement": false,
+          "peak_temperature_reduction_c": 9.43787592994277,
+          "peak_voltage_reduction_v": 0.3436248516149707,
+          "preempted_before_activation": false,
+          "undefended_hazard": false
+        },
+        "scenario": "AT2",
+        "seed": 1003
+      }
+    ],
+    "AT3": [
+      {
+        "detectors": {
+          "B0": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.2175,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 53.19696939070019,
+            "peak_voltage_v": 4.293547887284086,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B1": {
+            "attack_activated": true,
+            "delay_s": 0.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.2175,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 53.19696939070019,
+            "peak_voltage_v": 4.293547887284086,
+            "preempted_before_activation": false,
+            "safety_margin": 10.487775131734132
+          },
+          "B2": {
+            "attack_activated": true,
+            "delay_s": 0.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.2175,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 53.19696939070019,
+            "peak_voltage_v": 4.293547887284086,
+            "preempted_before_activation": false,
+            "safety_margin": 10.487775131734132
+          },
+          "B2_probe_present": {
+            "attack_activated": true,
+            "delay_s": 0.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.2175,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 53.20299505950111,
+            "peak_voltage_v": 4.293543439605723,
+            "preempted_before_activation": false,
+            "safety_margin": 10.485286778935354
+          },
+          "B3": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 1,
+            "false_alarm_hours": 0.2175,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 44.263843287305875,
+            "peak_voltage_v": 3.8293488348229636,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          }
+        },
+        "localization": {
+          "accuracy_excluding_ambiguous": 0.13555555555555557,
+          "ambiguous_multi": 0,
+          "counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              95,
+              0,
+              0,
+              2722,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              8,
+              0,
+              0,
+              287,
+              0,
+              488
+            ]
+          ],
+          "labels": [
+            "v",
+            "i",
+            "temp",
+            "multi",
+            "command",
+            "unknown",
+            "none"
+          ],
+          "samples": 3600
+        },
+        "paired_safety": {
+          "defended_hazard": false,
+          "hazard_improvement": false,
+          "peak_temperature_reduction_c": 8.933126103394315,
+          "peak_voltage_reduction_v": 0.4641990524611228,
+          "preempted_before_activation": false,
+          "undefended_hazard": false
+        },
+        "scenario": "AT3",
+        "seed": 1000
+      },
+      {
+        "detectors": {
+          "B0": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.3925,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 51.45974460826977,
+            "peak_voltage_v": 4.27716305688548,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B1": {
+            "attack_activated": true,
+            "delay_s": 20.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.3925,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 51.45974460826977,
+            "peak_voltage_v": 4.27716305688548,
+            "preempted_before_activation": false,
+            "safety_margin": 9.317905031621073
+          },
+          "B2": {
+            "attack_activated": true,
+            "delay_s": 0.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.3925,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 51.45974460826977,
+            "peak_voltage_v": 4.27716305688548,
+            "preempted_before_activation": false,
+            "safety_margin": 9.406169344862931
+          },
+          "B2_probe_present": {
+            "attack_activated": true,
+            "delay_s": 0.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.3925,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 51.466284364099046,
+            "peak_voltage_v": 4.277158923167052,
+            "preempted_before_activation": false,
+            "safety_margin": 9.404044532551275
+          },
+          "B3": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 1,
+            "false_alarm_hours": 0.3925,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 43.742110922724066,
+            "peak_voltage_v": 3.8268672225753906,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          }
+        },
+        "localization": {
+          "accuracy_excluding_ambiguous": 0.145,
+          "ambiguous_multi": 0,
+          "counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              10,
+              0,
+              0,
+              2177,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              891,
+              0,
+              522
+            ]
+          ],
+          "labels": [
+            "v",
+            "i",
+            "temp",
+            "multi",
+            "command",
+            "unknown",
+            "none"
+          ],
+          "samples": 3600
+        },
+        "paired_safety": {
+          "defended_hazard": false,
+          "hazard_improvement": false,
+          "peak_temperature_reduction_c": 7.717633685545707,
+          "peak_voltage_reduction_v": 0.45029583431008957,
+          "preempted_before_activation": false,
+          "undefended_hazard": false
+        },
+        "scenario": "AT3",
+        "seed": 1001
+      },
+      {
+        "detectors": {
+          "B0": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.31777777777777777,
+            "hazard_event": true,
+            "hazard_samples": 8,
+            "peak_temperature_c": 52.38425459905463,
+            "peak_voltage_v": 4.2909680942432775,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B1": {
+            "attack_activated": true,
+            "delay_s": 0.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.31777777777777777,
+            "hazard_event": true,
+            "hazard_samples": 8,
+            "peak_temperature_c": 52.38425459905463,
+            "peak_voltage_v": 4.2909680942432775,
+            "preempted_before_activation": false,
+            "safety_margin": 9.654341578971653
+          },
+          "B2": {
+            "attack_activated": true,
+            "delay_s": 0.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.31777777777777777,
+            "hazard_event": true,
+            "hazard_samples": 8,
+            "peak_temperature_c": 52.38425459905463,
+            "peak_voltage_v": 4.2909680942432775,
+            "preempted_before_activation": false,
+            "safety_margin": 9.654341578971653
+          },
+          "B2_probe_present": {
+            "attack_activated": true,
+            "delay_s": 0.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.31777777777777777,
+            "hazard_event": true,
+            "hazard_samples": 8,
+            "peak_temperature_c": 52.39227733101749,
+            "peak_voltage_v": 4.290962413612345,
+            "preempted_before_activation": false,
+            "safety_margin": 9.651557567711706
+          },
+          "B3": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 1,
+            "false_alarm_hours": 0.31777777777777777,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 43.76468191129649,
+            "peak_voltage_v": 3.8337003933683267,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          }
+        },
+        "localization": {
+          "accuracy_excluding_ambiguous": 0.13416666666666666,
+          "ambiguous_multi": 0,
+          "counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              2456,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              9,
+              0,
+              0,
+              652,
+              0,
+              483
+            ]
+          ],
+          "labels": [
+            "v",
+            "i",
+            "temp",
+            "multi",
+            "command",
+            "unknown",
+            "none"
+          ],
+          "samples": 3600
+        },
+        "paired_safety": {
+          "defended_hazard": false,
+          "hazard_improvement": true,
+          "peak_temperature_reduction_c": 8.619572687758136,
+          "peak_voltage_reduction_v": 0.45726770087495083,
+          "preempted_before_activation": false,
+          "undefended_hazard": true
+        },
+        "scenario": "AT3",
+        "seed": 1002
+      },
+      {
+        "detectors": {
+          "B0": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.24083333333333334,
+            "hazard_event": true,
+            "hazard_samples": 84,
+            "peak_temperature_c": 53.03588954068626,
+            "peak_voltage_v": 4.298760965141303,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B1": {
+            "attack_activated": true,
+            "delay_s": 0.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.24083333333333334,
+            "hazard_event": true,
+            "hazard_samples": 84,
+            "peak_temperature_c": 53.03588954068626,
+            "peak_voltage_v": 4.298760965141303,
+            "preempted_before_activation": false,
+            "safety_margin": 10.231424266603398
+          },
+          "B2": {
+            "attack_activated": true,
+            "delay_s": 0.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.24083333333333334,
+            "hazard_event": true,
+            "hazard_samples": 84,
+            "peak_temperature_c": 53.03588954068626,
+            "peak_voltage_v": 4.298760965141303,
+            "preempted_before_activation": false,
+            "safety_margin": 10.231424266603398
+          },
+          "B2_probe_present": {
+            "attack_activated": true,
+            "delay_s": 0.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.24083333333333334,
+            "hazard_event": true,
+            "hazard_samples": 83,
+            "peak_temperature_c": 53.04248678425811,
+            "peak_voltage_v": 4.29875623985122,
+            "preempted_before_activation": false,
+            "safety_margin": 10.22785906920965
+          },
+          "B3": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 1,
+            "false_alarm_hours": 0.24083333333333334,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 44.12915553344494,
+            "peak_voltage_v": 3.847413643478865,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          }
+        },
+        "localization": {
+          "accuracy_excluding_ambiguous": 0.1386111111111111,
+          "ambiguous_multi": 0,
+          "counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              2733,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              368,
+              0,
+              499
+            ]
+          ],
+          "labels": [
+            "v",
+            "i",
+            "temp",
+            "multi",
+            "command",
+            "unknown",
+            "none"
+          ],
+          "samples": 3600
+        },
+        "paired_safety": {
+          "defended_hazard": false,
+          "hazard_improvement": true,
+          "peak_temperature_reduction_c": 8.906734007241326,
+          "peak_voltage_reduction_v": 0.45134732166243774,
+          "preempted_before_activation": false,
+          "undefended_hazard": true
+        },
+        "scenario": "AT3",
+        "seed": 1003
+      }
+    ],
+    "AT4": [
+      {
+        "detectors": {
+          "B0": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.2175,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 46.94287883792116,
+            "peak_voltage_v": 4.004960834159603,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B1": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.2175,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 46.94287883792116,
+            "peak_voltage_v": 4.004960834159603,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2": {
+            "attack_activated": true,
+            "delay_s": 1.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.2175,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 46.94287883792116,
+            "peak_voltage_v": 4.004960834159603,
+            "preempted_before_activation": false,
+            "safety_margin": 10.481850748941916
+          },
+          "B2_probe_present": {
+            "attack_activated": true,
+            "delay_s": 1.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.2175,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 46.95557249296492,
+            "peak_voltage_v": 4.00444420982178,
+            "preempted_before_activation": false,
+            "safety_margin": 10.479363068075152
+          },
+          "B3": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 1,
+            "false_alarm_hours": 0.2175,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 44.263843287305875,
+            "peak_voltage_v": 3.8355155962456187,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          }
+        },
+        "localization": {
+          "accuracy_excluding_ambiguous": 0.13555555555555557,
+          "ambiguous_multi": 0,
+          "counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              2817,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              8,
+              0,
+              0,
+              287,
+              0,
+              488
+            ]
+          ],
+          "labels": [
+            "v",
+            "i",
+            "temp",
+            "multi",
+            "command",
+            "unknown",
+            "none"
+          ],
+          "samples": 3600
+        },
+        "paired_safety": {
+          "defended_hazard": false,
+          "hazard_improvement": false,
+          "peak_temperature_reduction_c": 2.679035550615282,
+          "peak_voltage_reduction_v": 0.16944523791398458,
+          "preempted_before_activation": false,
+          "undefended_hazard": false
+        },
+        "scenario": "AT4",
+        "seed": 1000
+      },
+      {
+        "detectors": {
+          "B0": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.3925,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 47.16232362930305,
+            "peak_voltage_v": 4.0737331273641315,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B1": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.3925,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 47.16232362930305,
+            "peak_voltage_v": 4.0737331273641315,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.3925,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 47.16232362930305,
+            "peak_voltage_v": 4.0737331273641315,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2_probe_present": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.3925,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 47.17454079559281,
+            "peak_voltage_v": 4.073268166801669,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B3": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 1,
+            "false_alarm_hours": 0.3925,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 43.742110922724066,
+            "peak_voltage_v": 3.827524737048665,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          }
+        },
+        "localization": {
+          "accuracy_excluding_ambiguous": 0.145,
+          "ambiguous_multi": 0,
+          "counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              2187,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              891,
+              0,
+              522
+            ]
+          ],
+          "labels": [
+            "v",
+            "i",
+            "temp",
+            "multi",
+            "command",
+            "unknown",
+            "none"
+          ],
+          "samples": 3600
+        },
+        "paired_safety": {
+          "defended_hazard": false,
+          "hazard_improvement": false,
+          "peak_temperature_reduction_c": 3.4202127065789867,
+          "peak_voltage_reduction_v": 0.24620839031546637,
+          "preempted_before_activation": false,
+          "undefended_hazard": false
+        },
+        "scenario": "AT4",
+        "seed": 1001
+      },
+      {
+        "detectors": {
+          "B0": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.31777777777777777,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 47.16544094754472,
+            "peak_voltage_v": 4.043698076358002,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B1": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.31777777777777777,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 47.16544094754472,
+            "peak_voltage_v": 4.043698076358002,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2": {
+            "attack_activated": true,
+            "delay_s": 2.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.31777777777777777,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 47.16544094754472,
+            "peak_voltage_v": 4.043698076358002,
+            "preempted_before_activation": false,
+            "safety_margin": 9.645418315199848
+          },
+          "B2_probe_present": {
+            "attack_activated": true,
+            "delay_s": 2.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.31777777777777777,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 47.170646072130566,
+            "peak_voltage_v": 4.043190132245835,
+            "preempted_before_activation": false,
+            "safety_margin": 9.642635697339792
+          },
+          "B3": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 1,
+            "false_alarm_hours": 0.31777777777777777,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 43.76468191129649,
+            "peak_voltage_v": 3.8337003933683267,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          }
+        },
+        "localization": {
+          "accuracy_excluding_ambiguous": 0.13416666666666666,
+          "ambiguous_multi": 0,
+          "counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              2456,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              9,
+              0,
+              0,
+              652,
+              0,
+              483
+            ]
+          ],
+          "labels": [
+            "v",
+            "i",
+            "temp",
+            "multi",
+            "command",
+            "unknown",
+            "none"
+          ],
+          "samples": 3600
+        },
+        "paired_safety": {
+          "defended_hazard": false,
+          "hazard_improvement": false,
+          "peak_temperature_reduction_c": 3.4007590362482247,
+          "peak_voltage_reduction_v": 0.20999768298967503,
+          "preempted_before_activation": false,
+          "undefended_hazard": false
+        },
+        "scenario": "AT4",
+        "seed": 1002
+      },
+      {
+        "detectors": {
+          "B0": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.24083333333333334,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 47.12632201304373,
+            "peak_voltage_v": 4.033085812175813,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B1": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.24083333333333334,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 47.12632201304373,
+            "peak_voltage_v": 4.033085812175813,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.24083333333333334,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 47.12632201304373,
+            "peak_voltage_v": 4.033085812175813,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2_probe_present": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.24083333333333334,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 47.132310330653944,
+            "peak_voltage_v": 4.032614380839742,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B3": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 1,
+            "false_alarm_hours": 0.24083333333333334,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 44.12915553344494,
+            "peak_voltage_v": 3.847413643478865,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          }
+        },
+        "localization": {
+          "accuracy_excluding_ambiguous": 0.1386111111111111,
+          "ambiguous_multi": 0,
+          "counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              2733,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              368,
+              0,
+              499
+            ]
+          ],
+          "labels": [
+            "v",
+            "i",
+            "temp",
+            "multi",
+            "command",
+            "unknown",
+            "none"
+          ],
+          "samples": 3600
+        },
+        "paired_safety": {
+          "defended_hazard": false,
+          "hazard_improvement": false,
+          "peak_temperature_reduction_c": 2.9971664795987962,
+          "peak_voltage_reduction_v": 0.1856721686969478,
+          "preempted_before_activation": false,
+          "undefended_hazard": false
+        },
+        "scenario": "AT4",
+        "seed": 1003
+      }
+    ],
+    "AT5": [
+      {
+        "detectors": {
+          "B0": {
+            "attack_activated": true,
+            "delay_s": 382.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.8166666666666667,
+            "hazard_event": true,
+            "hazard_samples": 257,
+            "peak_temperature_c": 47.9257811552506,
+            "peak_voltage_v": 4.317840903134266,
+            "preempted_before_activation": false,
+            "safety_margin": 0.007179440820320515
+          },
+          "B1": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.8166666666666667,
+            "hazard_event": true,
+            "hazard_samples": 257,
+            "peak_temperature_c": 47.9257811552506,
+            "peak_voltage_v": 4.317840903134266,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.8166666666666667,
+            "hazard_event": true,
+            "hazard_samples": 257,
+            "peak_temperature_c": 47.9257811552506,
+            "peak_voltage_v": 4.317840903134266,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2_probe_present": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.8169444444444445,
+            "hazard_event": true,
+            "hazard_samples": 254,
+            "peak_temperature_c": 47.92043317549711,
+            "peak_voltage_v": 4.317992538911815,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B3": {
+            "attack_activated": false,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 1,
+            "false_alarm_hours": 1.0,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 43.75197791747931,
+            "peak_voltage_v": 3.8366963408696835,
+            "preempted_before_activation": true,
+            "safety_margin": null
+          }
+        },
+        "localization": {
+          "accuracy_excluding_ambiguous": 0.13555555555555557,
+          "ambiguous_multi": 0,
+          "counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              8,
+              0,
+              0,
+              3104,
+              0,
+              488
+            ]
+          ],
+          "labels": [
+            "v",
+            "i",
+            "temp",
+            "multi",
+            "command",
+            "unknown",
+            "none"
+          ],
+          "samples": 3600
+        },
+        "paired_safety": {
+          "defended_hazard": false,
+          "hazard_improvement": true,
+          "peak_temperature_reduction_c": 4.173803237771288,
+          "peak_voltage_reduction_v": 0.4811445622645829,
+          "preempted_before_activation": true,
+          "undefended_hazard": true
+        },
+        "scenario": "AT5",
+        "seed": 1000
+      },
+      {
+        "detectors": {
+          "B0": {
+            "attack_activated": true,
+            "delay_s": 494.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.8019444444444445,
+            "hazard_event": true,
+            "hazard_samples": 116,
+            "peak_temperature_c": 48.02884565836235,
+            "peak_voltage_v": 4.297445629914706,
+            "preempted_before_activation": false,
+            "safety_margin": 0.010848032369608518
+          },
+          "B1": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.8019444444444445,
+            "hazard_event": true,
+            "hazard_samples": 116,
+            "peak_temperature_c": 48.02884565836235,
+            "peak_voltage_v": 4.297445629914706,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.8019444444444445,
+            "hazard_event": true,
+            "hazard_samples": 116,
+            "peak_temperature_c": 48.02884565836235,
+            "peak_voltage_v": 4.297445629914706,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2_probe_present": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.8022222222222222,
+            "hazard_event": true,
+            "hazard_samples": 115,
+            "peak_temperature_c": 48.02940460067097,
+            "peak_voltage_v": 4.29742194432057,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B3": {
+            "attack_activated": false,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 1,
+            "false_alarm_hours": 1.0,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 43.742110922724066,
+            "peak_voltage_v": 3.8282942211671553,
+            "preempted_before_activation": true,
+            "safety_margin": null
+          }
+        },
+        "localization": {
+          "accuracy_excluding_ambiguous": 0.145,
+          "ambiguous_multi": 0,
+          "counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              3078,
+              0,
+              522
+            ]
+          ],
+          "labels": [
+            "v",
+            "i",
+            "temp",
+            "multi",
+            "command",
+            "unknown",
+            "none"
+          ],
+          "samples": 3600
+        },
+        "paired_safety": {
+          "defended_hazard": false,
+          "hazard_improvement": true,
+          "peak_temperature_reduction_c": 4.286734735638284,
+          "peak_voltage_reduction_v": 0.46915140874755057,
+          "preempted_before_activation": true,
+          "undefended_hazard": true
+        },
+        "scenario": "AT5",
+        "seed": 1001
+      },
+      {
+        "detectors": {
+          "B0": {
+            "attack_activated": true,
+            "delay_s": 413.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.8058333333333333,
+            "hazard_event": true,
+            "hazard_samples": 251,
+            "peak_temperature_c": 48.0101261644591,
+            "peak_voltage_v": 4.31129803904379,
+            "preempted_before_activation": false,
+            "safety_margin": 0.011471953263170853
+          },
+          "B1": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.8058333333333333,
+            "hazard_event": true,
+            "hazard_samples": 251,
+            "peak_temperature_c": 48.0101261644591,
+            "peak_voltage_v": 4.31129803904379,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.8058333333333333,
+            "hazard_event": true,
+            "hazard_samples": 251,
+            "peak_temperature_c": 48.0101261644591,
+            "peak_voltage_v": 4.31129803904379,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2_probe_present": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.8061111111111111,
+            "hazard_event": true,
+            "hazard_samples": 250,
+            "peak_temperature_c": 48.008397682722794,
+            "peak_voltage_v": 4.311460848205221,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B3": {
+            "attack_activated": false,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 1,
+            "false_alarm_hours": 1.0,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 43.76468191129649,
+            "peak_voltage_v": 3.8346643490022054,
+            "preempted_before_activation": true,
+            "safety_margin": null
+          }
+        },
+        "localization": {
+          "accuracy_excluding_ambiguous": 0.13416666666666666,
+          "ambiguous_multi": 0,
+          "counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              9,
+              0,
+              0,
+              3108,
+              0,
+              483
+            ]
+          ],
+          "labels": [
+            "v",
+            "i",
+            "temp",
+            "multi",
+            "command",
+            "unknown",
+            "none"
+          ],
+          "samples": 3600
+        },
+        "paired_safety": {
+          "defended_hazard": false,
+          "hazard_improvement": true,
+          "peak_temperature_reduction_c": 4.24544425316261,
+          "peak_voltage_reduction_v": 0.47663369004158485,
+          "preempted_before_activation": true,
+          "undefended_hazard": true
+        },
+        "scenario": "AT5",
+        "seed": 1002
+      },
+      {
+        "detectors": {
+          "B0": {
+            "attack_activated": true,
+            "delay_s": 430.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.7933333333333333,
+            "hazard_event": true,
+            "hazard_samples": 300,
+            "peak_temperature_c": 48.063101423575404,
+            "peak_voltage_v": 4.315219626279557,
+            "preempted_before_activation": false,
+            "safety_margin": 0.0023468395008103826
+          },
+          "B1": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.7933333333333333,
+            "hazard_event": true,
+            "hazard_samples": 300,
+            "peak_temperature_c": 48.063101423575404,
+            "peak_voltage_v": 4.315219626279557,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.7933333333333333,
+            "hazard_event": true,
+            "hazard_samples": 300,
+            "peak_temperature_c": 48.063101423575404,
+            "peak_voltage_v": 4.315219626279557,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2_probe_present": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.7936111111111112,
+            "hazard_event": true,
+            "hazard_samples": 299,
+            "peak_temperature_c": 48.05595076278394,
+            "peak_voltage_v": 4.315638876191845,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B3": {
+            "attack_activated": false,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 1,
+            "false_alarm_hours": 1.0,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 43.75434849875421,
+            "peak_voltage_v": 3.8484595542038473,
+            "preempted_before_activation": true,
+            "safety_margin": null
+          }
+        },
+        "localization": {
+          "accuracy_excluding_ambiguous": 0.1386111111111111,
+          "ambiguous_multi": 0,
+          "counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              3101,
+              0,
+              499
+            ]
+          ],
+          "labels": [
+            "v",
+            "i",
+            "temp",
+            "multi",
+            "command",
+            "unknown",
+            "none"
+          ],
+          "samples": 3600
+        },
+        "paired_safety": {
+          "defended_hazard": false,
+          "hazard_improvement": true,
+          "peak_temperature_reduction_c": 4.308752924821192,
+          "peak_voltage_reduction_v": 0.4667600720757097,
+          "preempted_before_activation": true,
+          "undefended_hazard": true
+        },
+        "scenario": "AT5",
+        "seed": 1003
+      }
+    ],
+    "AT6": [
+      {
+        "detectors": {
+          "B0": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.2175,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 47.03570432044779,
+            "peak_voltage_v": 4.005360660377291,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B1": {
+            "attack_activated": true,
+            "delay_s": 1260.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.2175,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 47.03570432044779,
+            "peak_voltage_v": 4.005360660377291,
+            "preempted_before_activation": false,
+            "safety_margin": 8.026012986746373
+          },
+          "B2": {
+            "attack_activated": true,
+            "delay_s": 2.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.2175,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 47.03570432044779,
+            "peak_voltage_v": 4.005360660377291,
+            "preempted_before_activation": false,
+            "safety_margin": 10.47569465492969
+          },
+          "B2_probe_present": {
+            "attack_activated": true,
+            "delay_s": 2.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.2175,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 47.049496875952215,
+            "peak_voltage_v": 4.004868459354401,
+            "preempted_before_activation": false,
+            "safety_margin": 10.47320765000655
+          },
+          "B3": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 1,
+            "false_alarm_hours": 0.2175,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 44.263843287305875,
+            "peak_voltage_v": 3.8355155962456187,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          }
+        },
+        "localization": {
+          "accuracy_excluding_ambiguous": 0.13555555555555557,
+          "ambiguous_multi": 0,
+          "counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              2817,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              8,
+              0,
+              0,
+              287,
+              0,
+              488
+            ]
+          ],
+          "labels": [
+            "v",
+            "i",
+            "temp",
+            "multi",
+            "command",
+            "unknown",
+            "none"
+          ],
+          "samples": 3600
+        },
+        "paired_safety": {
+          "defended_hazard": false,
+          "hazard_improvement": false,
+          "peak_temperature_reduction_c": 2.771861033141917,
+          "peak_voltage_reduction_v": 0.16984506413167244,
+          "preempted_before_activation": false,
+          "undefended_hazard": false
+        },
+        "scenario": "AT6",
+        "seed": 1000
+      },
+      {
+        "detectors": {
+          "B0": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.3925,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 47.23970555705926,
+            "peak_voltage_v": 4.079003360582769,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B1": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.3925,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 47.23970555705926,
+            "peak_voltage_v": 4.079003360582769,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.3925,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 47.23970555705926,
+            "peak_voltage_v": 4.079003360582769,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2_probe_present": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.3925,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 47.24504120333807,
+            "peak_voltage_v": 4.078533053317916,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B3": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 1,
+            "false_alarm_hours": 0.3925,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 43.742110922724066,
+            "peak_voltage_v": 3.827524737048665,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          }
+        },
+        "localization": {
+          "accuracy_excluding_ambiguous": 0.145,
+          "ambiguous_multi": 0,
+          "counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              2187,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              891,
+              0,
+              522
+            ]
+          ],
+          "labels": [
+            "v",
+            "i",
+            "temp",
+            "multi",
+            "command",
+            "unknown",
+            "none"
+          ],
+          "samples": 3600
+        },
+        "paired_safety": {
+          "defended_hazard": false,
+          "hazard_improvement": false,
+          "peak_temperature_reduction_c": 3.4975946343351936,
+          "peak_voltage_reduction_v": 0.251478623534104,
+          "preempted_before_activation": false,
+          "undefended_hazard": false
+        },
+        "scenario": "AT6",
+        "seed": 1001
+      },
+      {
+        "detectors": {
+          "B0": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.31777777777777777,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 47.24726826105083,
+            "peak_voltage_v": 4.047204372136746,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B1": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.31777777777777777,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 47.24726826105083,
+            "peak_voltage_v": 4.047204372136746,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.31777777777777777,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 47.24726826105083,
+            "peak_voltage_v": 4.047204372136746,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2_probe_present": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.31777777777777777,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 47.25298867784296,
+            "peak_voltage_v": 4.0467227945993285,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B3": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 1,
+            "false_alarm_hours": 0.31777777777777777,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 43.76468191129649,
+            "peak_voltage_v": 3.8337003933683267,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          }
+        },
+        "localization": {
+          "accuracy_excluding_ambiguous": 0.13416666666666666,
+          "ambiguous_multi": 0,
+          "counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              2456,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              9,
+              0,
+              0,
+              652,
+              0,
+              483
+            ]
+          ],
+          "labels": [
+            "v",
+            "i",
+            "temp",
+            "multi",
+            "command",
+            "unknown",
+            "none"
+          ],
+          "samples": 3600
+        },
+        "paired_safety": {
+          "defended_hazard": false,
+          "hazard_improvement": false,
+          "peak_temperature_reduction_c": 3.4825863497543352,
+          "peak_voltage_reduction_v": 0.21350397876841942,
+          "preempted_before_activation": false,
+          "undefended_hazard": false
+        },
+        "scenario": "AT6",
+        "seed": 1002
+      },
+      {
+        "detectors": {
+          "B0": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.24083333333333334,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 47.224839033292604,
+            "peak_voltage_v": 4.0340423873084905,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B1": {
+            "attack_activated": true,
+            "delay_s": 2103.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.24083333333333334,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 47.224839033292604,
+            "peak_voltage_v": 4.0340423873084905,
+            "preempted_before_activation": false,
+            "safety_margin": 7.777453776329388
+          },
+          "B2": {
+            "attack_activated": true,
+            "delay_s": 2103.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.24083333333333334,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 47.224839033292604,
+            "peak_voltage_v": 4.0340423873084905,
+            "preempted_before_activation": false,
+            "safety_margin": 7.777453776329388
+          },
+          "B2_probe_present": {
+            "attack_activated": true,
+            "delay_s": 2103.0,
+            "detected": true,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 0.24083333333333334,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 47.233709143547266,
+            "peak_voltage_v": 4.033581874661952,
+            "preempted_before_activation": false,
+            "safety_margin": 7.77240237053087
+          },
+          "B3": {
+            "attack_activated": true,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 1,
+            "false_alarm_hours": 0.24083333333333334,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 44.12915553344494,
+            "peak_voltage_v": 3.847413643478865,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          }
+        },
+        "localization": {
+          "accuracy_excluding_ambiguous": 0.1386111111111111,
+          "ambiguous_multi": 0,
+          "counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              2733,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              368,
+              0,
+              499
+            ]
+          ],
+          "labels": [
+            "v",
+            "i",
+            "temp",
+            "multi",
+            "command",
+            "unknown",
+            "none"
+          ],
+          "samples": 3600
+        },
+        "paired_safety": {
+          "defended_hazard": false,
+          "hazard_improvement": false,
+          "peak_temperature_reduction_c": 3.0956834998476666,
+          "peak_voltage_reduction_v": 0.1866287438296257,
+          "preempted_before_activation": false,
+          "undefended_hazard": false
+        },
+        "scenario": "AT6",
+        "seed": 1003
+      }
+    ],
+    "baseline": [
+      {
+        "detectors": {
+          "B0": {
+            "attack_activated": false,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 1.0,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 45.853278256497305,
+            "peak_voltage_v": 4.1902744509965855,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B1": {
+            "attack_activated": false,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 1.0,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 45.853278256497305,
+            "peak_voltage_v": 4.1902744509965855,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2": {
+            "attack_activated": false,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 1.0,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 45.853278256497305,
+            "peak_voltage_v": 4.1902744509965855,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2_probe_present": {
+            "attack_activated": false,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 1.0,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 45.86116655195432,
+            "peak_voltage_v": 4.199283226991713,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B3": {
+            "attack_activated": false,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 1,
+            "false_alarm_hours": 1.0,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 43.75197791747931,
+            "peak_voltage_v": 3.8366963408696835,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          }
+        },
+        "localization": {
+          "accuracy_excluding_ambiguous": 0.13555555555555557,
+          "ambiguous_multi": 0,
+          "counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              8,
+              0,
+              0,
+              3104,
+              0,
+              488
+            ]
+          ],
+          "labels": [
+            "v",
+            "i",
+            "temp",
+            "multi",
+            "command",
+            "unknown",
+            "none"
+          ],
+          "samples": 3600
+        },
+        "paired_safety": {
+          "defended_hazard": false,
+          "hazard_improvement": false,
+          "peak_temperature_reduction_c": 2.101300339017996,
+          "peak_voltage_reduction_v": 0.353578110126902,
+          "preempted_before_activation": false,
+          "undefended_hazard": false
+        },
+        "scenario": "baseline",
+        "seed": 1000
+      },
+      {
+        "detectors": {
+          "B0": {
+            "attack_activated": false,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 1.0,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 45.99116978013868,
+            "peak_voltage_v": 4.184227770269336,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B1": {
+            "attack_activated": false,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 1.0,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 45.99116978013868,
+            "peak_voltage_v": 4.184227770269336,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2": {
+            "attack_activated": false,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 1.0,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 45.99116978013868,
+            "peak_voltage_v": 4.184227770269336,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2_probe_present": {
+            "attack_activated": false,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 1.0,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 46.00483731798196,
+            "peak_voltage_v": 4.183781397256199,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B3": {
+            "attack_activated": false,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 1,
+            "false_alarm_hours": 1.0,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 43.742110922724066,
+            "peak_voltage_v": 3.8282942211671553,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          }
+        },
+        "localization": {
+          "accuracy_excluding_ambiguous": 0.145,
+          "ambiguous_multi": 0,
+          "counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              3078,
+              0,
+              522
+            ]
+          ],
+          "labels": [
+            "v",
+            "i",
+            "temp",
+            "multi",
+            "command",
+            "unknown",
+            "none"
+          ],
+          "samples": 3600
+        },
+        "paired_safety": {
+          "defended_hazard": false,
+          "hazard_improvement": false,
+          "peak_temperature_reduction_c": 2.24905885741461,
+          "peak_voltage_reduction_v": 0.3559335491021809,
+          "preempted_before_activation": false,
+          "undefended_hazard": false
+        },
+        "scenario": "baseline",
+        "seed": 1001
+      },
+      {
+        "detectors": {
+          "B0": {
+            "attack_activated": false,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 1.0,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 45.93494715418492,
+            "peak_voltage_v": 4.1854844057540666,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B1": {
+            "attack_activated": false,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 1.0,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 45.93494715418492,
+            "peak_voltage_v": 4.1854844057540666,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2": {
+            "attack_activated": false,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 1.0,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 45.93494715418492,
+            "peak_voltage_v": 4.1854844057540666,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2_probe_present": {
+            "attack_activated": false,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 1.0,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 45.94467951385599,
+            "peak_voltage_v": 4.185058967619438,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B3": {
+            "attack_activated": false,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 1,
+            "false_alarm_hours": 1.0,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 43.76468191129649,
+            "peak_voltage_v": 3.8346643490022054,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          }
+        },
+        "localization": {
+          "accuracy_excluding_ambiguous": 0.13416666666666666,
+          "ambiguous_multi": 0,
+          "counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              9,
+              0,
+              0,
+              3108,
+              0,
+              483
+            ]
+          ],
+          "labels": [
+            "v",
+            "i",
+            "temp",
+            "multi",
+            "command",
+            "unknown",
+            "none"
+          ],
+          "samples": 3600
+        },
+        "paired_safety": {
+          "defended_hazard": false,
+          "hazard_improvement": false,
+          "peak_temperature_reduction_c": 2.1702652428884264,
+          "peak_voltage_reduction_v": 0.3508200567518611,
+          "preempted_before_activation": false,
+          "undefended_hazard": false
+        },
+        "scenario": "baseline",
+        "seed": 1002
+      },
+      {
+        "detectors": {
+          "B0": {
+            "attack_activated": false,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 1.0,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 46.00056752317812,
+            "peak_voltage_v": 4.184205483426254,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B1": {
+            "attack_activated": false,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 1.0,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 46.00056752317812,
+            "peak_voltage_v": 4.184205483426254,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2": {
+            "attack_activated": false,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 1.0,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 46.00056752317812,
+            "peak_voltage_v": 4.184205483426254,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B2_probe_present": {
+            "attack_activated": false,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 0,
+            "false_alarm_hours": 1.0,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 46.00865832053906,
+            "peak_voltage_v": 4.184086790576461,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          },
+          "B3": {
+            "attack_activated": false,
+            "delay_s": null,
+            "detected": false,
+            "false_alarm_episodes": 1,
+            "false_alarm_hours": 1.0,
+            "hazard_event": false,
+            "hazard_samples": 0,
+            "peak_temperature_c": 43.75434849875421,
+            "peak_voltage_v": 3.8484595542038473,
+            "preempted_before_activation": false,
+            "safety_margin": null
+          }
+        },
+        "localization": {
+          "accuracy_excluding_ambiguous": 0.1386111111111111,
+          "ambiguous_multi": 0,
+          "counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              3101,
+              0,
+              499
+            ]
+          ],
+          "labels": [
+            "v",
+            "i",
+            "temp",
+            "multi",
+            "command",
+            "unknown",
+            "none"
+          ],
+          "samples": 3600
+        },
+        "paired_safety": {
+          "defended_hazard": false,
+          "hazard_improvement": false,
+          "peak_temperature_reduction_c": 2.246219024423908,
+          "peak_voltage_reduction_v": 0.33574592922240676,
+          "preempted_before_activation": false,
+          "undefended_hazard": false
+        },
+        "scenario": "baseline",
+        "seed": 1003
+      }
+    ]
+  },
+  "duration_s": 3600,
+  "localization_confusion": {
+    "AT1": {
+      "accuracy_excluding_ambiguous": 0.13833333333333334,
+      "ambiguous_multi": 0,
+      "counts": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1200,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          17,
+          0,
+          0,
+          11191,
+          0,
+          1992
+        ]
+      ],
+      "labels": [
+        "v",
+        "i",
+        "temp",
+        "multi",
+        "command",
+        "unknown",
+        "none"
+      ],
+      "samples": 14400
+    },
+    "AT2": {
+      "accuracy_excluding_ambiguous": 0.13833333333333334,
+      "ambiguous_multi": 0,
+      "counts": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          10193,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          17,
+          0,
+          0,
+          2198,
+          0,
+          1992
+        ]
+      ],
+      "labels": [
+        "v",
+        "i",
+        "temp",
+        "multi",
+        "command",
+        "unknown",
+        "none"
+      ],
+      "samples": 14400
+    },
+    "AT3": {
+      "accuracy_excluding_ambiguous": 0.13833333333333334,
+      "ambiguous_multi": 0,
+      "counts": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          105,
+          0,
+          0,
+          10088,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          17,
+          0,
+          0,
+          2198,
+          0,
+          1992
+        ]
+      ],
+      "labels": [
+        "v",
+        "i",
+        "temp",
+        "multi",
+        "command",
+        "unknown",
+        "none"
+      ],
+      "samples": 14400
+    },
+    "AT4": {
+      "accuracy_excluding_ambiguous": 0.13833333333333334,
+      "ambiguous_multi": 0,
+      "counts": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          10193,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          17,
+          0,
+          0,
+          2198,
+          0,
+          1992
+        ]
+      ],
+      "labels": [
+        "v",
+        "i",
+        "temp",
+        "multi",
+        "command",
+        "unknown",
+        "none"
+      ],
+      "samples": 14400
+    },
+    "AT5": {
+      "accuracy_excluding_ambiguous": 0.13833333333333334,
+      "ambiguous_multi": 0,
+      "counts": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          17,
+          0,
+          0,
+          12391,
+          0,
+          1992
+        ]
+      ],
+      "labels": [
+        "v",
+        "i",
+        "temp",
+        "multi",
+        "command",
+        "unknown",
+        "none"
+      ],
+      "samples": 14400
+    },
+    "AT6": {
+      "accuracy_excluding_ambiguous": 0.13833333333333334,
+      "ambiguous_multi": 0,
+      "counts": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          10193,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          17,
+          0,
+          0,
+          2198,
+          0,
+          1992
+        ]
+      ],
+      "labels": [
+        "v",
+        "i",
+        "temp",
+        "multi",
+        "command",
+        "unknown",
+        "none"
+      ],
+      "samples": 14400
+    },
+    "baseline": {
+      "accuracy_excluding_ambiguous": 0.13833333333333334,
+      "ambiguous_multi": 0,
+      "counts": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          17,
+          0,
+          0,
+          12391,
+          0,
+          1992
+        ]
+      ],
+      "labels": [
+        "v",
+        "i",
+        "temp",
+        "multi",
+        "command",
+        "unknown",
+        "none"
+      ],
+      "samples": 14400
+    }
+  },
+  "scenarios": {
+    "AT1": {
+      "B0": {
+        "attack_activated_runs": 4,
+        "delay_iqr_s": [
+          0.0,
+          0.0
+        ],
+        "detection_ci_95": [
+          0.5101091635454027,
+          1.0
+        ],
+        "detection_rate": 1.0,
+        "detections": 4,
+        "false_alarm_episodes": 0,
+        "false_alarm_hours": 1.168611111111111,
+        "false_alarm_rate_ci_95": [
+          0.0,
+          3.156635615595476
+        ],
+        "false_alarms_per_hour": 0.0,
+        "hazard_event_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "hazard_event_rate": 0.0,
+        "hazard_events": 0,
+        "mean_peak_temperature_c": 45.94322505704456,
+        "mean_peak_voltage_v": 4.185646974713126,
+        "median_delay_s": 0.0,
+        "median_safety_margin": 9.942882922787526,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": "\u00b0C"
+      },
+      "B1": {
+        "attack_activated_runs": 4,
+        "delay_iqr_s": [
+          0.0,
+          0.0
+        ],
+        "detection_ci_95": [
+          0.5101091635454027,
+          1.0
+        ],
+        "detection_rate": 1.0,
+        "detections": 4,
+        "false_alarm_episodes": 0,
+        "false_alarm_hours": 1.168611111111111,
+        "false_alarm_rate_ci_95": [
+          0.0,
+          3.156635615595476
+        ],
+        "false_alarms_per_hour": 0.0,
+        "hazard_event_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "hazard_event_rate": 0.0,
+        "hazard_events": 0,
+        "mean_peak_temperature_c": 45.94322505704456,
+        "mean_peak_voltage_v": 4.185646974713126,
+        "median_delay_s": 0.0,
+        "median_safety_margin": 9.942882922787526,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": "\u00b0C"
+      },
+      "B2": {
+        "attack_activated_runs": 4,
+        "delay_iqr_s": [
+          0.0,
+          0.0
+        ],
+        "detection_ci_95": [
+          0.5101091635454027,
+          1.0
+        ],
+        "detection_rate": 1.0,
+        "detections": 4,
+        "false_alarm_episodes": 0,
+        "false_alarm_hours": 1.168611111111111,
+        "false_alarm_rate_ci_95": [
+          0.0,
+          3.156635615595476
+        ],
+        "false_alarms_per_hour": 0.0,
+        "hazard_event_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "hazard_event_rate": 0.0,
+        "hazard_events": 0,
+        "mean_peak_temperature_c": 45.94322505704456,
+        "mean_peak_voltage_v": 4.185646974713126,
+        "median_delay_s": 0.0,
+        "median_safety_margin": 9.942882922787526,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": "\u00b0C"
+      },
+      "B2_probe_present": {
+        "attack_activated_runs": 4,
+        "delay_iqr_s": [
+          0.0,
+          0.0
+        ],
+        "detection_ci_95": [
+          0.5101091635454027,
+          1.0
+        ],
+        "detection_rate": 1.0,
+        "detections": 4,
+        "false_alarm_episodes": 0,
+        "false_alarm_hours": 1.168611111111111,
+        "false_alarm_rate_ci_95": [
+          0.0,
+          3.156635615595476
+        ],
+        "false_alarms_per_hour": 0.0,
+        "hazard_event_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "hazard_event_rate": 0.0,
+        "hazard_events": 0,
+        "mean_peak_temperature_c": 45.95232416696915,
+        "mean_peak_voltage_v": 4.187497114402397,
+        "median_delay_s": 0.0,
+        "median_safety_margin": 9.939708318460678,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": "\u00b0C"
+      },
+      "B3": {
+        "attack_activated_runs": 4,
+        "delay_iqr_s": null,
+        "detection_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "detection_rate": 0.0,
+        "detections": 0,
+        "false_alarm_episodes": 4,
+        "false_alarm_hours": 1.168611111111111,
+        "false_alarm_rate_ci_95": [
+          0.9326159603172736,
+          8.76389808211393
+        ],
+        "false_alarms_per_hour": 3.422866650820062,
+        "hazard_event_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "hazard_event_rate": 0.0,
+        "hazard_events": 0,
+        "mean_peak_temperature_c": 43.75327981256352,
+        "mean_peak_voltage_v": 3.837028616310723,
+        "median_delay_s": null,
+        "median_safety_margin": null,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": null
+      },
+      "paired_safety": {
+        "hazard_rate_reduction": 0.0,
+        "hazard_reduction_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "mean_peak_temperature_reduction_c": 2.189945244481038,
+        "mean_peak_voltage_reduction_v": 0.34861835840240396,
+        "preempted_before_activation_runs": 0,
+        "runs": 4
+      }
+    },
+    "AT2": {
+      "B0": {
+        "attack_activated_runs": 4,
+        "delay_iqr_s": null,
+        "detection_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "detection_rate": 0.0,
+        "detections": 0,
+        "false_alarm_episodes": 0,
+        "false_alarm_hours": 1.168611111111111,
+        "false_alarm_rate_ci_95": [
+          0.0,
+          3.156635615595476
+        ],
+        "false_alarms_per_hour": 0.0,
+        "hazard_event_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "hazard_event_rate": 0.0,
+        "hazard_events": 0,
+        "mean_peak_temperature_c": 52.61287454165471,
+        "mean_peak_voltage_v": 4.188699906199362,
+        "median_delay_s": null,
+        "median_safety_margin": null,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": null
+      },
+      "B1": {
+        "attack_activated_runs": 4,
+        "delay_iqr_s": null,
+        "detection_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "detection_rate": 0.0,
+        "detections": 0,
+        "false_alarm_episodes": 0,
+        "false_alarm_hours": 1.168611111111111,
+        "false_alarm_rate_ci_95": [
+          0.0,
+          3.156635615595476
+        ],
+        "false_alarms_per_hour": 0.0,
+        "hazard_event_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "hazard_event_rate": 0.0,
+        "hazard_events": 0,
+        "mean_peak_temperature_c": 52.61287454165471,
+        "mean_peak_voltage_v": 4.188699906199362,
+        "median_delay_s": null,
+        "median_safety_margin": null,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": null
+      },
+      "B2": {
+        "attack_activated_runs": 4,
+        "delay_iqr_s": [
+          1264.75,
+          1338.25
+        ],
+        "detection_ci_95": [
+          0.5101091635454027,
+          1.0
+        ],
+        "detection_rate": 1.0,
+        "detections": 4,
+        "false_alarm_episodes": 0,
+        "false_alarm_hours": 1.168611111111111,
+        "false_alarm_rate_ci_95": [
+          0.0,
+          3.156635615595476
+        ],
+        "false_alarms_per_hour": 0.0,
+        "hazard_event_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "hazard_event_rate": 0.0,
+        "hazard_events": 0,
+        "mean_peak_temperature_c": 52.61287454165471,
+        "mean_peak_voltage_v": 4.188699906199362,
+        "median_delay_s": 1297.0,
+        "median_safety_margin": 2.8535408749041444,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": "\u00b0C"
+      },
+      "B2_probe_present": {
+        "attack_activated_runs": 4,
+        "delay_iqr_s": [
+          1264.75,
+          1338.25
+        ],
+        "detection_ci_95": [
+          0.5101091635454027,
+          1.0
+        ],
+        "detection_rate": 1.0,
+        "detections": 4,
+        "false_alarm_episodes": 0,
+        "false_alarm_hours": 1.168611111111111,
+        "false_alarm_rate_ci_95": [
+          0.0,
+          3.156635615595476
+        ],
+        "false_alarms_per_hour": 0.0,
+        "hazard_event_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "hazard_event_rate": 0.0,
+        "hazard_events": 0,
+        "mean_peak_temperature_c": 52.61360709672369,
+        "mean_peak_voltage_v": 4.188489642911023,
+        "median_delay_s": 1297.0,
+        "median_safety_margin": 2.851944321674626,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": "\u00b0C"
+      },
+      "B3": {
+        "attack_activated_runs": 4,
+        "delay_iqr_s": null,
+        "detection_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "detection_rate": 0.0,
+        "detections": 0,
+        "false_alarm_episodes": 4,
+        "false_alarm_hours": 1.168611111111111,
+        "false_alarm_rate_ci_95": [
+          0.9326159603172736,
+          8.76389808211393
+        ],
+        "false_alarms_per_hour": 3.422866650820062,
+        "hazard_event_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "hazard_event_rate": 0.0,
+        "hazard_events": 0,
+        "mean_peak_temperature_c": 43.75327981256352,
+        "mean_peak_voltage_v": 3.837028616310723,
+        "median_delay_s": null,
+        "median_safety_margin": null,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": null
+      },
+      "paired_safety": {
+        "hazard_rate_reduction": 0.0,
+        "hazard_reduction_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "mean_peak_temperature_reduction_c": 8.85959472909119,
+        "mean_peak_voltage_reduction_v": 0.35167128988863927,
+        "preempted_before_activation_runs": 0,
+        "runs": 4
+      }
+    },
+    "AT3": {
+      "B0": {
+        "attack_activated_runs": 4,
+        "delay_iqr_s": null,
+        "detection_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "detection_rate": 0.0,
+        "detections": 0,
+        "false_alarm_episodes": 0,
+        "false_alarm_hours": 1.168611111111111,
+        "false_alarm_rate_ci_95": [
+          0.0,
+          3.156635615595476
+        ],
+        "false_alarms_per_hour": 0.0,
+        "hazard_event_ci_95": [
+          0.15003898915214958,
+          0.8499610108478504
+        ],
+        "hazard_event_rate": 0.5,
+        "hazard_events": 2,
+        "mean_peak_temperature_c": 52.519214534677715,
+        "mean_peak_voltage_v": 4.290110000888537,
+        "median_delay_s": null,
+        "median_safety_margin": null,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": null
+      },
+      "B1": {
+        "attack_activated_runs": 4,
+        "delay_iqr_s": [
+          0.0,
+          5.0
+        ],
+        "detection_ci_95": [
+          0.5101091635454027,
+          1.0
+        ],
+        "detection_rate": 1.0,
+        "detections": 4,
+        "false_alarm_episodes": 0,
+        "false_alarm_hours": 1.168611111111111,
+        "false_alarm_rate_ci_95": [
+          0.0,
+          3.156635615595476
+        ],
+        "false_alarms_per_hour": 0.0,
+        "hazard_event_ci_95": [
+          0.15003898915214958,
+          0.8499610108478504
+        ],
+        "hazard_event_rate": 0.5,
+        "hazard_events": 2,
+        "mean_peak_temperature_c": 52.519214534677715,
+        "mean_peak_voltage_v": 4.290110000888537,
+        "median_delay_s": 0.0,
+        "median_safety_margin": 9.942882922787526,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": "\u00b0C"
+      },
+      "B2": {
+        "attack_activated_runs": 4,
+        "delay_iqr_s": [
+          0.0,
+          0.0
+        ],
+        "detection_ci_95": [
+          0.5101091635454027,
+          1.0
+        ],
+        "detection_rate": 1.0,
+        "detections": 4,
+        "false_alarm_episodes": 0,
+        "false_alarm_hours": 1.168611111111111,
+        "false_alarm_rate_ci_95": [
+          0.0,
+          3.156635615595476
+        ],
+        "false_alarms_per_hour": 0.0,
+        "hazard_event_ci_95": [
+          0.15003898915214958,
+          0.8499610108478504
+        ],
+        "hazard_event_rate": 0.5,
+        "hazard_events": 2,
+        "mean_peak_temperature_c": 52.519214534677715,
+        "mean_peak_voltage_v": 4.290110000888537,
+        "median_delay_s": 0.0,
+        "median_safety_margin": 9.942882922787526,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": "\u00b0C"
+      },
+      "B2_probe_present": {
+        "attack_activated_runs": 4,
+        "delay_iqr_s": [
+          0.0,
+          0.0
+        ],
+        "detection_ci_95": [
+          0.5101091635454027,
+          1.0
+        ],
+        "detection_rate": 1.0,
+        "detections": 4,
+        "false_alarm_episodes": 0,
+        "false_alarm_hours": 1.168611111111111,
+        "false_alarm_rate_ci_95": [
+          0.0,
+          3.156635615595476
+        ],
+        "false_alarms_per_hour": 0.0,
+        "hazard_event_ci_95": [
+          0.15003898915214958,
+          0.8499610108478504
+        ],
+        "hazard_event_rate": 0.5,
+        "hazard_events": 2,
+        "mean_peak_temperature_c": 52.526010884718936,
+        "mean_peak_voltage_v": 4.2901052540590845,
+        "median_delay_s": 0.0,
+        "median_safety_margin": 9.939708318460678,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": "\u00b0C"
+      },
+      "B3": {
+        "attack_activated_runs": 4,
+        "delay_iqr_s": null,
+        "detection_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "detection_rate": 0.0,
+        "detections": 0,
+        "false_alarm_episodes": 4,
+        "false_alarm_hours": 1.168611111111111,
+        "false_alarm_rate_ci_95": [
+          0.9326159603172736,
+          8.76389808211393
+        ],
+        "false_alarms_per_hour": 3.422866650820062,
+        "hazard_event_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "hazard_event_rate": 0.0,
+        "hazard_events": 0,
+        "mean_peak_temperature_c": 43.974947913692844,
+        "mean_peak_voltage_v": 3.8343325235613865,
+        "median_delay_s": null,
+        "median_safety_margin": null,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": null
+      },
+      "paired_safety": {
+        "hazard_rate_reduction": 0.5,
+        "hazard_reduction_ci_95": [
+          0.15003898915214958,
+          0.8499610108478504
+        ],
+        "mean_peak_temperature_reduction_c": 8.544266620984871,
+        "mean_peak_voltage_reduction_v": 0.45577747732715024,
+        "preempted_before_activation_runs": 0,
+        "runs": 4
+      }
+    },
+    "AT4": {
+      "B0": {
+        "attack_activated_runs": 4,
+        "delay_iqr_s": null,
+        "detection_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "detection_rate": 0.0,
+        "detections": 0,
+        "false_alarm_episodes": 0,
+        "false_alarm_hours": 1.168611111111111,
+        "false_alarm_rate_ci_95": [
+          0.0,
+          3.156635615595476
+        ],
+        "false_alarms_per_hour": 0.0,
+        "hazard_event_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "hazard_event_rate": 0.0,
+        "hazard_events": 0,
+        "mean_peak_temperature_c": 47.099241356953165,
+        "mean_peak_voltage_v": 4.038869462514388,
+        "median_delay_s": null,
+        "median_safety_margin": null,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": null
+      },
+      "B1": {
+        "attack_activated_runs": 4,
+        "delay_iqr_s": null,
+        "detection_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "detection_rate": 0.0,
+        "detections": 0,
+        "false_alarm_episodes": 0,
+        "false_alarm_hours": 1.168611111111111,
+        "false_alarm_rate_ci_95": [
+          0.0,
+          3.156635615595476
+        ],
+        "false_alarms_per_hour": 0.0,
+        "hazard_event_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "hazard_event_rate": 0.0,
+        "hazard_events": 0,
+        "mean_peak_temperature_c": 47.099241356953165,
+        "mean_peak_voltage_v": 4.038869462514388,
+        "median_delay_s": null,
+        "median_safety_margin": null,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": null
+      },
+      "B2": {
+        "attack_activated_runs": 4,
+        "delay_iqr_s": [
+          1.25,
+          1.75
+        ],
+        "detection_ci_95": [
+          0.15003898915214958,
+          0.8499610108478504
+        ],
+        "detection_rate": 0.5,
+        "detections": 2,
+        "false_alarm_episodes": 0,
+        "false_alarm_hours": 1.168611111111111,
+        "false_alarm_rate_ci_95": [
+          0.0,
+          3.156635615595476
+        ],
+        "false_alarms_per_hour": 0.0,
+        "hazard_event_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "hazard_event_rate": 0.0,
+        "hazard_events": 0,
+        "mean_peak_temperature_c": 47.099241356953165,
+        "mean_peak_voltage_v": 4.038869462514388,
+        "median_delay_s": 1.5,
+        "median_safety_margin": 10.063634532070882,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": "\u00b0C"
+      },
+      "B2_probe_present": {
+        "attack_activated_runs": 4,
+        "delay_iqr_s": [
+          1.25,
+          1.75
+        ],
+        "detection_ci_95": [
+          0.15003898915214958,
+          0.8499610108478504
+        ],
+        "detection_rate": 0.5,
+        "detections": 2,
+        "false_alarm_episodes": 0,
+        "false_alarm_hours": 1.168611111111111,
+        "false_alarm_rate_ci_95": [
+          0.0,
+          3.156635615595476
+        ],
+        "false_alarms_per_hour": 0.0,
+        "hazard_event_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "hazard_event_rate": 0.0,
+        "hazard_events": 0,
+        "mean_peak_temperature_c": 47.10826742283556,
+        "mean_peak_voltage_v": 4.038379222427256,
+        "median_delay_s": 1.5,
+        "median_safety_margin": 10.060999382707472,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": "\u00b0C"
+      },
+      "B3": {
+        "attack_activated_runs": 4,
+        "delay_iqr_s": null,
+        "detection_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "detection_rate": 0.0,
+        "detections": 0,
+        "false_alarm_episodes": 4,
+        "false_alarm_hours": 1.168611111111111,
+        "false_alarm_rate_ci_95": [
+          0.9326159603172736,
+          8.76389808211393
+        ],
+        "false_alarms_per_hour": 3.422866650820062,
+        "hazard_event_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "hazard_event_rate": 0.0,
+        "hazard_events": 0,
+        "mean_peak_temperature_c": 43.974947913692844,
+        "mean_peak_voltage_v": 3.8360385925353686,
+        "median_delay_s": null,
+        "median_safety_margin": null,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": null
+      },
+      "paired_safety": {
+        "hazard_rate_reduction": 0.0,
+        "hazard_reduction_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "mean_peak_temperature_reduction_c": 3.1242934432603224,
+        "mean_peak_voltage_reduction_v": 0.20283086997901845,
+        "preempted_before_activation_runs": 0,
+        "runs": 4
+      }
+    },
+    "AT5": {
+      "B0": {
+        "attack_activated_runs": 4,
+        "delay_iqr_s": [
+          405.25,
+          446.0
+        ],
+        "detection_ci_95": [
+          0.5101091635454027,
+          1.0
+        ],
+        "detection_rate": 1.0,
+        "detections": 4,
+        "false_alarm_episodes": 0,
+        "false_alarm_hours": 3.2177777777777776,
+        "false_alarm_rate_ci_95": [
+          0.0,
+          1.146405907701154
+        ],
+        "false_alarms_per_hour": 0.0,
+        "hazard_event_ci_95": [
+          0.5101091635454027,
+          1.0
+        ],
+        "hazard_event_rate": 1.0,
+        "hazard_events": 4,
+        "mean_peak_temperature_c": 48.006963600411865,
+        "mean_peak_voltage_v": 4.31045104959308,
+        "median_delay_s": 421.5,
+        "median_safety_margin": 0.009013736594964517,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": "V"
+      },
+      "B1": {
+        "attack_activated_runs": 4,
+        "delay_iqr_s": null,
+        "detection_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "detection_rate": 0.0,
+        "detections": 0,
+        "false_alarm_episodes": 0,
+        "false_alarm_hours": 3.2177777777777776,
+        "false_alarm_rate_ci_95": [
+          0.0,
+          1.146405907701154
+        ],
+        "false_alarms_per_hour": 0.0,
+        "hazard_event_ci_95": [
+          0.5101091635454027,
+          1.0
+        ],
+        "hazard_event_rate": 1.0,
+        "hazard_events": 4,
+        "mean_peak_temperature_c": 48.006963600411865,
+        "mean_peak_voltage_v": 4.31045104959308,
+        "median_delay_s": null,
+        "median_safety_margin": null,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": null
+      },
+      "B2": {
+        "attack_activated_runs": 4,
+        "delay_iqr_s": null,
+        "detection_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "detection_rate": 0.0,
+        "detections": 0,
+        "false_alarm_episodes": 0,
+        "false_alarm_hours": 3.2177777777777776,
+        "false_alarm_rate_ci_95": [
+          0.0,
+          1.146405907701154
+        ],
+        "false_alarms_per_hour": 0.0,
+        "hazard_event_ci_95": [
+          0.5101091635454027,
+          1.0
+        ],
+        "hazard_event_rate": 1.0,
+        "hazard_events": 4,
+        "mean_peak_temperature_c": 48.006963600411865,
+        "mean_peak_voltage_v": 4.31045104959308,
+        "median_delay_s": null,
+        "median_safety_margin": null,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": null
+      },
+      "B2_probe_present": {
+        "attack_activated_runs": 4,
+        "delay_iqr_s": null,
+        "detection_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "detection_rate": 0.0,
+        "detections": 0,
+        "false_alarm_episodes": 0,
+        "false_alarm_hours": 3.218888888888889,
+        "false_alarm_rate_ci_95": [
+          0.0,
+          1.1460101859518612
+        ],
+        "false_alarms_per_hour": 0.0,
+        "hazard_event_ci_95": [
+          0.5101091635454027,
+          1.0
+        ],
+        "hazard_event_rate": 1.0,
+        "hazard_events": 4,
+        "mean_peak_temperature_c": 48.0035465554187,
+        "mean_peak_voltage_v": 4.310628551907363,
+        "median_delay_s": null,
+        "median_safety_margin": null,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": null
+      },
+      "B3": {
+        "attack_activated_runs": 0,
+        "delay_iqr_s": null,
+        "detection_ci_95": null,
+        "detection_rate": null,
+        "detections": 0,
+        "false_alarm_episodes": 4,
+        "false_alarm_hours": 4.0,
+        "false_alarm_rate_ci_95": [
+          0.2724663434065812,
+          2.5603971688509235
+        ],
+        "false_alarms_per_hour": 1.0,
+        "hazard_event_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "hazard_event_rate": 0.0,
+        "hazard_events": 0,
+        "mean_peak_temperature_c": 43.75327981256352,
+        "mean_peak_voltage_v": 3.837028616310723,
+        "median_delay_s": null,
+        "median_safety_margin": null,
+        "preempted_before_activation_runs": 4,
+        "runs": 4,
+        "safety_margin_unit": null
+      },
+      "paired_safety": {
+        "hazard_rate_reduction": 1.0,
+        "hazard_reduction_ci_95": [
+          0.5101091635454027,
+          1.0
+        ],
+        "mean_peak_temperature_reduction_c": 4.253683787848344,
+        "mean_peak_voltage_reduction_v": 0.473422433282357,
+        "preempted_before_activation_runs": 4,
+        "runs": 4
+      }
+    },
+    "AT6": {
+      "B0": {
+        "attack_activated_runs": 4,
+        "delay_iqr_s": null,
+        "detection_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "detection_rate": 0.0,
+        "detections": 0,
+        "false_alarm_episodes": 0,
+        "false_alarm_hours": 1.168611111111111,
+        "false_alarm_rate_ci_95": [
+          0.0,
+          3.156635615595476
+        ],
+        "false_alarms_per_hour": 0.0,
+        "hazard_event_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "hazard_event_rate": 0.0,
+        "hazard_events": 0,
+        "mean_peak_temperature_c": 47.18687929296262,
+        "mean_peak_voltage_v": 4.041402695101324,
+        "median_delay_s": null,
+        "median_safety_margin": null,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": null
+      },
+      "B1": {
+        "attack_activated_runs": 4,
+        "delay_iqr_s": [
+          1470.75,
+          1892.25
+        ],
+        "detection_ci_95": [
+          0.15003898915214958,
+          0.8499610108478504
+        ],
+        "detection_rate": 0.5,
+        "detections": 2,
+        "false_alarm_episodes": 0,
+        "false_alarm_hours": 1.168611111111111,
+        "false_alarm_rate_ci_95": [
+          0.0,
+          3.156635615595476
+        ],
+        "false_alarms_per_hour": 0.0,
+        "hazard_event_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "hazard_event_rate": 0.0,
+        "hazard_events": 0,
+        "mean_peak_temperature_c": 47.18687929296262,
+        "mean_peak_voltage_v": 4.041402695101324,
+        "median_delay_s": 1681.5,
+        "median_safety_margin": 7.9017333815378805,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": "\u00b0C"
+      },
+      "B2": {
+        "attack_activated_runs": 4,
+        "delay_iqr_s": [
+          527.25,
+          1577.75
+        ],
+        "detection_ci_95": [
+          0.15003898915214958,
+          0.8499610108478504
+        ],
+        "detection_rate": 0.5,
+        "detections": 2,
+        "false_alarm_episodes": 0,
+        "false_alarm_hours": 1.168611111111111,
+        "false_alarm_rate_ci_95": [
+          0.0,
+          3.156635615595476
+        ],
+        "false_alarms_per_hour": 0.0,
+        "hazard_event_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "hazard_event_rate": 0.0,
+        "hazard_events": 0,
+        "mean_peak_temperature_c": 47.18687929296262,
+        "mean_peak_voltage_v": 4.041402695101324,
+        "median_delay_s": 1052.5,
+        "median_safety_margin": 9.126574215629539,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": "\u00b0C"
+      },
+      "B2_probe_present": {
+        "attack_activated_runs": 4,
+        "delay_iqr_s": [
+          527.25,
+          1577.75
+        ],
+        "detection_ci_95": [
+          0.15003898915214958,
+          0.8499610108478504
+        ],
+        "detection_rate": 0.5,
+        "detections": 2,
+        "false_alarm_episodes": 0,
+        "false_alarm_hours": 1.168611111111111,
+        "false_alarm_rate_ci_95": [
+          0.0,
+          3.156635615595476
+        ],
+        "false_alarms_per_hour": 0.0,
+        "hazard_event_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "hazard_event_rate": 0.0,
+        "hazard_events": 0,
+        "mean_peak_temperature_c": 47.19530897517012,
+        "mean_peak_voltage_v": 4.0409265454834,
+        "median_delay_s": 1052.5,
+        "median_safety_margin": 9.12280501026871,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": "\u00b0C"
+      },
+      "B3": {
+        "attack_activated_runs": 4,
+        "delay_iqr_s": null,
+        "detection_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "detection_rate": 0.0,
+        "detections": 0,
+        "false_alarm_episodes": 4,
+        "false_alarm_hours": 1.168611111111111,
+        "false_alarm_rate_ci_95": [
+          0.9326159603172736,
+          8.76389808211393
+        ],
+        "false_alarms_per_hour": 3.422866650820062,
+        "hazard_event_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "hazard_event_rate": 0.0,
+        "hazard_events": 0,
+        "mean_peak_temperature_c": 43.974947913692844,
+        "mean_peak_voltage_v": 3.8360385925353686,
+        "median_delay_s": null,
+        "median_safety_margin": null,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": null
+      },
+      "paired_safety": {
+        "hazard_rate_reduction": 0.0,
+        "hazard_reduction_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "mean_peak_temperature_reduction_c": 3.211931379269778,
+        "mean_peak_voltage_reduction_v": 0.2053641025659554,
+        "preempted_before_activation_runs": 0,
+        "runs": 4
+      }
+    },
+    "baseline": {
+      "B0": {
+        "attack_activated_runs": 0,
+        "delay_iqr_s": null,
+        "detection_ci_95": null,
+        "detection_rate": null,
+        "detections": 0,
+        "false_alarm_episodes": 0,
+        "false_alarm_hours": 4.0,
+        "false_alarm_rate_ci_95": [
+          0.0,
+          0.9222198635284838
+        ],
+        "false_alarms_per_hour": 0.0,
+        "hazard_event_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "hazard_event_rate": 0.0,
+        "hazard_events": 0,
+        "mean_peak_temperature_c": 45.94499067849976,
+        "mean_peak_voltage_v": 4.186048027611561,
+        "median_delay_s": null,
+        "median_safety_margin": null,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": null
+      },
+      "B1": {
+        "attack_activated_runs": 0,
+        "delay_iqr_s": null,
+        "detection_ci_95": null,
+        "detection_rate": null,
+        "detections": 0,
+        "false_alarm_episodes": 0,
+        "false_alarm_hours": 4.0,
+        "false_alarm_rate_ci_95": [
+          0.0,
+          0.9222198635284838
+        ],
+        "false_alarms_per_hour": 0.0,
+        "hazard_event_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "hazard_event_rate": 0.0,
+        "hazard_events": 0,
+        "mean_peak_temperature_c": 45.94499067849976,
+        "mean_peak_voltage_v": 4.186048027611561,
+        "median_delay_s": null,
+        "median_safety_margin": null,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": null
+      },
+      "B2": {
+        "attack_activated_runs": 0,
+        "delay_iqr_s": null,
+        "detection_ci_95": null,
+        "detection_rate": null,
+        "detections": 0,
+        "false_alarm_episodes": 0,
+        "false_alarm_hours": 4.0,
+        "false_alarm_rate_ci_95": [
+          0.0,
+          0.9222198635284838
+        ],
+        "false_alarms_per_hour": 0.0,
+        "hazard_event_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "hazard_event_rate": 0.0,
+        "hazard_events": 0,
+        "mean_peak_temperature_c": 45.94499067849976,
+        "mean_peak_voltage_v": 4.186048027611561,
+        "median_delay_s": null,
+        "median_safety_margin": null,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": null
+      },
+      "B2_probe_present": {
+        "attack_activated_runs": 0,
+        "delay_iqr_s": null,
+        "detection_ci_95": null,
+        "detection_rate": null,
+        "detections": 0,
+        "false_alarm_episodes": 0,
+        "false_alarm_hours": 4.0,
+        "false_alarm_rate_ci_95": [
+          0.0,
+          0.9222198635284838
+        ],
+        "false_alarms_per_hour": 0.0,
+        "hazard_event_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "hazard_event_rate": 0.0,
+        "hazard_events": 0,
+        "mean_peak_temperature_c": 45.95483542608283,
+        "mean_peak_voltage_v": 4.1880525956109524,
+        "median_delay_s": null,
+        "median_safety_margin": null,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": null
+      },
+      "B3": {
+        "attack_activated_runs": 0,
+        "delay_iqr_s": null,
+        "detection_ci_95": null,
+        "detection_rate": null,
+        "detections": 0,
+        "false_alarm_episodes": 4,
+        "false_alarm_hours": 4.0,
+        "false_alarm_rate_ci_95": [
+          0.2724663434065812,
+          2.5603971688509235
+        ],
+        "false_alarms_per_hour": 1.0,
+        "hazard_event_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "hazard_event_rate": 0.0,
+        "hazard_events": 0,
+        "mean_peak_temperature_c": 43.75327981256352,
+        "mean_peak_voltage_v": 3.837028616310723,
+        "median_delay_s": null,
+        "median_safety_margin": null,
+        "preempted_before_activation_runs": 0,
+        "runs": 4,
+        "safety_margin_unit": null
+      },
+      "paired_safety": {
+        "hazard_rate_reduction": 0.0,
+        "hazard_reduction_ci_95": [
+          0.0,
+          0.4898908364545972
+        ],
+        "mean_peak_temperature_reduction_c": 2.191710865936235,
+        "mean_peak_voltage_reduction_v": 0.3490194113008377,
+        "preempted_before_activation_runs": 0,
+        "runs": 4
+      }
+    }
+  },
+  "schema_version": 1,
+  "seeds": [
+    1000,
+    1001,
+    1002,
+    1003
+  ],
+  "split": "test"
+}
