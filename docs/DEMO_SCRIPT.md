@@ -1,27 +1,27 @@
 # DEMO_SCRIPT.md
 
-Three-minute demo, then Q&A. Rehearse at least twice before submission. Numbers in brackets come from the live run or `results.json`; never say a number you did not read off the screen.
+Three-minute dashboard demo, then Q&A. Rehearse before submission. Read live values from the active run and benchmark values from the backend report; never estimate a number.
 
 ## Setup checklist (5 minutes before)
-- Demo machine on `v1.0.0`, `make serve`, browser at `http://localhost:8000`, presentation-scale on, zoom 100%.
-- Network off to prove it works offline (optional but strong). Backup video open in another tab.
-- Console view, scenario `story_ladder` loaded, speed 20×, seed fixed.
+- Start the backend and primary `static-website` frontend using the root README instructions. The browser UI should show **Backend ready**.
+- Keep the network available for the live API/WebSocket demo. Offline replay is a separate recorded-data path and must be labeled as such.
+- Select `baseline`, set seed `4242`, choose 20×, then start a live run. Use the classifier, chart, response posture, and event log as the walkthrough.
 
 ## Script (3:00)
 
-**0:00–0:25 Problem.** "Chargers and vehicles trust sensor values that pass digital checks. An attacker with a compromised data path can send values that are well-formed and in range, yet physically impossible. Normal cybersecurity checks that data is valid. We check whether it is true."
+**0:00–0:25 Scope.** "PhysiGuard is a simulation bench for battery telemetry integrity. It compares measured signals with a cell-model estimate and records how different detector and response configurations behave under defined simulated attacks. This is not connected to a real vehicle."
 
-**0:25–0:50 Setup on screen.** Point at the two traces. "Same battery, same attack, same random seed. Blue is protected by PhysiGuard. Red is not. The dashed line is what the sensors report. The thin line is what our physics model expects."
+**0:25–0:50 Baseline run.** Start the baseline and point to the live clock, current, state, and channel. "These values come from the backend's live simulation stream. The chart compares physical truth, reported telemetry, and the model estimate. This is simulated, not an onboard vehicle measurement. A clean run can still produce a temporary SUSPECT warning; the alert says that alone does not prove malware."
 
-**0:50–1:15 Step 1–2: spike and drift.** Press Play on the ladder. "A spike is easy: every detector catches it. Now a slow drift, half a degree per minute, far below sensor noise. A threshold check never sees it. Accumulated evidence does, after [delay] seconds." Point at CUSUM strip.
+**0:50–1:20 Inject an attack.** Select a defined attack channel, inject it into the running simulation, and point to the event log and classifier. "The backend records the injection and streams the resulting telemetry. Detection is not guaranteed for every attack; the benchmark table shows measured detection and false-alarm results by configuration."
 
-**1:15–1:55 Step 3: the model-aware attack.** "Now the interesting one. This attacker knows our physics model. It generates telemetry that fits the model perfectly while the real battery loses cooling." Point at red trace climbing and the quiet evidence strips. "Every passive test is silent. This is where physics-only monitoring fails. We show it failing."
+**1:20–1:55 Compare signals.** Point to reported, estimated, and true telemetry, plus NIS/CUSUM/probe/localization values. "A model-aware attacker is difficult: B2 detected AT4 in 27.5% of validation runs. Adding the probe did not make this reliable. We show that limitation rather than claim universal detection."
 
-**1:55–2:30 Step 4: the probe.** "Our fix: the charger adds a tiny random current wiggle the attacker cannot predict. The real battery's voltage responds. Forged data does not. Probe gain on the real battery is near one; on the forged data it is near zero." Point at probe gain strip. "The guard confirms the attack [delay] seconds after onset, switches to a virtual sensor, and limits the charge current. Blue peaks at [peak T]; red reaches [peak T] in simulation."
+**1:55–2:25 Response and limitations.** Point at response posture and current limit. "The software simulation can enter a conservative response state and use its virtual sensor. That is a simulated control result; it is not a command to a charger or car. The prototype needs independent hardware-in-the-loop and pack testing before any real control action."
 
-**2:30–2:50 Step 5: limits.** "If the attacker also sees the probe in real time, this check fails. We show that case in the same run and in the Benchmarks. We are a simulation prototype, not a certified safety system."
+**2:25–2:50 Benchmarks.** Open the detector evaluation table. "These are held-out simulation results on seeds 1000–1199. B3 reports 0.160 baseline false-alarm episodes per hour against the 0.20 target, but B3 detects AT4 in 19.5% and AT6 in 15.5%, and it trails B2 on several attacks. The full evaluation took 695.6 seconds, still above the ten-minute gate. These limits matter for deployment decisions."
 
-**2:50–3:00 Close.** "Physical consistency becomes a security signal: detect, localize, and limit the damage. Everything you saw is reproducible with one command, with measured results including failures."
+**2:50–3:00 Close.** "The contribution is an evaluated physical-consistency signal and a conservative simulated response. Real-world validation remains open: independent cells and packs, calibrated temperature sensing, target BMS integration, and hardware-in-the-loop safety testing."
 
 ## If something breaks
 | Failure | Action |
@@ -31,18 +31,18 @@ Three-minute demo, then Q&A. Rehearse at least twice before submission. Numbers 
 | Everything fails | Play backup video; run Benchmarks page from static results if available. |
 
 ## Likely questions (answer from evidence; fill brackets from results)
-1. **Is this real data?** Simulation. The twin is [validated against NASA data with RMSE ___ / parameterized from literature, not dataset-validated: say whichever is true]. Real deployment needs hardware validation.
-2. **Why not just train an anomaly-detection model?** Learned detectors need attack data and can be evaded by data that stays inside the learned distribution. A physics model gives an interpretable reference, and the probe adds something the attacker cannot learn.
-3. **What stops the attacker from guessing the probe?** It comes from a keyed, fresh-per-window random sequence. An attacker without the key cannot predict it. An attacker who sees `I_cmd` in real time can forge it; that is scenario AT6 and we report it as a failure case.
-4. **Does the probe harm the battery?** Zero-mean, 4% of request current, clipped to limits. Measured overhead: [extra heating ___ °C, charge-time change ___, efficiency change ___] from `results.json`.
-5. **How did you set false alarms?** Thresholds are empirical, calibrated on validation seeds 0–99, and false alarms are measured on separate test seeds: [___ per hour, CI ___]. Chi-square is used as a diagnostic, not the threshold source, because model mismatch breaks the textbook assumption.
-6. **Did you tune on the test set?** No. Seeds are separated and the harness asserts it.
-7. **How good is localization?** [Confusion matrix]. Forged-everything attacks are reported as `multi`; single-channel attacks [accuracy ___]. We say where it is ambiguous.
-8. **Why does the model-aware attack fool passive monitoring?** It generates telemetry from the same physics, so residuals stay inside noise. Without a secret challenge there is nothing to distinguish forged from real.
-9. **Does it scale to a pack or a fleet?** Not claimed. Single-cell-equivalent model. The principle extends; pack-level coupling is future work.
-10. **What about aging or temperature drift in the model?** Not modeled. Unit-to-unit variation and ambient drift are; aging is future work and listed in Limits.
-11. **Where is the AI?** [If S1 shipped: the learned residual model, with ablation ___. If not: say plainly that the core is physics-based estimation and statistical detection; the learned component was out of scope this round.]
-12. **Relation to UN R155 / ISO 21434?** It complements cyber-risk management by adding a physical-consistency control. We make no compliance claim.
+1. **Is this real data?** The live demo is simulated. A separate exploratory CALCE single-cell voltage-model check had 0.1916 V RMSE on later cycles, using measured discharge capacity as reference SOC. It does not validate temperature, attacks, pack behavior, BMS, or vehicle safety. No NASA validation or hardware integration exists.
+2. **Why use a physics model?** It provides an explicit voltage/temperature reference for this experiment. The project has not shown superiority to machine-learning approaches; no ML model was shipped.
+3. **What protects the probe?** It uses a keyed, fresh-per-window sequence in the simulation. An attacker with access to the true command/current path can defeat the assumption; this limitation is reported.
+4. **Does the probe harm the battery?** Only simulated overhead was measured across 20 paired runs: peak temperature +0.0118 °C, final temperature +0.0020 °C, time to 90% SOC +1.25 s, and estimated efficiency −0.000137 percentage points. This is not a physical battery safety result.
+5. **How were false alarms measured?** The passive detector's earlier held-out check on seeds 100–199 produced 0.2101 episodes/hour. In the updated full evaluation, B3 produced 0.160 episodes/hour on seeds 1000–1199 (B2: 0.135/hour). A direct state audit found 30/200 honest baseline runs entered SUSPECT, 27 cleared, none reached CONFIRMED or SAFE_MODE, and three stayed SUSPECT through the hour. These are simulation results, not a physical false-alarm rate.
+6. **Were thresholds tuned on the test set?** No. Calibration and test seeds are separated; the evaluation includes a regression check for the split.
+7. **How good is localization?** On validation seeds 0–99, the temperature channel was correctly localized in 100/100 AT1 runs and 85/100 AT2 runs; AT2 had 5 unknown results and 10 runs with no localization output.
+8. **How does the model-aware attack perform?** It is a difficult case, not a solved one: B2 detected AT4 in 27.5% of validation runs. The 4% probe's combined gain detector caught 3%; it does not reliably close the gap.
+9. **Does it scale to a pack or fleet?** Not demonstrated. The CALCE experiment uses one small lab cell, and the simulator's pack behavior has no independent pack validation.
+10. **What about aging and temperature drift?** The CALCE split shows weaker voltage fit on later cycles. Temperature channels and pack-level thermal aging have not been validated.
+11. **Where is the AI?** No learned model is included. The prototype uses a physical model, an EKF, statistical detectors, and a command guard.
+12. **Is this compliant with vehicle cybersecurity or safety standards?** No compliance, certification, or standards-conformance claim is made. A qualified engineering and regulatory process is required before vehicle deployment.
 
 ## Recording shot list (backup video)
-1. Title and one-sentence problem (5 s). 2. Console at 20× running the ladder with captions (150 s). 3. Benchmarks page: ladder table, probe-amplitude curve, failure rows (20 s). 4. Limits page (5 s). Screen capture at 1920×1080, no notifications, mouse movement slow.
+1. Show dashboard and scope note (10 s). 2. Run baseline and inject a defined attack (90 s). 3. Show detector metrics and measured limitations (30 s). 4. Show method and limits, ending on the real-hardware validation gap (10 s). Record only after a live browser smoke succeeds.

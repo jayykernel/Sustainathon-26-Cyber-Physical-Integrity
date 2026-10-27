@@ -2,7 +2,7 @@
 
 Budgets are **wall-clock caps for Claude Code work**, not human time. Total build budget: about 30 h, leaving buffer inside a 48 h event. Phases marked **REVIEW** stop for the user's "go". Priority tags: **MUST / SHOULD / COULD**.
 
-Order of dependency: P0 → P1 → P2 → P3 → P4 → P5 → P6 → P7 → P8 → P9 → P10 → P11. Backend phases P1–P7 must be finished and tested **before** the frontend starts, so the UI is built against a stable API. Current continuation point: P7 evaluation harness.
+Order of dependency: P0 → P1 → P2 → P3 → P4 → P5 → P6 → P7 → P8 → P9 → P10 → P11. The user chose to continue despite P7's 30.0-minute runtime miss; the <10-minute P7 criterion remains unmet. Current continuation point: P10 deployment-readiness audit for the user-selected `static-website/` frontend. Real-vehicle deployment is not supported by the available hardware/data and must remain gated.
 
 ## Cut rules (apply automatically, log in PROGRESS.md)
 
@@ -123,14 +123,16 @@ Tasks:
 
 Gate: [x] schema and repeatability checks pass; [ ] evaluation finishes under 10 minutes. **The 1,400-run evaluation took 1,802.4 s (30 min) with 12 workers, so the runtime gate is not met.** The system Make utility is unavailable on this Windows host; the Makefile target's command was run directly as `python -m physiguard.eval.cli`. Results and all report artifacts are under `data/results/`.
 
-Held-out findings: B0/B1/B2 show the expected attack-specific behavior, while B3 has a high false-alarm burden (1.000 episodes/hour on baseline and 3.356/hour on attack scenarios). Because pre-onset B3 alarms remain open across attack onset, they are not credited as detections. B3 preempted all 200 AT5 scenarios before activation; detector detection rate is therefore undefined for those runs. B3 lowers paired peak temperature and voltage across all scenarios, but incurs routine interventions on attack-free runs. No held-out thresholds were tuned. See `data/results/tables.md` for all rates, confidence intervals, delays, and safety metrics.
+Held-out findings from the earlier response implementation: B0/B1/B2 show the expected attack-specific behavior, while B3 has a high false-alarm burden (1.000 episodes/hour on baseline and 3.356/hour on attack scenarios). Because pre-onset B3 alarms remain open across attack onset, they are not credited as detections. B3 preempted all 200 AT5 scenarios before activation; detector detection rate is therefore undefined for those runs. B3 lowers peak temperature and voltage in paired runs but has routine attack-free interventions. No held-out thresholds were tuned. That report is preserved at `data/results/p7-pre-response-recovery/`.
+
+Updated held-out findings after the command-evidence and SUSPECT-recovery corrections: 1,400 runs on seeds 1000–1199 completed in 695.6 s, still above the <600 s gate. B3 baseline FA is 0.160/hour (B2 0.135/hour; configured target 0.20/hour). B3 detection is AT1 98.5%, AT2 81.0%, AT3 98.5%, AT4 19.5%, AT5 98.5%, AT6 15.5%; B3 trails B2 on AT2/AT3/AT4/AT6. Paired hazard rates improved AT2 0.5%→0%, AT3 28%→0%, AT5 97%→0%. No test-seed tuning occurred. Current report is in `data/results/`; run artifacts and provenance are in `data/results/p10-response-recovery-heldout/`. The B3-vs-B2 telemetry-attack sanity expectation remains unmet.
 
 ---
 
-## P8 — API and session engine (budget 3 h, MUST) — **REVIEW**
+## P8 — API and session engine (budget 3 h, MUST) — **COMPLETE**
 
 Tasks per SPEC 10: FastAPI app, session manager (limits, idle timeout, cleanup), WebSocket protocol with batching and speed control, `inject`, `pause/resume`, `reset`, `operator_reset`, `/api/benchmarks`, `/api/limits`, static serving of the built frontend, CORS for dev only, typed error mapping, JSON logging.
-Recorder: `make demo-data` writes recorded runs for every scenario into `frontend/public/demo-runs/`.
+Recorder: `make demo-data` writes recorded runs for every scenario into `static-website/public/demo-runs/`, the primary site's served offline replay path. Include those generated assets in the release snapshot.
 
 Tests: REST validation errors, WS happy path, inject mid-run reproducibility (same seed + same injection time → identical frames), malformed WS messages return `error` frames without closing the server, session cleanup, 4-session concurrency, step-time budget.
 
@@ -140,7 +142,7 @@ P8 implementation evidence (2026-10-26):
 - FastAPI serves health, the validated seven-scenario catalog and story captions, validated session creation/status/deletion, real P7 benchmark artifacts, and the threat-model/limitations payload. Development CORS is enabled only by the local dev launcher; a built frontend is served at `/` when present.
 - Sessions run the paired defended/undefended traces with the same deterministic seed, cap at four active sessions, expire after 15 idle minutes, and clean up their tasks at shutdown. WebSocket playback supports pause/resume, speed selection (1/5/20/60), seeded reset, parameter-validated mid-run injection, and an operator-reset replay that preserves the clean-window acceptance rule. Malformed JSON and invalid commands return error frames without closing the socket.
 - The frame stream includes paired truth, reported telemetry, EKF estimates and innovations, NIS/CUSUM evidence, probe results, response state, localization, control, hazard margins, and attack timing. Batches are limited to ten output frames and paced at no more than ten per second.
-- `scripts/demo_data.py` completed all seven scenarios at 60× with zero error frames. Each output has 600 decimated frames spanning simulated seconds 0–3599 under `frontend/public/demo-runs/`. Outputs are locally generated and ignored by Git so the command can recreate them for offline replay.
+- `scripts/demo_data.py` completed all seven scenarios at 60× with zero error frames. Each output has 600 decimated frames spanning simulated seconds 0–3599. The recorder writes to `static-website/public/demo-runs/` for the primary frontend; generated data must be present in the release snapshot for offline replay.
 - Verification passed: backend pytest (77 passed), Ruff, strict mypy, frontend Vitest (1 passed), ESLint, TypeScript, and Vite production build. A built-app smoke returned HTTP 200 for `/` and `/api/health`. GNU Make is unavailable on the Windows host, so the `demo-data` script and each `make check` component were run directly.
 - API contract tests are in `backend/tests/test_api.py`; session playback and frame evidence are implemented in `backend/src/physiguard/api/sessions.py`; app routes and error mapping are in `backend/src/physiguard/api/app.py`.
 
@@ -148,18 +150,20 @@ Gate: [x] REST/WebSocket/error and session lifecycle tests pass; [x] all seven 6
 
 ---
 
-## P9 — Frontend (budget 8 h, MUST for 9a–9d, SHOULD for 9e–9f)
+## P9 — Primary frontend (user-approved `static-website/`)
 
-Read `docs/DESIGN.md` before starting. Sub-phases, each ends with `make check`, a screenshot set saved to `docs/screens/`, and a short REVIEW pause for the user to look at it.
+Architecture decision: the user explicitly chose `static-website/` as the primary frontend paired with the FastAPI backend. This supersedes the original React/Tailwind/ECharts/Zustand proposal below; do not implement or serve a second frontend. Keep the static site's Vite/TypeScript/Three.js scene, DOM controls, API client, and WebSocket protocol.
 
-- **9a Foundation (1.5 h):** design tokens in Tailwind config, typography, layout shell (nav, status bar), API client with runtime validation, WebSocket hook with reconnect/backoff, Zustand store, error boundary, connection states, **offline replay mode** (loads `demo-runs`), reusable `Chart` wrapper (ECharts, no animation on streams, windowed data), `StatusBadge`, `Metric`, `Panel` components with all states (loading, empty, error).
-- **9b Live console (2.5 h):** per DESIGN.md: thermal trace hero (protected vs unprotected true temperature, reported, predicted, limits, attack window), evidence strip (NIS, CUSUM, probe gain), control strip (request, command, safe limit), state machine indicator, channel trust, event timeline, run controls (play/pause/speed/reset), attack injection dock.
-- **9c Scenario lab and guided story (1.5 h):** scenario picker, the `story_ladder` guided demo with step captions that tie to the live run, seed input, share/reproduce text.
-- **9d Benchmarks (1.5 h):** detector ladder table + bars, detection-vs-probe-amplitude curve, delay distributions, localization confusion matrix, probe overhead, run metadata, "reproduce with" command, honest failure rows displayed with equal prominence.
-- **9e Method and limits (0.75 h, SHOULD):** architecture diagram (SVG), equations, threat-model table, limitations from `/api/limits`.
-- **9f Polish and accessibility (0.75 h, SHOULD):** keyboard navigation, focus states, `prefers-reduced-motion`, presentation-scale toggle, responsive checks at 1280 and 768 widths, empty/error copy review.
+Acceptance for the selected frontend:
+- Scenario selection, Start live run, Pause/Resume, Reset, Attack inject, classifier, temperature chart, response posture, and backend event log use the existing backend session stream.
+- Benchmarks and method/threat-model/limitations views read backend endpoints; no displayed measured result is invented.
+- Offline replay is clearly labeled as recorded, distinct from live backend sessions.
+- Driver alert/incident interactions remain prototype UI/backend logging only and do not claim real OEM assistance or emergency communications.
+- Unit/contract checks, strict TypeScript check, production build, API/WebSocket smoke, keyboard/focus/reduced-motion review, and one browser walk-through are recorded with evidence.
 
-Gate: Vitest component and store tests (WS message handling, offline fallback, error states), `tsc --noEmit`, ESLint, production build, bundle < 1.5 MB gzipped excluding fonts, manual walkthrough of DEMO_SCRIPT.md without console errors.
+Gate: the above functionality and the commands in `Makefile` pass for the selected static site. Package-audit and bundle warnings are release-hardening items. Screenshot/browser review remains a human review item when requested.
+
+Historical P9 implementation notes below refer to the superseded React plan and are retained only as project history; current verification and open items are in `docs/PROGRESS.md` and `docs/PHASE_CHECKLIST.md`.
 
 ---
 
@@ -169,7 +173,7 @@ Tasks:
 - Fresh-clone test script `scripts/fresh_clone_test.sh`: clone → `make setup` → `make check` → `make eval` (reduced) → `make serve` → HTTP and WS smoke.
 - Soak test: scripted client runs every scenario at 60× three times; assert zero error frames, no memory growth beyond a threshold, no unhandled rejections in the frontend (Playwright if available; else a headless script using the WS client).
 - Failure drills: kill backend mid-run (UI shows reconnect then offers replay); malformed config (clear error at startup); missing `detection.yaml` (health reports it, UI explains); missing `results.json` (Benchmarks view explains).
-- Playwright E2E smoke: load console, start `story_ladder`, assert state transitions appear (SHOULD).
+- Playwright E2E smoke: load the user-selected static dashboard, start a selected live simulation, verify streamed telemetry, pause/resume, and injection feedback (SHOULD).
 - Dockerfile (multi-stage) and `docker run` smoke (COULD).
 - README: what it is, scope and limits, quick start, architecture, how results were produced, reproducibility, folder map. Remove dead code, unused deps, TODOs. License file.
 - `make check` zero warnings. Tag `v1.0.0`.
@@ -182,7 +186,7 @@ Gate: all PHASE_CHECKLIST "Release" items ticked with evidence.
 
 Tasks:
 - Fill `docs/CLAIMS_EVIDENCE.md` with real numbers and file paths; produce the final form text with only supported claims (drop or soften unsupported ones, list what changed).
-- Record a 3-minute backup demo video of `story_ladder` (user records; Claude supplies the shot list from DEMO_SCRIPT.md).
+- Record a 3-minute backup demo video of the stationary static dashboard, its live controls, benchmark evidence, and limits (user records from `docs/DEMO_SCRIPT.md`).
 - Q&A rehearsal sheet finalized from real results.
 - Export figures for slides if the hackathon needs a deck (SVG/PNG from `data/results/figures`).
 
@@ -194,5 +198,5 @@ Gate: every claim in the submission text maps to evidence; backup video exists; 
 
 - **S1** ML residual learner with ablation (CLAIM only if test-seed results improve with CI).
 - **S2** Adaptive probing cost panel (AI-08): measure monitoring compute and probe overhead versus always-on probing; show energy/time cost honestly.
-- **S3** CALCE data validation.
+- **S3** CALCE data validation — completed as an exploratory CS2_33 one-cell voltage-model fit. See `docs/DATA_VALIDATION.md`; held-out error worsened and the experiment does not validate pack or deployment accuracy.
 - **S4** Pack-level (series cells) extension: not planned; mention as future work only.

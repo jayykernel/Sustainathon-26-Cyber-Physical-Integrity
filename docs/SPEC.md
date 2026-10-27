@@ -163,7 +163,7 @@ Report a confusion matrix per scenario, with `multi` counted as correct for AT3/
 **Command guard** (before actuation): forward-simulate the twin with **pessimistic** parameters (`R_th×1.5, T_amb+5 °C, R0×1.2`) over horizon `H = 300 s` using `I_req`. If predicted `V > V_max`, `T > T_warn`, or `SOC > 1.0`: flag `cmd_unsafe`, compute `I_safe(t)` = largest current (bisection, ≤8 iterations) that keeps the prediction safe; apply `I_cmd = min(I_req, I_safe)`.
 
 **State machine** (hysteresis):
-`NORMAL` → `SUSPECT` (any single evidence) → `CONFIRMED` (≥2 independent evidence classes within 60 s, or probe failure in 2 consecutive windows, or `cmd_unsafe` with prediction violation) → `SAFE_MODE` (CONFIRMED persists 10 s). Return to NORMAL only after `N_clean = 3` consecutive clean challenge windows **and** operator reset (button in UI). Evidence classes: passive-NIS, CUSUM, probe-gain, command-unsafe.
+`NORMAL` → `SUSPECT` (any single integrity evidence) → `CONFIRMED` (≥2 independent integrity evidence classes within 60 s, or probe failure in 2 consecutive windows, or a command deviation from the authorized charging profile that the guard predicts unsafe) → `SAFE_MODE` (CONFIRMED persists 10 s). A guard clamp is recorded as a protective intervention; by itself it is not evidence of command tampering. Return from `SUSPECT` to `NORMAL` after `N_clean = 3` consecutive clean challenge windows; new integrity evidence or a failed challenge restarts this count. Return from `SAFE_MODE` to `NORMAL` only after the same clean-window requirement **and** explicit operator reset (button in UI). Evidence classes: passive-NIS, CUSUM, probe-gain, command-tampering.
 
 **SAFE_MODE actions**: (1) `I_cmd = min(I_cmd, I_safe_worst)` where `I_safe_worst` keeps `T` below `T_warn` even with cooling degradation `R_th×4`, and `V` below `V_max`; (2) controller uses virtual `T` instead of `T_rep`; (3) continuous probing; (4) event emitted.
 
@@ -220,7 +220,7 @@ Frame:
 ```
 `truth_undefended` is the paired plant (same seed, same attack, no defense). It exists so the UI can show the counterfactual. Both plants are advanced in the same session loop, deterministically.
 
-Frontend offline mode: if the backend is unreachable, the UI loads `frontend/public/demo-runs/<scenario>.json` (recorded frames from `make demo-data`) and replays them with a visible "Replay of a recorded run" banner. Nothing in replay mode may be presented as live.
+Frontend offline mode: if the backend is unreachable, the user-selected primary UI loads `static-website/public/demo-runs/<scenario>.json` (recorded frames from `make demo-data`) and replays them with a visible "Replay of a recorded run" banner. Nothing in replay mode may be presented as live.
 
 ---
 
