@@ -6,7 +6,8 @@ connected to the FastAPI simulation backend.
 
 ## Start the application
 
-Requirements: Python 3.11+ and Node.js 18+.
+Requirements: Python 3.11+ and Node.js 20.19+ (or 22.12+). The selected
+Vite 8 build tool does not support Node.js 18.
 
 ```powershell
 python -m venv backend/.venv
@@ -38,5 +39,15 @@ make check
 ```
 
 The separate `frontend` folder is not used by the normal launcher or backend
-static hosting. All demonstrations are simulated and do not establish real-cell
-safety or deployment readiness.
+static hosting. The primary frontend is TypeScript, Vite, and Three.js; the API
+backend is Python, FastAPI, Pydantic, NumPy, and SciPy. All demonstrations are
+simulated and do not establish real-cell safety or deployment readiness. See
+[`docs/DATA_VALIDATION.md`](docs/DATA_VALIDATION.md) for the measured-cell
+experiment and its limits.
+
+## Deployment readiness
+
+This repository is a simulation prototype and must not be connected to a vehicle
+or public network. Read [`docs/DEPLOYMENT_READINESS.md`](docs/DEPLOYMENT_READINESS.md)
+for verified software checks, the reproduced nominal-baseline false alarm, and
+the physical validation and security gates that remain.

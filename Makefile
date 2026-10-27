@@ -1,4 +1,4 @@
-.PHONY: all setup dev serve demo-data test test-quick lint typecheck fit-twin plot-nominal calibrate eval-passive stealth-report localization-report probe-report guard-report eval eval-repeatability build check clean
+.PHONY: all setup dev serve demo-data download-calce test test-quick lint typecheck fit-twin plot-nominal calibrate calibrate-probe eval-passive stealth-report localization-report probe-report guard-report eval eval-repeatability failure-drill build check clean
 
 PYTHON ?= python
 ifeq ($(OS),Windows_NT)
@@ -42,6 +42,9 @@ plot-nominal:
 calibrate:
 	$(VENV_PYTHON) -m physiguard.eval.calibrate
 
+calibrate-probe:
+	$(VENV_PYTHON) scripts/calibrate_probe.py
+
 eval-passive:
 	$(VENV_PYTHON) -m physiguard.eval.evaluate_test_fa
 
@@ -63,11 +66,17 @@ eval:
 eval-repeatability:
 	$(VENV_PYTHON) -m pytest backend/tests/test_evaluation.py -q
 
+failure-drill:
+	$(VENV_PYTHON) scripts/failure_drill.py
+
 serve:
 	$(VENV_PYTHON) scripts/dev.py
 
 demo-data:
 	$(VENV_PYTHON) scripts/demo_data.py
+
+download-calce:
+	$(VENV_PYTHON) scripts/download_calce.py
 
 build:
 	npm --prefix static-website run build
