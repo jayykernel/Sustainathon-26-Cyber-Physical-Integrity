@@ -4,7 +4,7 @@ Read this file fully at the start of every session. It overrides your defaults.
 
 ## 1. What this project is
 
-PhysiGuard is a **simulation-based cyber-physical security prototype** for EV charging. It detects telemetry and commands that are digitally valid but physically inconsistent with a battery digital twin, localizes the suspect channel, verifies telemetry authenticity with randomized current probes (active challenge-response), and responds with a conservative charging policy. A FastAPI backend streams a live simulation to a React frontend. A reproducible evaluation harness produces the benchmark numbers shown in the UI.
+PhysiGuard is a **simulation-based cyber-physical security prototype** for EV charging. It detects telemetry and commands that are digitally valid but physically inconsistent with a battery digital twin, localizes the suspect channel, verifies telemetry authenticity with randomized current probes (active challenge-response), and responds with a conservative charging policy. A FastAPI backend streams a live simulation to the user-selected `static-website/` frontend. A reproducible evaluation harness produces the benchmark numbers shown in the UI.
 
 Hackathon: **48 hours total**. Problem statements targeted: AI-01 (primary), AI-07 (localization), AI-10 (cyber-to-physical impact). AI-08 (adaptive monitoring cost) is a stretch.
 
@@ -66,6 +66,8 @@ If documents conflict: SPEC.md wins for behavior, DESIGN.md wins for UI, this fi
 **Backend (`backend/`)**: Python 3.11+, NumPy, SciPy, pydantic v2, PyYAML, FastAPI, uvicorn, pytest, ruff, mypy. Optional stretch: scikit-learn (residual learner only). Package manager: `uv` if available, else `pip` + venv with a lock file.
 
 **Frontend (`frontend/`)**: Vite, React 18, TypeScript (strict), Tailwind CSS, Radix UI primitives, Apache ECharts (direct integration via `echarts` with a thin wrapper component), Zustand, lucide-react, `@fontsource/ibm-plex-sans` (+ `ibm-plex-mono` for code only). Tests: Vitest + React Testing Library; Playwright for one E2E smoke (SHOULD).
+
+**Approved project-specific frontend decision:** the user explicitly selected `static-website/` as the primary frontend paired with the backend. It uses Vite, strict TypeScript, Three.js, and native DOM/CSS. The separate React `frontend/` folder is legacy and must not be used by the normal launcher or deployment unless the user changes this decision. This explicit choice supersedes the generic frontend stack and layout above; it does not authorize changing the backend or simulation architecture.
 
 **Run modes**: `make dev` (hot reload, two processes), `make serve` (production: FastAPI serves the built frontend on one port, default 8000).
 
