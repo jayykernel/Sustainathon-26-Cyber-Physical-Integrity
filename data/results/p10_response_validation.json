@@ -1,0 +1,2312 @@
+{
+  "split": "validation",
+  "seed_ranges": {
+    "baseline": [
+      0,
+      99
+    ],
+    "attacks": [
+      0,
+      9
+    ]
+  },
+  "duration_s": 3600,
+  "config_hash": "f56e499aeb4d481e",
+  "scenarios": {
+    "baseline": {
+      "runs": 100,
+      "B3_alarm_episodes": 13,
+      "B3_alarm_episodes_per_hour": 0.13,
+      "attack_detection_rate": null,
+      "response_state_counts": {
+        "SUSPECT": 13,
+        "CONFIRMED": 0,
+        "SAFE_MODE": 0
+      },
+      "hazard_runs": 0
+    },
+    "AT1": {
+      "runs": 10,
+      "B3_alarm_episodes": 10,
+      "B3_alarm_episodes_per_hour": 1.0,
+      "attack_detection_rate": 1.0,
+      "response_state_counts": {
+        "SUSPECT": 0,
+        "CONFIRMED": 10,
+        "SAFE_MODE": 10
+      },
+      "hazard_runs": 0
+    },
+    "AT2": {
+      "runs": 10,
+      "B3_alarm_episodes": 9,
+      "B3_alarm_episodes_per_hour": 0.9,
+      "attack_detection_rate": 0.8,
+      "response_state_counts": {
+        "SUSPECT": 8,
+        "CONFIRMED": 3,
+        "SAFE_MODE": 3
+      },
+      "hazard_runs": 0
+    },
+    "AT3": {
+      "runs": 10,
+      "B3_alarm_episodes": 10,
+      "B3_alarm_episodes_per_hour": 1.0,
+      "attack_detection_rate": 1.0,
+      "response_state_counts": {
+        "SUSPECT": 10,
+        "CONFIRMED": 10,
+        "SAFE_MODE": 10
+      },
+      "hazard_runs": 0
+    },
+    "AT4": {
+      "runs": 10,
+      "B3_alarm_episodes": 1,
+      "B3_alarm_episodes_per_hour": 0.1,
+      "attack_detection_rate": 0.1,
+      "response_state_counts": {
+        "SUSPECT": 1,
+        "CONFIRMED": 0,
+        "SAFE_MODE": 0
+      },
+      "hazard_runs": 0
+    },
+    "AT5": {
+      "runs": 10,
+      "B3_alarm_episodes": 11,
+      "B3_alarm_episodes_per_hour": 1.1,
+      "attack_detection_rate": 1.0,
+      "response_state_counts": {
+        "SUSPECT": 1,
+        "CONFIRMED": 10,
+        "SAFE_MODE": 10
+      },
+      "hazard_runs": 0
+    },
+    "AT6": {
+      "runs": 10,
+      "B3_alarm_episodes": 0,
+      "B3_alarm_episodes_per_hour": 0.0,
+      "attack_detection_rate": 0.0,
+      "response_state_counts": {
+        "SUSPECT": 0,
+        "CONFIRMED": 0,
+        "SAFE_MODE": 0
+      },
+      "hazard_runs": 0
+    }
+  },
+  "details": [
+    {
+      "scenario": "baseline",
+      "seed": 0,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 1,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 2,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 3,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 4,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 5,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 6,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": false,
+      "response_states": [
+        "NORMAL",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "suspect_cleared"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 7,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 8,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": false,
+      "response_states": [
+        "NORMAL",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "suspect_cleared"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 9,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 10,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": false,
+      "response_states": [
+        "NORMAL",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "suspect_cleared"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 11,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 12,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 13,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 14,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": false,
+      "response_states": [
+        "NORMAL",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "suspect_cleared"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 15,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 16,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 17,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": false,
+      "response_states": [
+        "NORMAL",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "suspect_cleared"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 18,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 19,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 20,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 21,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 22,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 23,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 24,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 25,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 26,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 27,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 28,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": false,
+      "response_states": [
+        "NORMAL",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "suspect_cleared"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 29,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": false,
+      "response_states": [
+        "NORMAL",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "suspect_cleared"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 30,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 31,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 32,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 33,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 34,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 35,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 36,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 37,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 38,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 39,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 40,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 41,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 42,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 43,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 44,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": false,
+      "response_states": [
+        "NORMAL",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "suspect_cleared"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 45,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 46,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": false,
+      "response_states": [
+        "NORMAL",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "suspect_cleared"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 47,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 48,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": false,
+      "response_states": [
+        "NORMAL",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "suspect_cleared"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 49,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 50,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 51,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 52,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 53,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 54,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 55,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 56,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 57,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 58,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 59,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 60,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 61,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 62,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 63,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 64,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 65,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 66,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 67,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 68,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": false,
+      "response_states": [
+        "NORMAL",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "suspect_cleared"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 69,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 70,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 71,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 72,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 73,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": false,
+      "response_states": [
+        "NORMAL",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 74,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 75,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 76,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 77,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 78,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 79,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 80,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 81,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 82,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 83,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 84,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 85,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 86,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 87,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 88,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 89,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 90,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 91,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 92,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": false,
+      "response_states": [
+        "NORMAL",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "suspect_cleared"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 93,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 94,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 95,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 96,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 97,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 98,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "baseline",
+      "seed": 99,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "AT1",
+      "seed": 0,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT1",
+      "seed": 1,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT1",
+      "seed": 2,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT1",
+      "seed": 3,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT1",
+      "seed": 4,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT1",
+      "seed": 5,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT1",
+      "seed": 6,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT1",
+      "seed": 7,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT1",
+      "seed": 8,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT1",
+      "seed": 9,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT2",
+      "seed": 0,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "NORMAL",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "suspect_cleared"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT2",
+      "seed": 1,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "NORMAL",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "suspect_cleared"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT2",
+      "seed": 2,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "AT2",
+      "seed": 3,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "AT2",
+      "seed": 4,
+      "duration_h": 1.0,
+      "alarm_episodes": 2,
+      "detected": true,
+      "response_states": [
+        "NORMAL",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "suspect_cleared",
+        "suspect"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT2",
+      "seed": 5,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT2",
+      "seed": 6,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT2",
+      "seed": 7,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "NORMAL",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT2",
+      "seed": 8,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "NORMAL",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "suspect_cleared"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT2",
+      "seed": 9,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT3",
+      "seed": 0,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT3",
+      "seed": 1,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT3",
+      "seed": 2,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT3",
+      "seed": 3,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT3",
+      "seed": 4,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT3",
+      "seed": 5,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT3",
+      "seed": 6,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT3",
+      "seed": 7,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT3",
+      "seed": 8,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT3",
+      "seed": 9,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT4",
+      "seed": 0,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "AT4",
+      "seed": 1,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "AT4",
+      "seed": 2,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "AT4",
+      "seed": 3,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "AT4",
+      "seed": 4,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "AT4",
+      "seed": 5,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "AT4",
+      "seed": 6,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "AT4",
+      "seed": 7,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "AT4",
+      "seed": 8,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "NORMAL",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "suspect_cleared"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT4",
+      "seed": 9,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "AT5",
+      "seed": 0,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT5",
+      "seed": 1,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT5",
+      "seed": 2,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT5",
+      "seed": 3,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT5",
+      "seed": 4,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT5",
+      "seed": 5,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT5",
+      "seed": 6,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT5",
+      "seed": 7,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT5",
+      "seed": 8,
+      "duration_h": 1.0,
+      "alarm_episodes": 2,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE",
+        "SUSPECT"
+      ],
+      "event_codes": [
+        "suspect",
+        "suspect_cleared",
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT5",
+      "seed": 9,
+      "duration_h": 1.0,
+      "alarm_episodes": 1,
+      "detected": true,
+      "response_states": [
+        "CONFIRMED",
+        "NORMAL",
+        "SAFE_MODE"
+      ],
+      "event_codes": [
+        "suspect",
+        "confirmed",
+        "safe_mode"
+      ],
+      "hazard": false
+    },
+    {
+      "scenario": "AT6",
+      "seed": 0,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "AT6",
+      "seed": 1,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "AT6",
+      "seed": 2,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "AT6",
+      "seed": 3,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "AT6",
+      "seed": 4,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "AT6",
+      "seed": 5,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "AT6",
+      "seed": 6,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "AT6",
+      "seed": 7,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "AT6",
+      "seed": 8,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    },
+    {
+      "scenario": "AT6",
+      "seed": 9,
+      "duration_h": 1.0,
+      "alarm_episodes": 0,
+      "detected": false,
+      "response_states": [
+        "NORMAL"
+      ],
+      "event_codes": [],
+      "hazard": false
+    }
+  ]
+}

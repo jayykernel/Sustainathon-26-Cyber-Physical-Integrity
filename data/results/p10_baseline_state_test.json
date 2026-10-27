@@ -1,0 +1,19 @@
+{
+  "split": "test",
+  "seeds": [1000, 1199],
+  "runs": 200,
+  "duration_s": 3600,
+  "config_hash": "f56e499aeb4d481e",
+  "runs_with_state": {
+    "SUSPECT": 30,
+    "CONFIRMED": 0,
+    "SAFE_MODE": 0
+  },
+  "runs_with_event": {
+    "suspect": 30,
+    "suspect_cleared": 27,
+    "confirmed": 0,
+    "safe_mode": 0
+  },
+  "method": "Direct defended baseline simulation for each held-out seed; no thresholds or code changed during measurement."
+}
