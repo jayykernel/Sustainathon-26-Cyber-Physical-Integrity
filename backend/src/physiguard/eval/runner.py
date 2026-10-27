@@ -100,7 +100,7 @@ def _localization_result(
             float(trace["T_rep"][index]),
             float(trace["I_cmd"][index]),
             alarm,
-            command_unsafe=bool(trace["command_unsafe"][index]),
+            command_tampered=bool(trace["command_tampered"][index]),
         )
         actual.append(attack_channel if active else "none")
         predicted.append(output["channel"])
