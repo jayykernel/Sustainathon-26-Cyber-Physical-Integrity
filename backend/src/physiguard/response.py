@@ -47,6 +47,7 @@ class ResponseManager:
         self._probe_failures = 0
         self._confirmed_since: float | None = None
         self._clean_windows = 0
+        self._suspect_clean_windows = 0
         self._reset_requested = False
         self._events: list[ResponseEvent] = []
 
@@ -60,7 +61,7 @@ class ResponseManager:
         evidence_classes: set[str] | frozenset[str] = frozenset(),
         *,
         probe_failed: bool = False,
-        command_unsafe: bool = False,
+        command_tampered: bool = False,
         prediction_violation: bool = False,
         clean_challenge: bool = False,
     ) -> ResponseSnapshot:
@@ -68,8 +69,10 @@ class ResponseManager:
         if not np.isfinite(time_s) or time_s < 0:
             raise ValueError("time_s must be finite and non-negative")
         classes = set(evidence_classes)
-        if command_unsafe:
-            classes.add("command_unsafe")
+        if command_tampered:
+            classes.add("command_tampering")
+        if classes or probe_failed or command_tampered:
+            self._suspect_clean_windows = 0
         if self.state in {"NORMAL", "SUSPECT"} and classes:
             if self.state == "NORMAL":
                 self.state = "SUSPECT"
@@ -78,7 +81,7 @@ class ResponseManager:
                 self._evidence.append((float(time_s), evidence))
             self._expire_evidence(time_s)
             distinct = {kind for _, kind in self._evidence}
-            direct_confirmation = command_unsafe and prediction_violation
+            direct_confirmation = command_tampered and prediction_violation
             if (
                 len(distinct) >= int(self.config.response.SUSPECT_to_CONFIRMED_evidence_classes)
                 or direct_confirmation
@@ -96,6 +99,19 @@ class ResponseManager:
                 self._confirm(time_s, "Two consecutive probe windows failed verification.")
         elif clean_challenge:
             self._probe_failures = 0
+
+        if self.state == "SUSPECT" and clean_challenge and not probe_failed and not classes:
+            self._suspect_clean_windows += 1
+            if self._suspect_clean_windows >= int(self.config.response.N_clean):
+                self.state = "NORMAL"
+                self._evidence.clear()
+                self._suspect_clean_windows = 0
+                self._emit(
+                    time_s,
+                    "info",
+                    "suspect_cleared",
+                    "Suspect state cleared after consecutive clean challenge windows.",
+                )
 
         if self.state == "CONFIRMED":
             assert self._confirmed_since is not None

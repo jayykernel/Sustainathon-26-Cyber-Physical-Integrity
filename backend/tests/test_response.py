@@ -54,10 +54,50 @@ def test_response_requires_independent_evidence_and_persistence() -> None:
     ]
 
 
+def test_guard_intervention_is_not_malicious_command_evidence() -> None:
+    response = ResponseManager(Config())
+    assert response.update(1.0, prediction_violation=True).state == "NORMAL"
+
+    assert (
+        response.update(2.0, command_tampered=True, prediction_violation=True).state
+        == "CONFIRMED"
+    )
+
+
 def test_suspect_state_does_not_oscillate_back_without_operator_action() -> None:
     response = ResponseManager(Config())
     assert response.update(5.0, {"CUSUM"}).state == "SUSPECT"
     assert response.update(5.0 + 10_000.0).state == "SUSPECT"
+
+
+def test_suspect_clears_only_after_configured_clean_challenges() -> None:
+    response = ResponseManager(Config())
+    assert response.update(5.0, {"CUSUM"}).state == "SUSPECT"
+    for time_s in (125.0, 245.0):
+        assert response.update(time_s, clean_challenge=True).state == "SUSPECT"
+    assert response.update(365.0, clean_challenge=True).state == "NORMAL"
+    assert response.events[-1]["code"] == "suspect_cleared"
+
+
+def test_new_evidence_restarts_suspect_clean_challenge_count() -> None:
+    response = ResponseManager(Config())
+    assert response.update(5.0, {"CUSUM"}).state == "SUSPECT"
+    assert response.update(125.0, clean_challenge=True).state == "SUSPECT"
+    assert response.update(245.0, {"passive_NIS"}).state == "SUSPECT"
+    assert response.update(365.0, clean_challenge=True).state == "SUSPECT"
+    assert response.update(485.0, clean_challenge=True).state == "SUSPECT"
+    assert response.update(605.0, clean_challenge=True).state == "NORMAL"
+
+
+def test_failed_probe_restarts_suspect_clean_challenge_count() -> None:
+    response = ResponseManager(Config())
+    assert response.update(5.0, {"CUSUM"}).state == "SUSPECT"
+    assert response.update(125.0, clean_challenge=True).state == "SUSPECT"
+    assert response.update(245.0, clean_challenge=True).state == "SUSPECT"
+    assert response.update(365.0, probe_failed=True, clean_challenge=True).state == "SUSPECT"
+    for time_s in (485.0, 605.0):
+        assert response.update(time_s, clean_challenge=True).state == "SUSPECT"
+    assert response.update(725.0, clean_challenge=True).state == "NORMAL"
 
 
 def test_two_failed_probe_windows_confirm_and_safe_mode_needs_operator_reset() -> None:
