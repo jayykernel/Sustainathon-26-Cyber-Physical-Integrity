@@ -33,6 +33,7 @@ class CommandGuard:
     def __init__(self, config: Config | None = None) -> None:
         self.config = config or get_config()
         self._limit_configs: dict[bool, Config] = {}
+        self._prediction_parameters: dict[int, tuple[Config, tuple[float, ...]]] = {}
         for worst_case, multiplier in (
             (False, float(self.config.command_guard.R_th_pessimism)),
             (True, float(self.config.command_guard.R_th_worst)),
@@ -42,6 +43,7 @@ class CommandGuard:
             limit_config.twin.T_amb_hat += float(self.config.command_guard.T_amb_pessimism)
             limit_config.twin.R0_n *= float(self.config.command_guard.R0_pessimism)
             self._limit_configs[worst_case] = limit_config
+            self._cache_prediction_parameters(limit_config)
 
     def evaluate(
         self,
@@ -89,20 +91,20 @@ class CommandGuard:
     ) -> tuple[float, float, float]:
         # The requested current is held constant, so SOC, RC polarization, and
         # temperature each have a closed-form horizon prediction matching Twin.step.
-        steps = max(1, int(np.ceil(config.command_guard.horizon / config.simulation.dt)))
-        dt_s = float(config.simulation.dt)
-        p = config.twin
         soc, v1, temperature = map(float, state)
-        decay_rc = exp(-dt_s / p.tau1_n)
-        r0 = p.R0_n
-        heat_w = current_a**2 * (r0 + p.R1_n)
-        thermal_decay = 1.0 - dt_s / (p.C_th_n * p.R_th_n)
-        equilibrium = p.T_amb_hat + heat_w * p.R_th_n
-
-        decay_n = decay_rc**steps
-        v1_end = v1 * decay_n + p.R1_n * (1.0 - decay_n) * current_a
-        soc_end = soc + config.plant.eta * current_a * dt_s * steps / (3600.0 * p.Q_n)
-        temp_end = equilibrium + (temperature - equilibrium) * thermal_decay**steps
+        (
+            soc_per_amp,
+            rc_decay_n,
+            rc_current_gain,
+            r0,
+            heat_resistance,
+            thermal_decay_n,
+            ambient,
+        ) = self._prediction_parameters_for(config)
+        v1_end = v1 * rc_decay_n + rc_current_gain * current_a
+        soc_end = soc + soc_per_amp * current_a
+        equilibrium = ambient + current_a**2 * heat_resistance
+        temp_end = equilibrium + (temperature - equilibrium) * thermal_decay_n
         # SOC/OCV and RC voltage are monotone under a constant non-negative
         # request; the independent maxima give a conservative voltage envelope.
         voltage_max = (
@@ -116,6 +118,31 @@ class CommandGuard:
             max(temperature, temp_end) + numerical_margin,
             max(soc, soc_end) + numerical_margin,
         )
+
+    def _cache_prediction_parameters(self, config: Config) -> tuple[float, ...]:
+        """Precompute request-independent horizon factors for repeated guard checks."""
+        steps = max(1, int(np.ceil(config.command_guard.horizon / config.simulation.dt)))
+        dt_s = float(config.simulation.dt)
+        p = config.twin
+        rc_decay_n = exp(-dt_s / p.tau1_n) ** steps
+        thermal_decay_n = (1.0 - dt_s / (p.C_th_n * p.R_th_n)) ** steps
+        parameters = (
+            config.plant.eta * dt_s * steps / (3600.0 * p.Q_n),
+            rc_decay_n,
+            p.R1_n * (1.0 - rc_decay_n),
+            p.R0_n,
+            (p.R0_n + p.R1_n) * p.R_th_n,
+            thermal_decay_n,
+            p.T_amb_hat,
+        )
+        self._prediction_parameters[id(config)] = (config, parameters)
+        return parameters
+
+    def _prediction_parameters_for(self, config: Config) -> tuple[float, ...]:
+        cached = self._prediction_parameters.get(id(config))
+        if cached is None or cached[0] is not config:
+            return self._cache_prediction_parameters(config)
+        return cached[1]
 
     def _safe(self, voltage_v: float, temperature_c: float, soc: float) -> bool:
         p = self.config.plant

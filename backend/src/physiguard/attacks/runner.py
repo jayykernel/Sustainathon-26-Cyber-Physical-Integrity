@@ -57,6 +57,7 @@ class AttackTrajectory(TypedDict):
     defended: bool
     response_state: NDArray[np.str_]
     command_unsafe: NDArray[np.bool_]
+    command_tampered: NDArray[np.bool_]
     virtual_temperature: NDArray[np.float64]
     estimate_degraded: NDArray[np.bool_]
     events: list[ResponseEvent]
@@ -149,6 +150,7 @@ def run_attack_scenario(
     cusum_values: dict[str, list[bool]] = {channel: [] for channel in ("V", "T", "I")}
     response_values: list[str] = []
     command_unsafe_values: list[bool] = []
+    command_tampered_values: list[bool] = []
     virtual_temperature_values: list[float] = []
     estimate_degraded_values: list[bool] = []
     probe_active_values: list[bool] = []
@@ -223,9 +225,11 @@ def run_attack_scenario(
             cusum_score_values[channel].append(max(detector.positive, detector.negative))
 
         requested = profile.request(reported["V_rep"])
+        authorized_request = requested
         if attack is not None:
             requested = attack.request(t_s, requested, truth)
             attack.physical(t_s, plant)
+        command_tampered = not np.isclose(requested, authorized_request, rtol=0.0, atol=1e-6)
         b0_alarm = any(alarm.startswith("RANGE_") for alarm in passive_alarms)
         b1_alarm = "NIS" in passive_alarms
         b2_alarm = b1_alarm or any(alarm.startswith("CUSUM_") for alarm in passive_alarms)
@@ -307,10 +311,13 @@ def run_attack_scenario(
                 t_s,
                 evidence_classes,
                 probe_failed=probe_failed,
-                command_unsafe=command_unsafe,
+                command_tampered=command_tampered,
                 prediction_violation=guard_result.violation,
                 clean_challenge=(
-                    probe_challenge_completed and not evidence_classes and not command_unsafe
+                    probe_challenge_completed
+                    and not evidence_classes
+                    and not command_tampered
+                    and not probe_failed
                 ),
             )
             if (
@@ -401,6 +408,7 @@ def run_attack_scenario(
             estimate_degraded_values.append(estimate_degraded)
             probe_active_values.append(probe_active)
             probe_delta_values.append(probe_delta)
+        command_tampered_values.append(command_tampered)
 
         state = {
             "t": t_s,
@@ -460,6 +468,7 @@ def run_attack_scenario(
             "defended": defended,
             "response_state": np.asarray(response_values, dtype=np.str_),
             "command_unsafe": np.asarray(command_unsafe_values, dtype=np.bool_),
+            "command_tampered": np.asarray(command_tampered_values, dtype=np.bool_),
             "virtual_temperature": np.asarray(virtual_temperature_values, dtype=np.float64),
             "estimate_degraded": np.asarray(estimate_degraded_values, dtype=np.bool_),
             "events": response.events if response is not None else [],

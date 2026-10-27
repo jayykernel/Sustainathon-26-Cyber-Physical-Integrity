@@ -2,7 +2,8 @@
 
 import numpy as np
 
-from physiguard.config import Config
+from physiguard.attacks.runner import run_attack_scenario
+from physiguard.config import Config, get_config
 from physiguard.pipeline import run_paired_pipeline, run_pipeline
 from physiguard.plant import plant_advance, vary_unit_config
 
@@ -25,6 +26,7 @@ def test_paired_attack_pipeline_reuses_seed_and_returns_guard_evidence() -> None
     assert defended["defended"]
     assert defended["response_state"].shape == (90,)
     assert defended["command_unsafe"].shape == (90,)
+    assert defended["command_tampered"].shape == (90,)
     assert defended["probe_active"].shape == (90,)
     assert np.any(np.abs(defended["probe_delta"]) > 0.0)
     assert isinstance(defended["events"], list)
@@ -36,6 +38,24 @@ def test_defended_baseline_runs_probe_gain_challenge_and_response() -> None:
     assert defended["probe_delta"].shape == (130,)
     assert defended["probe_gain_alarm"].shape == (130,)
     assert defended["B3_alarm"].shape == (130,)
+
+
+def test_honest_baseline_guard_clamps_do_not_confirm_a_command_attack() -> None:
+    trace = run_attack_scenario("baseline", 4242, get_config(), defended=True)
+
+    assert np.any(trace["command_unsafe"])
+    assert not np.any(trace["command_tampered"])
+    assert not np.isin(trace["response_state"], ["CONFIRMED", "SAFE_MODE"]).any()
+    assert trace["response_state"][-1] == "NORMAL"
+    assert [event["code"] for event in trace["events"]] == ["suspect", "suspect_cleared"]
+
+
+def test_malicious_command_override_is_separate_from_guard_intervention() -> None:
+    trace = run_attack_scenario("AT5", 11, get_config(), defended=True)
+
+    assert np.any(trace["attack_active"])
+    assert np.any(trace["command_tampered"] & trace["attack_active"])
+    assert any(event["code"] == "confirmed" for event in trace["events"])
 
 
 def test_honest_one_hour_run_stays_within_operating_limits() -> None:

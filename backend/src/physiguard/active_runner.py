@@ -17,7 +17,7 @@ from .attacks.base import (
     make_attack,
 )
 from .charger import ChargeProfile, execute_request
-from .config import Config, get_config, load_detection_config
+from .config import Config, DetectionConfig, get_config, load_detection_config
 from .detectors.passive import PassiveDetectors
 from .detectors.probe import (
     ProbeScheduler,
@@ -59,13 +59,14 @@ def run_active_scenario(
     config: Config | None = None,
     duration_s: int | None = None,
     probe_key: str | None = None,
+    detection_override: DetectionConfig | None = None,
 ) -> ActiveTrajectory:
     """Run one undefended scenario with NORMAL-mode periodic probe windows."""
     base = config or get_config()
     duration = duration_s if duration_s is not None else base.simulation.duration
     if duration < 1:
         raise ValueError("duration_s must be at least one second")
-    detection = load_detection_config(base_config=base)
+    detection = detection_override or load_detection_config(base_config=base)
     run_config = vary_unit_config(base, seed)
     run_config.detection = detection
     attack: AttackBase | None = None
