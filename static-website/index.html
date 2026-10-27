@@ -7,14 +7,9 @@
       name="description"
       content="A live 3D view of backend cyber-physical battery simulations and defense telemetry."
     />
-    <meta name="theme-color" content="#ECEFF1" />
-    <link
-      rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23ECEFF1'/%3E%3Crect x='6' y='6' width='20' height='20' fill='none' stroke='%231D5FA8' stroke-width='3'/%3E%3Crect x='12' y='12' width='8' height='8' fill='%231D5FA8'/%3E%3C/svg%3E"
-    />
     <title>PhysiGuard — Battery integrity bench</title>
   </head>
-  <body>
+  <body data-telemetry="waiting" data-mode="connecting">
     <a class="skip-link" href="#runbar">Skip to the simulation controls</a>
 
     <div class="boot" id="boot" role="status" aria-live="polite">
@@ -24,12 +19,42 @@
         <p class="boot__text" id="boot-text">
           Connecting to the PhysiGuard simulation backend.
         </p>
+        <div class="boot__skeleton" aria-hidden="true"><i></i><i></i><i></i></div>
         <div class="boot__bar" aria-hidden="true"><span></span></div>
       </div>
     </div>
 
     <canvas id="scene" aria-hidden="true"></canvas>
+    <div class="map-route" aria-hidden="true">
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+        <path class="map-route__halo" d="M50 0V100" />
+        <path class="map-route__ahead" d="M50 0V48" />
+        <path class="map-route__active" d="M50 48V100" />
+        <circle class="map-route__waypoint" cx="50" cy="15" r=".58" />
+        <circle class="map-route__waypoint" cx="50" cy="83" r=".58" />
+      </svg>
+      <span class="vehicle-focus-ring"></span>
+      <span class="vehicle-focus-dot"></span>
+      <span class="map-route__caption">SIMULATED ROUTE</span>
+      <span class="map-route__waypoint-label map-route__waypoint-label--upper">WAYPOINT A</span>
+      <span class="map-route__waypoint-label map-route__waypoint-label--lower">WAYPOINT B</span>
+    </div>
+    <div class="map-callouts" role="group" aria-label="Live vehicle telemetry">
+      <article class="map-callout map-callout--temp"><span>Pack temperature</span><strong id="callout-temp">-- °C</strong></article>
+      <article class="map-callout map-callout--soc"><span>State of charge</span><strong id="callout-soc">-- %</strong></article>
+      <article class="map-callout map-callout--rate"><span>Charge current</span><strong id="callout-rate">-- A</strong></article>
+    </div>
+    <div class="replay-banner" id="replay-notice" role="status" aria-live="polite" hidden>Replay of a recorded run — not live data.</div>
     <div class="alarm-wash" id="alarm-wash" aria-hidden="true"></div>
+    <section class="incident-overlay" id="incident-overlay" role="alertdialog" aria-modal="true" aria-labelledby="incident-overlay-title" aria-describedby="incident-overlay-copy" aria-hidden="true" inert>
+      <div class="incident-overlay__card">
+        <p class="incident-overlay__eyebrow">PhysiGuard / vehicle safety alert</p>
+        <h2 class="incident-overlay__title" id="incident-overlay-title">SYSTEM<br /><span>ANOMALY</span></h2>
+        <p class="incident-overlay__mode">DRIVER GUIDANCE REQUIRED</p>
+        <p class="incident-overlay__copy" id="incident-overlay-copy">A battery-system data path needs attention. Keep control of the vehicle and follow the safe-stop guidance when it is safe to do so.</p>
+        <button class="button incident-overlay__button" id="incident-continue" type="button">View driver guidance</button>
+      </div>
+    </section>
 
     <header class="topbar">
       <div class="identity">
@@ -39,6 +64,13 @@
           <p class="identity__sub">Battery integrity bench</p>
         </div>
       </div>
+      <nav class="topnav" aria-label="Dashboard sections">
+        <a class="topnav__link is-active" href="#console" aria-current="page">Overview</a>
+        <a class="topnav__link" href="#classifier-toggle">Battery</a>
+        <a class="topnav__link" href="#runbar">Charging</a>
+        <a class="topnav__link" href="#benchmarks">Benchmarks</a>
+        <a class="topnav__link" href="#method-details">Diagnostics</a>
+      </nav>
       <div class="readouts">
         <div class="readout">
           <span class="readout__label">Sim clock</span>
@@ -51,10 +83,10 @@
         <div class="readout">
           <span class="readout__label">State</span>
           <strong class="readout__value"
-            ><span class="chip chip--nominal" id="state-chip">Safe</span></strong
+            ><span class="chip chip--nominal" id="state-chip">Waiting</span></strong
           >
         </div>
-        <div class="readout">
+        <div class="readout readout--channel">
           <span class="readout__label">Channel</span>
           <strong class="readout__value" id="channel">Nominal</strong>
         </div>
@@ -65,185 +97,164 @@
       </div>
     </header>
 
+    <div class="command-layout">
+    <aside class="command-rail command-rail--left" aria-label="Simulation controls and classifier">
     <section class="runbar" id="runbar" aria-label="Live simulation controls" tabindex="-1">
-      <label>Scenario<select id="scenario-select" disabled><option>Loading scenarios…</option></select></label>
-      <label>Seed<input id="seed-input" type="number" min="0" max="4294967295" value="4242" /></label>
-      <label>Speed<select id="speed-select"><option value="1">1×</option><option value="5">5×</option><option value="20" selected>20×</option><option value="60">60×</option></select></label>
-      <button class="button" id="start-run" type="button" disabled>Start live run</button>
-      <button class="button button--quiet" id="pause-run" type="button" disabled>Pause</button>
-      <label class="runbar__inject">Inject<select id="attack-select"><option>AT1</option><option>AT2</option><option>AT3</option><option>AT4</option><option>AT5</option><option>AT6</option></select></label>
-      <button class="button button--quiet" id="inject-run" type="button" disabled>Inject attack</button>
+      <label class="runbar__field runbar__vehicle">Vehicle<select id="vehicle-type"><option value="car">Car · Tesla-style visual mockup</option><option value="two_wheeler">Electric two-wheeler</option></select></label>
+      <label class="runbar__field runbar__scenario">Scenario<select id="scenario-select" disabled><option>Loading scenarios…</option></select></label>
+      <details class="runbar__settings">
+        <summary class="button button--quiet">Run settings</summary>
+        <div class="runbar__settings-popover">
+          <label>Assist<select id="assist-profile"><option value="available">Safe-stop assist · demo</option><option value="unavailable">No automated parking</option></select></label>
+          <label>Seed<input id="seed-input" type="number" min="0" max="4294967295" value="4242" /></label>
+          <label>Speed<select id="speed-select"><option value="1">1×</option><option value="5">5×</option><option value="20" selected>20×</option><option value="60">60×</option></select></label>
+          <button class="button button--reset" id="operator-reset" type="button" disabled title="Resets only the backend simulation">Reset simulation</button>
+        </div>
+      </details>
+      <div class="runbar__actions" aria-label="Simulation actions">
+        <button class="button" id="start-run" type="button" disabled>Start run</button>
+        <button class="button button--quiet" id="pause-run" type="button" disabled hidden>Pause</button>
+        <button class="button button--replay" id="load-replay" type="button" hidden>Load recorded run</button>
+      </div>
+      <div class="runbar__attack" aria-label="Attack simulation controls">
+        <label for="attack-select">Attack</label>
+        <select id="attack-select"><option>AT1</option><option>AT2</option><option>AT3</option><option>AT4</option><option>AT5</option><option>AT6</option></select>
+        <button class="button button--quiet" id="inject-run" type="button" disabled>Inject</button>
+      </div>
+      <button class="button button--quiet driver-alert-reopen" id="open-driver-alert" type="button" hidden>Open vehicle alert</button>
       <span class="runbar__status" id="run-status" role="status">Checking backend…</span>
     </section>
-
-    <main class="story" id="simulation" aria-label="Live battery simulation">
-      <h1 class="sr-only">PhysiGuard live battery integrity simulation</h1>
-      <section class="stage" id="stage-0" data-stage="0" aria-labelledby="stage-0-title" data-tone="nominal">
-        <div class="brief">
-          <p class="brief__eyebrow">01 / Normal drive</p>
-          <h2 class="brief__title" id="stage-0-title">Start a live run.</h2>
-          <p class="brief__body">Choose a backend scenario and start it. Temperature, state estimates, detection evidence, and response state update from the live session.</p>
-          <p class="brief__note">The selected seed makes the backend simulation reproducible.</p>
-          <p class="brief__cue">Start from the run bar</p>
-        </div>
-      </section>
-      <section class="stage" id="stage-1" data-stage="1" aria-labelledby="stage-1-title" data-tone="caution">
-        <div class="brief">
-          <p class="brief__eyebrow">02 / Intrusion</p>
-          <h2 class="brief__title" id="stage-1-title">The selected scenario begins.</h2>
-          <p class="brief__body">The backend runs the selected attack model and streams protected, unprotected, reported, and estimated battery values into this scene.</p>
-          <p class="brief__note">Use the scenario selector and attack controls to explore the API session.</p>
-        </div>
-      </section>
-      <section class="stage" id="stage-2" data-stage="2" aria-labelledby="stage-2-title" data-tone="hazard">
-        <div class="brief">
-          <p class="brief__eyebrow">03 / Vehicle response</p>
-          <h2 class="brief__title" id="stage-2-title">Evidence accumulates.</h2>
-          <p class="brief__body">The HUD uses estimator and detector values sent by the backend. Scene color follows its live response state.</p>
-          <p class="brief__note">Temperature limits and margins come from the configured backend run.</p>
-        </div>
-      </section>
-      <section class="stage" id="stage-3" data-stage="3" aria-labelledby="stage-3-title" data-tone="protected">
-        <div class="brief">
-          <p class="brief__eyebrow">04 / Detection</p>
-          <h2 class="brief__title" id="stage-3-title">The defense responds.</h2>
-          <p class="brief__body">Passive evidence, active probes, and the command guard contribute to the backend's detection and response state.</p>
-          <p class="brief__note">The event log lists backend events as they arrive.</p>
-        </div>
-      </section>
-      <section class="stage" id="stage-4" data-stage="4" aria-labelledby="stage-4-title" data-tone="protected">
-        <div class="brief">
-          <p class="brief__eyebrow">05 / Digital twin</p>
-          <h2 class="brief__title" id="stage-4-title">Follow the protected estimate.</h2>
-          <p class="brief__body">The wireframe marks the protected estimator and response state during a confirmed event.</p>
-          <p class="brief__note">Estimate values and control mode update from live frames.</p>
-        </div>
-      </section>
-      <section class="stage" id="stage-5" data-stage="5" aria-labelledby="stage-5-title" data-tone="caution">
-        <div class="brief">
-          <p class="brief__eyebrow">06 / Response</p>
-          <h2 class="brief__title" id="stage-5-title">The backend contains unsafe requests.</h2>
-          <p class="brief__body">When its guard enters safe mode, the backend constrains charging current and continues to report the simulation state.</p>
-          <p class="brief__note">Current request, guarded command, and safety margin are available in the live session.</p>
-        </div>
-      </section>
-      <section class="stage" id="stage-6" data-stage="6" aria-labelledby="stage-6-title" data-tone="nominal">
-        <div class="brief">
-          <p class="brief__eyebrow">07 / Review</p>
-          <h2 class="brief__title" id="stage-6-title">Review and repeat the run.</h2>
-          <p class="brief__body">Backend frames drive the chart and event log. Start again with the same seed or choose another scenario.</p>
-          <p class="brief__note">All values are simulated; this prototype is not connected to a real vehicle.</p>
-        </div>
-      </section>
-      <footer class="footer" id="end" aria-labelledby="footer-title">
-        <div class="footer__inner">
-          <p class="brief__eyebrow">End of run</p>
-          <h2 class="footer__title" id="footer-title">What the simulation showed.</h2>
-          <p class="footer__lede">Backend-generated telemetry, detection evidence, and response state drive the 3D scene. The chart and event log use the same live session frames.</p>
-          <div class="footer__grid">
-            <section><h3>Detection</h3><p>A state estimator checks battery telemetry against its physical model. Passive evidence and keyed active probes contribute to detection.</p></section>
-            <section><h3>Response</h3><p>The command guard constrains unsafe current requests and enters safe mode after sufficient evidence.</p></section>
-            <section><h3>Limits</h3><p>This is a simulated research prototype, not a vehicle interface. No hardware is connected and no real telemetry is read.</p></section>
-          </div>
-          <p class="footer__fine">Three.js scene driven by live frames from the PhysiGuard backend API.</p>
-        </div>
-      </footer>
-    </main>
-
-    <aside class="hud" aria-label="Live battery telemetry">
       <section class="panel hud__status">
-        <div class="panel__head">
+          <button class="panel__head classifier-toggle" id="classifier-toggle" type="button" aria-expanded="false" aria-controls="classifier-details">
           <span>Classifier</span>
-          <span class="panel__meta" id="window-note">window 0 / 20</span>
-        </div>
-        <div class="statusline">
-          <span class="chip chip--nominal" id="classification">Safe</span>
-          <span class="statusline__note" id="residual-flag">no persistent residual</span>
-        </div>
-        <div class="metrics">
-          <div class="metric">
-            <span class="metric__label">True temp</span>
-            <span class="metric__value" id="true-temp">35.0 °C</span>
+            <span class="chip chip--nominal" id="classification">Waiting</span>
+            <span class="classifier-toggle__arrow" aria-hidden="true">›</span>
+          </button>
+          <div class="classifier-drawer" id="classifier-details" aria-hidden="true" inert>
+            <div class="panel__head">
+              <span>Classifier details</span>
+              <span class="panel__meta" id="window-note">Waiting for run</span>
+            </div>
+            <div class="statusline"><span class="statusline__note" id="residual-flag">Waiting for telemetry</span></div>
+            <div class="metrics">
+              <div class="metric"><span class="metric__label">True temp</span><span class="metric__value" id="true-temp">-- °C</span></div>
+              <div class="metric"><span class="metric__label">Reported</span><span class="metric__value" id="reported-temp">-- °C</span></div>
+              <div class="metric"><span class="metric__label">Model estimate</span><span class="metric__value" id="model-temp">-- °C</span></div>
+              <div class="metric"><span class="metric__label">Residual</span><span class="metric__value" id="residual">-- °C</span></div>
+              <div class="metric"><span class="metric__label">NIS</span><span class="metric__value" id="nis">--</span></div>
+              <div class="metric"><span class="metric__label">SOC</span><span class="metric__value" id="soc">-- %</span></div>
+            </div>
+            <div class="evidencebar" id="evidence-meter" role="meter" aria-label="Client-computed residual meter from the temperature residual" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+              <span class="evidencebar__label" title="Client-computed from the temperature residual; not a backend detector output.">Residual meter</span>
+              <div class="evidencebar__track" aria-hidden="true"><div class="evidencebar__fill" id="evidence-fill"></div></div>
+              <span class="evidencebar__value" id="evidence-value">--</span>
+            </div>
           </div>
-          <div class="metric">
-            <span class="metric__label">Reported</span>
-            <span class="metric__value" id="reported-temp">35.0 °C</span>
-          </div>
-          <div class="metric">
-            <span class="metric__label">Model estimate</span>
-            <span class="metric__value" id="model-temp">35.0 °C</span>
-          </div>
-          <div class="metric">
-            <span class="metric__label">Residual</span>
-            <span class="metric__value" id="residual">+0.0 °C</span>
-          </div>
-          <div class="metric">
-            <span class="metric__label">NIS</span>
-            <span class="metric__value" id="nis">0.0</span>
-          </div>
-          <div class="metric">
-            <span class="metric__label">SOC</span>
-            <span class="metric__value" id="soc">72.0 %</span>
-          </div>
-        </div>
-        <div class="evidencebar">
-          <span class="evidencebar__label">Strong residual</span>
-          <div class="evidencebar__track" aria-hidden="true">
-            <div class="evidencebar__fill" id="evidence-fill"></div>
-          </div>
-          <span class="evidencebar__value" id="evidence-value">0 %</span>
-        </div>
       </section>
+    </aside>
 
+    <main class="hud command-center" id="console" aria-label="Live battery analysis dashboard">
+      <div class="telemetry-intro">
+        <p class="hero-title__eyebrow">PHYSIGUARD / LIVE ANALYSIS</p>
+        <h1>Battery integrity dashboard</h1>
+        <p>Physics-model residuals, detector evidence, and charging limits from the active backend session.</p>
+        <div class="scenario-context" aria-live="polite"><span>SCENARIO</span><strong id="selected-scenario-title">Connecting to scenario catalog</strong><p id="selected-scenario-copy">Scenario details will appear when the backend responds.</p></div>
+      </div>
       <section class="panel hud__chart">
         <div class="panel__head">
           <span>Cell temperature</span>
           <span class="panel__meta" id="chart-time">00:00 / 60:00</span>
         </div>
+        <div class="chart-signal" id="chart-divergence" data-state="aligned">Waiting for telemetry</div>
         <canvas
           id="chart"
           role="img"
+          tabindex="0"
           aria-label="Live backend cell temperature history."
         ></canvas>
-        <ul class="legend">
-          <li><i class="swatch swatch--true"></i>True</li>
-          <li><i class="swatch swatch--reported"></i>Reported</li>
-          <li><i class="swatch swatch--model"></i>Model estimate</li>
-        </ul>
+        <div class="chart-tooltip" id="chart-tooltip" role="tooltip" hidden></div>
       </section>
-
-      <section class="panel hud__twin" id="twin-panel" data-engaged="false">
-        <div class="panel__head">
-          <span>Protected estimate</span>
-          <span class="panel__meta" id="twin-state">Monitoring</span>
-        </div>
-        <div class="twin-metrics">
-          <div class="metric">
-            <span class="metric__label">Twin temp</span>
-            <span class="metric__value" id="twin-temp">—</span>
-          </div>
-          <div class="metric">
-            <span class="metric__label">Twin SOC</span>
-            <span class="metric__value" id="twin-soc">—</span>
-          </div>
-          <div class="metric">
-            <span class="metric__label">Command guard</span>
-            <span class="metric__value" id="fake-packets">Monitoring</span>
-          </div>
-          <div class="metric">
-            <span class="metric__label">Control mode</span>
-            <span class="metric__value" id="twin-uplink">Idle</span>
-          </div>
+    </main>
+    <div class="command-details">
+      <section class="panel telemetry-details" aria-label="Backend telemetry detail">
+        <div class="panel__head"><span>Evidence & control</span><span class="panel__meta">backend frame</span></div>
+        <div class="telemetry-grid">
+          <div><span>Undefended true temp</span><strong id="undefended-temp">Awaiting frame</strong></div>
+          <div><span>True / reported voltage</span><strong id="voltage-pair">Awaiting frame</strong></div>
+          <div><span>Request / command / safe current</span><strong id="current-triple">Awaiting frame</strong></div>
+          <div><span>Temp / voltage margin</span><strong id="margin-pair">Awaiting frame</strong></div>
+          <div><span>NIS / threshold</span><strong id="nis-threshold">Awaiting frame</strong></div>
+          <div><span>CUSUM temp / V / I</span><strong id="cusum-values">Awaiting frame</strong></div>
+          <div><span>Probe / voltage gain / current gain</span><strong id="probe-values">Awaiting frame</strong></div>
+          <div><span>Localization / score</span><strong id="localization-values">Awaiting frame</strong></div>
+          <div><span>Attack / onset</span><strong id="attack-values">Awaiting frame</strong></div>
         </div>
       </section>
 
+          <section class="panel research-section dashboard-benchmarks" id="benchmarks" aria-labelledby="benchmark-title">
+            <div class="research-section__inner">
+              <div class="panel__head"><span id="benchmark-title">Detector evaluation metrics</span><span class="panel__meta">backend artifact</span></div>
+
+              <p class="research-status" id="benchmark-status" role="status">Loading benchmark artifact…</p>
+              <div class="benchmark-table-wrap" id="benchmark-table-wrap" hidden>
+                <table class="benchmark-table">
+                  <thead><tr><th scope="col">Detector</th><th scope="col">Attack detection</th><th scope="col">Mean delay</th><th scope="col">Pre-empted before onset</th><th scope="col">Baseline false alarms / h</th><th scope="col">Attack hazard rate</th></tr></thead>
+                  <tbody id="benchmark-rows"></tbody>
+                </table>
+                <p class="benchmark-meta" id="benchmark-meta"></p>
+              </div>
+            </div>
+          </section>
+      <details class="panel method-details" id="method-details">
+        <summary class="panel__head"><span>Model, threat model & limits</span><span class="panel__meta">from backend</span></summary>
+        <div class="method-columns">
+          <section><h2>Detection and response</h2><ul id="method-list"><li>Loading backend method…</li></ul></section>
+          <section><h2>Threat model and limitations</h2><ul id="limits-list"><li>Loading backend limitations…</li></ul></section>
+        </div>
+      </details>
+    </div>
+    <aside class="command-rail command-rail--right" aria-label="Response posture and backend events">
+      <section class="panel hud__response" id="response-panel">
+        <div class="panel__head"><span>Response posture</span><span class="panel__meta" id="response-state">Monitoring</span></div>
+        <ol class="response-steps" aria-label="Response progression">
+          <li data-response-step="monitoring" class="is-active">Monitoring</li>
+          <li data-response-step="suspect">Suspect</li>
+          <li data-response-step="isolate">Isolate</li>
+          <li data-response-step="safe-mode">SAFE_MODE: current limited</li>
+        </ol>
+        <p class="response-detail" id="response-detail">No suspect path identified</p>
+      </section>
       <section class="terminal" aria-label="Backend event log">
-        <div class="terminal__head">
-          <span>Backend events</span>
-          <span class="terminal__status" id="terminal-status">waiting</span>
-        </div>
+        <div class="terminal__head"><span>Backend events</span><span class="terminal__status" id="terminal-status">waiting</span></div>
+        <div class="terminal__toast" id="event-toast" role="status" aria-live="polite" hidden></div>
         <ol class="terminal__lines" id="terminal-lines"></ol>
       </section>
+    </aside>
+    </div>
+
+    <aside class="driver-display" id="driver-display" aria-labelledby="driver-display-title" hidden>
+      <div class="driver-display__top">
+        <div>
+          <p class="driver-display__eyebrow">IN-VEHICLE DISPLAY PREVIEW · SIMULATION</p>
+          <h2 id="driver-display-title">Vehicle system alert</h2>
+        </div>
+        <span class="driver-display__state" id="driver-alert-state">ANOMALY</span>
+        <button class="driver-display__close" id="close-driver-alert" type="button" aria-label="Close driver alert preview" title="Close message">×</button>
+      </div>
+      <p class="driver-display__message" id="driver-guidance"></p>
+      <dl class="driver-display__facts">
+        <div><dt>Suspect path</dt><dd id="driver-suspect-path">Under investigation</dd></div>
+        <div><dt>Safe-stop support</dt><dd id="driver-assist-state">Checking capability</dd></div>
+        <div><dt>Evidence</dt><dd id="driver-evidence-state">Saved locally</dd></div>
+      </dl>
+      <p class="driver-display__delivery" id="alert-delivery" role="status">Emergency alert is ready.</p>
+      <div class="driver-display__actions">
+        <button class="button button--quiet" id="request-safe-stop" type="button">Request safe-stop assist</button>
+        <button class="button button--quiet" id="save-evidence" type="button">Download evidence</button>
+        <button class="button button--emergency" id="emergency-send" type="button">Force-send emergency alert</button>
+        <button class="link-button" id="overview-button" type="button">Return to overview</button>
+      </div>
+      <p class="driver-display__fine">Demo only: no vehicle control or emergency-service connection is active.</p>
     </aside>
 
     <div class="sr-only" id="live-region" aria-live="polite"></div>

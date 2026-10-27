@@ -1,0 +1,30 @@
+:root {
+  color-scheme: light;
+
+  /* PhysiGuard's paper-scrapbook engineering dashboard. */
+  --bg: #FFF8E1;
+  --surface: #FFFCF2;
+  --border: #111111;
+  --ink: #111111;
+  --ink-muted: #5D584D;
+  --accent: #FFE000;
+  --pink: #FF3366;
+  --cyan: #00C2E0;
+  --safe: #198754;
+  --suspect: #B7791F;
+  --attack: #C0392B;
+  --reported: #5D584D;
+  --physics: #FF3366;
+  --twin: #00A9C2;
+  --defended: #111111;
+  --grid: #D8D1BD;
+  --vehicle: #50575A;
+  --tire: #202124;
+
+  --brutal-border: 3px;
+  --brutal-shadow: 6px;
+  --radius: 14px;
+  --space: 8px;
+  --font-ui: "IBM Plex Sans", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
