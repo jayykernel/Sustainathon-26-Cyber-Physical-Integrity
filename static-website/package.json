@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Scrollable 3D simulation of an electric vehicle battery cyber-physical attack",
+  "description": "PhysiGuard EV battery integrity and attack detection dashboard",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
@@ -14,12 +14,13 @@
   "dependencies": {
     "@fontsource/ibm-plex-mono": "^5.3.0",
     "@fontsource/ibm-plex-sans": "^5.3.0",
+    "@fontsource/manrope": "^5.3.0",
     "three": "^0.170.0"
   },
   "devDependencies": {
     "@types/three": "^0.170.0",
     "typescript": "^5.6.3",
-    "vite": "^5.4.10",
-    "vitest": "^2.1.4"
+    "vite": "^8.3.5",
+    "vitest": "^4.1.11"
   }
 }

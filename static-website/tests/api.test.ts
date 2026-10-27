@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { toTimelineSample, type BackendFrame } from "../src/api";
+import { createIdleSample, toTimelineSample, type BackendFrame } from "../src/api";
 
 function frame(state: string): BackendFrame {
   return {
@@ -24,6 +24,13 @@ function frame(state: string): BackendFrame {
 }
 
 describe("backend frame adapter", () => {
+  it("keeps the car scene ready before the first live frame", () => {
+    const sample = createIdleSample();
+    expect(sample.trueTempC).toBe(35);
+    expect(sample.currentA).toBe(0);
+    expect(sample.classification).toBe("safe");
+  });
+
   it("maps backend telemetry and classifier states into the scene model", () => {
     const sample = toTimelineSample(frame("SAFE_MODE"), 3600);
     expect(sample.trueTempC).toBe(42);
@@ -35,6 +42,7 @@ describe("backend frame adapter", () => {
     expect(sample.attackActive).toBe(true);
     expect(sample.stageIndex).toBe(3);
     expect(sample.controlMode).toBe("derated");
+    expect(sample.twinProtecting).toBe(true);
   });
 
   it("does not invent an alert for a normal backend frame", () => {
@@ -44,5 +52,6 @@ describe("backend frame adapter", () => {
     expect(sample.classification).toBe("safe");
     expect(sample.alarm).toBe(false);
     expect(sample.twinActive).toBe(false);
+    expect(sample.twinProtecting).toBe(false);
   });
 });

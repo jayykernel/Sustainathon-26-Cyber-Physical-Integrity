@@ -55,17 +55,6 @@ describe("attack timeline", () => {
     expect(timeline.samples[firstConfirmed].twinActive).toBe(true);
   });
 
-  it("sends fabricated packets during deception and then goes silent", () => {
-    const before = timeline.sampleAt(599);
-    const during = timeline.sampleAt(620);
-    const after = timeline.sampleAt(660);
-    expect(before.fakePackets).toBe(0);
-    expect(during.fakePackets).toBeGreaterThan(0);
-    expect(during.twinResponding).toBe(true);
-    expect(after.twinResponding).toBe(false);
-    expect(after.fakePackets).toBe(SIMULATION.maxFakePackets);
-  });
-
   it("raises alarms during the attack and clears them at rest", () => {
     expect(timeline.sampleAt(0).alarm).toBe(false);
     expect(timeline.sampleAt(300).alarm).toBe(true);

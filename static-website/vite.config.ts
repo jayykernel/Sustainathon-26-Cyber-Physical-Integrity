@@ -13,6 +13,13 @@ export default defineConfig({
     target: "es2020",
     outDir: "dist",
     assetsDir: "assets",
+    rolldownOptions: {
+      output: {
+        codeSplitting: {
+          groups: [{ name: "vendor", test: /node_modules[\\/]/, maxSize: 450_000 }],
+        },
+      },
+    },
   },
   test: {
     environment: "node",

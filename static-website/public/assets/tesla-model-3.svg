@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 220" role="img" aria-labelledby="title desc">
+  <title id="title">Tesla Model 3 style electric sedan</title>
+  <desc id="desc">Original side-profile vector illustration of a low-profile electric sedan with glass roof, alloy wheels, and red tail lamp.</desc>
+  <defs>
+    <linearGradient id="body" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#f8fafb"/>
+      <stop offset=".48" stop-color="#cbd4d9"/>
+      <stop offset="1" stop-color="#87959e"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#293a45"/>
+      <stop offset="1" stop-color="#526773"/>
+    </linearGradient>
+    <linearGradient id="shadow" x1="0" x2="1">
+      <stop offset="0" stop-color="#1d5fa8" stop-opacity="0"/>
+      <stop offset=".5" stop-color="#1d5fa8" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#1d5fa8" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="360" cy="190" rx="288" ry="14" fill="url(#shadow)"/>
+  <path d="M82 151c9-15 23-25 47-31l70-16c22-37 52-61 91-69 34-7 85-4 115 5 35 11 57 33 77 62l75 17c31 7 50 19 58 38l9 19c2 6-2 11-9 12l-40 3a47 47 0 0 0-93-1l-235 2a47 47 0 0 0-93 1l-58-2c-9 0-14-6-13-14z" fill="url(#body)" stroke="#73828a" stroke-width="3" stroke-linejoin="round"/>
+  <path d="m210 101 33-37c15-17 34-27 57-31 23-4 66-4 89 2 28 8 49 26 69 55l8 12z" fill="url(#glass)" stroke="#aebbc1" stroke-width="3" stroke-linejoin="round"/>
+  <path d="m317 39-5 63m93-57 20 58" fill="none" stroke="#97a7af" stroke-width="3"/>
+  <path d="M198 108h300" stroke="#75858e" stroke-width="2" opacity=".75"/>
+  <path d="m120 137 31-8m432 8 30 8" stroke="#1d5fa8" stroke-width="4" stroke-linecap="round"/>
+  <path d="m80 151 24-8 2 21-23-1z" fill="#d53f49"/>
+  <path d="m646 158-21-7 2 14 20 1z" fill="#fff3d5"/>
+  <path d="M274 119h174" stroke="#596b74" stroke-width="2" opacity=".5"/>
+  <g>
+    <circle cx="193" cy="169" r="35" fill="#25323a"/>
+    <circle cx="193" cy="169" r="25" fill="#aeb8bd" stroke="#596870" stroke-width="3"/>
+    <circle cx="193" cy="169" r="8" fill="#596870"/>
+    <path d="M193 146v15m0 16v15m-23-23h15m16 0h15m-39-16 11 11m11 11 11 11m0-33-11 11m-11 11-11 11" stroke="#e9eef0" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="548" cy="169" r="35" fill="#25323a"/>
+    <circle cx="548" cy="169" r="25" fill="#aeb8bd" stroke="#596870" stroke-width="3"/>
+    <circle cx="548" cy="169" r="8" fill="#596870"/>
+    <path d="M548 146v15m0 16v15m-23-23h15m16 0h15m-39-16 11 11m11 11 11 11m0-33-11 11m-11 11-11 11" stroke="#e9eef0" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <path d="M100 181h540" stroke="#263843" stroke-width="4" stroke-linecap="round" opacity=".75"/>
+</svg>

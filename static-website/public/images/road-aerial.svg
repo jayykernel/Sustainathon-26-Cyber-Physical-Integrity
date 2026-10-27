@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="ground" x2="0" y2="1">
+      <stop stop-color="#758657"/>
+      <stop offset=".48" stop-color="#4e6748"/>
+      <stop offset="1" stop-color="#304735"/>
+    </linearGradient>
+    <linearGradient id="road" x2="1">
+      <stop stop-color="#929b8f"/>
+      <stop offset=".5" stop-color="#c5c5b5"/>
+      <stop offset="1" stop-color="#849083"/>
+    </linearGradient>
+    <radialGradient id="canopy">
+      <stop stop-color="#9aa96c"/>
+      <stop offset=".68" stop-color="#627b4e"/>
+      <stop offset="1" stop-color="#364d38"/>
+    </radialGradient>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".018 .042" numOctaves="3" seed="12"/>
+      <feColorMatrix values=".28 0 0 0 .08 .28 0 0 0 .12 .28 0 0 0 .08 0 0 0 .18 0"/>
+    </filter>
+    <filter id="soft"><feGaussianBlur stdDeviation="18"/></filter>
+    <g id="tree">
+      <circle r="35" fill="#1a2b20" opacity=".72"/>
+      <circle cx="-7" cy="-6" r="25" fill="url(#canopy)"/>
+      <circle cx="10" cy="5" r="19" fill="#50613b" opacity=".78"/>
+      <circle cx="-9" cy="7" r="11" fill="#86915a" opacity=".32"/>
+    </g>
+    <pattern id="forest" width="230" height="188" patternUnits="userSpaceOnUse">
+      <rect width="230" height="188" fill="url(#ground)"/>
+      <use href="#tree" x="35" y="36" transform="scale(.9)"/>
+      <use href="#tree" x="117" y="29" transform="scale(1.2)"/>
+      <use href="#tree" x="192" y="61" transform="scale(.72)"/>
+      <use href="#tree" x="75" y="119" transform="scale(1.1)"/>
+      <use href="#tree" x="177" y="145" transform="scale(1.05)"/>
+      <use href="#tree" x="17" y="167" transform="scale(.64)"/>
+      <path d="M0 93Q55 75 98 91T230 80V112Q172 129 112 108T0 124Z" fill="#8b8a4b" opacity=".12"/>
+    </pattern>
+  </defs>
+  <rect width="1600" height="900" fill="url(#forest)"/>
+  <rect width="1600" height="900" fill="#91a16a" opacity=".2" filter="url(#grain)"/>
+  <path d="M0 0H710L747 900H0Z" fill="#697447" opacity=".2"/>
+  <path d="M880 0H1600V900H850Z" fill="#101e17" opacity=".24"/>
+  <path d="M710 0H890L856 900H742Z" fill="#d2d1bd" opacity=".22" filter="url(#soft)"/>
+  <path d="M728 0H872L844 900H756Z" fill="url(#road)"/>
+  <path d="M728 0H740L768 900H756Z" fill="#d6d5c4" opacity=".32"/>
+  <path d="M860 0H872L844 900H832Z" fill="#d6d5c4" opacity=".19"/>
+  <path d="M738 0H862L836 900H764Z" fill="#485449" opacity=".2"/>
+  <path d="M798 0L800 900" stroke="#d8d8c7" stroke-width="2" stroke-dasharray="28 34" opacity=".3"/>
+  <path d="M0 0H1600V900H0Z" fill="#06100c" opacity=".25"/>
+  <g transform="translate(800 432) rotate(2)">
+    <ellipse cy="8" rx="21" ry="39" fill="#050807" opacity=".48"/>
+    <path d="M-14-31Q-10-38 0-38T14-31L18-16V23L13 34H-13L-18 23V-16Z" fill="#111a17" stroke="#91a19a" stroke-opacity=".48" stroke-width="2"/>
+    <path d="M-12-20Q0-25 12-20L10-7H-10Z" fill="#6b8982" opacity=".82"/>
+    <path d="M-11 5H11L10 20H-10Z" fill="#30433d"/>
+    <path d="M-14-27L-18-20V-10M14-27L18-20V-10" stroke="#d2e4c4" stroke-width="2" stroke-linecap="round" opacity=".72"/>
+    <path d="M-12 30H-7M12 30H7" stroke="#d95a4e" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>
