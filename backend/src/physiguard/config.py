@@ -215,7 +215,7 @@ class ResponseConfig(BaseModel):
     SUSPECT_to_CONFIRMED_window: int = Field(60, gt=0, description="Time window for evidence accumulation in seconds")
     CONFIRMED_to_SAFE_MODE_persist: int = Field(10, gt=0, description="CONFIRMED persistence before SAFE_MODE in seconds")
     evidence_classes: list[str] = Field(
-        default_factory=lambda: ["passive_NIS", "CUSUM", "probe_gain", "command_unsafe"],
+        default_factory=lambda: ["passive_NIS", "CUSUM", "probe_gain", "command_tampering"],
         description="Evidence class names",
     )
 
