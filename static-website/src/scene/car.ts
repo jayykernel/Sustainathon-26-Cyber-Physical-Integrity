@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
 import type { Classification } from "../sim/classifier";
-import { COLORS, colorForClassification } from "../tokens";
+import { COLORS } from "../tokens";
 
 export interface CarInput {
   speedKmh: number;
@@ -16,9 +16,8 @@ export interface CarInput {
 }
 
 /**
- * A deliberately simple, readable electric car assembled from primitives.
- * The silhouette, wheels, and light bars carry the state; there is no imported
- * model and no external asset.
+ * A Tesla Model 3 inspired electric sedan, assembled from local Three.js
+ * geometry. The telemetry effects stay attached to this visual model.
  */
 export class CarRig {
   readonly group = new THREE.Group();
@@ -29,17 +28,14 @@ export class CarRig {
   private readonly headlightMaterial: THREE.MeshStandardMaterial;
   private readonly tailMaterial: THREE.MeshStandardMaterial;
   private readonly beaconMaterial: THREE.MeshStandardMaterial;
-  private readonly cabinLight: THREE.PointLight;
-  private readonly accentLight: THREE.PointLight;
-  private readonly targetTone = new THREE.Color(COLORS.nominal);
 
   constructor() {
     this.group.add(this.bodyGroup);
 
     const paint = new THREE.MeshStandardMaterial({
-      color: "#D8DEE2",
-      roughness: 0.34,
-      metalness: 0.5,
+      color: COLORS.inkSoft,
+      roughness: 0.78,
+      metalness: 0.06,
     });
     const darkTrim = new THREE.MeshStandardMaterial({
       color: COLORS.graphite,
@@ -53,98 +49,123 @@ export class CarRig {
     });
 
     this.accentMaterial = new THREE.MeshStandardMaterial({
-      color: COLORS.nominal,
-      emissive: COLORS.nominal,
-      emissiveIntensity: 0.55,
-      roughness: 0.35,
-      metalness: 0.1,
+      color: COLORS.inkSoft,
+      roughness: 0.8,
+      metalness: 0.04,
     });
     this.headlightMaterial = new THREE.MeshStandardMaterial({
-      color: "#FFF8E4",
-      emissive: "#FFF1CC",
-      emissiveIntensity: 1.5,
-      roughness: 0.3,
+      color: COLORS.benchDeep,
+      roughness: 0.8,
     });
     this.tailMaterial = new THREE.MeshStandardMaterial({
-      color: COLORS.hazard,
-      emissive: COLORS.hazard,
-      emissiveIntensity: 0.55,
-      roughness: 0.4,
+      color: COLORS.inkSoft,
+      roughness: 0.82,
     });
     this.beaconMaterial = new THREE.MeshStandardMaterial({
-      color: COLORS.hazard,
-      emissive: COLORS.hazard,
-      emissiveIntensity: 0.05,
-      roughness: 0.4,
+      color: COLORS.inkSoft,
+      roughness: 0.82,
     });
 
-    const body = new THREE.Mesh(new RoundedBoxGeometry(4.08, 0.58, 1.86, 4, 0.14), paint);
-    body.position.y = 0.64;
+    const silhouette = new THREE.Shape();
+    silhouette.moveTo(-2.18, 0.48);
+    silhouette.quadraticCurveTo(-2.25, 0.51, -2.21, 0.64);
+    silhouette.lineTo(-2.05, 0.82);
+    silhouette.quadraticCurveTo(-1.98, 0.9, -1.82, 0.93);
+    silhouette.lineTo(-1.38, 1.0);
+    silhouette.bezierCurveTo(-1.17, 1.04, -1.01, 1.27, -0.82, 1.48);
+    silhouette.bezierCurveTo(-0.68, 1.64, -0.49, 1.69, -0.22, 1.7);
+    silhouette.bezierCurveTo(0.31, 1.72, 0.62, 1.57, 0.82, 1.37);
+    silhouette.bezierCurveTo(1.02, 1.18, 1.08, 1.04, 1.36, 1.0);
+    silhouette.lineTo(1.91, 0.92);
+    silhouette.quadraticCurveTo(2.09, 0.89, 2.17, 0.73);
+    silhouette.lineTo(2.21, 0.62);
+    silhouette.quadraticCurveTo(2.22, 0.49, 2.1, 0.48);
+    silhouette.closePath();
+    const bodyGeometry = new THREE.ExtrudeGeometry(silhouette, {
+      depth: 1.72,
+      bevelEnabled: true,
+      bevelSegments: 3,
+      steps: 1,
+      bevelSize: 0.045,
+      bevelThickness: 0.035,
+      curveSegments: 16,
+    });
+    bodyGeometry.translate(0, 0, -0.86);
+    const body = new THREE.Mesh(bodyGeometry, paint);
     this.bodyGroup.add(body);
 
-    const skirt = new THREE.Mesh(new RoundedBoxGeometry(3.7, 0.16, 1.9, 3, 0.05), darkTrim);
-    skirt.position.y = 0.4;
+    const skirt = new THREE.Mesh(new RoundedBoxGeometry(3.55, 0.09, 1.78, 4, 0.04), darkTrim);
+    skirt.position.y = 0.51;
     this.bodyGroup.add(skirt);
 
-    const belt = new THREE.Mesh(new RoundedBoxGeometry(2.12, 0.26, 1.72, 3, 0.09), paint);
-    belt.position.set(-0.1, 1.02, 0);
-    this.bodyGroup.add(belt);
+    const glassMaterial = glass.clone();
+    glassMaterial.side = THREE.DoubleSide;
+    const addSideGlass = (points: Array<[number, number]>, side: number) => {
+      const shape = new THREE.Shape();
+      shape.moveTo(points[0][0], points[0][1]);
+      for (const [x, y] of points.slice(1)) shape.lineTo(x, y);
+      shape.closePath();
+      const geometry = new THREE.ExtrudeGeometry(shape, { depth: 0.018, bevelEnabled: false });
+      const pane = new THREE.Mesh(geometry, glassMaterial);
+      pane.position.z = side > 0 ? 0.867 : -0.885;
+      this.bodyGroup.add(pane);
+    };
+    for (const side of [-1, 1]) {
+      addSideGlass([[-1.45, 1.04], [-1.05, 1.41], [-0.88, 1.54], [-0.66, 1.59], [-0.25, 1.6], [-0.25, 1.06]], side);
+      addSideGlass([[-0.16, 1.06], [-0.16, 1.6], [0.11, 1.58], [0.48, 1.45], [0.82, 1.13], [0.91, 1.04]], side);
+    }
 
-    const greenhouse = new THREE.Mesh(new RoundedBoxGeometry(2.0, 0.4, 1.62, 3, 0.12), glass);
-    greenhouse.position.set(-0.12, 1.3, 0);
-    this.bodyGroup.add(greenhouse);
+    const roofGlass = new THREE.Mesh(
+      new RoundedBoxGeometry(1.18, 0.025, 1.38, 4, 0.015),
+      glassMaterial,
+    );
+    roofGlass.position.set(-0.22, 1.695, 0);
+    this.bodyGroup.add(roofGlass);
 
-    const roof = new THREE.Mesh(new RoundedBoxGeometry(1.7, 0.13, 1.48, 3, 0.06), paint);
-    roof.position.set(-0.18, 1.52, 0);
-    this.bodyGroup.add(roof);
-
-    const hood = new THREE.Mesh(new RoundedBoxGeometry(1.05, 0.1, 1.7, 3, 0.05), paint);
-    hood.position.set(1.52, 0.96, 0);
-    this.bodyGroup.add(hood);
-
-    const mirrorGeometry = new THREE.BoxGeometry(0.15, 0.07, 0.09);
+    const mirrorGeometry = new RoundedBoxGeometry(0.18, 0.07, 0.12, 3, 0.03);
     for (const side of [-1, 1]) {
       const mirror = new THREE.Mesh(mirrorGeometry, paint);
-      mirror.position.set(0.58, 1.15, side * 0.98);
+      mirror.position.set(0.65, 1.11, side * 0.91);
       mirror.castShadow = true;
       this.bodyGroup.add(mirror);
     }
 
-    const accentBar = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.035, 1.2), this.accentMaterial);
-    accentBar.position.set(2.055, 0.67, 0);
+    const accentBar = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.04, 1.05), this.accentMaterial);
+    accentBar.position.set(2.18, 0.69, 0);
     this.bodyGroup.add(accentBar);
 
     for (const side of [-1, 1]) {
-      const stripe = new THREE.Mesh(new THREE.BoxGeometry(2.9, 0.045, 0.014), this.accentMaterial);
-      stripe.position.set(-0.08, 0.8, side * 0.935);
-      this.bodyGroup.add(stripe);
+      const sill = new THREE.Mesh(new THREE.BoxGeometry(2.55, 0.025, 0.018), darkTrim);
+      sill.position.set(0.02, 0.64, side * 0.88);
+      this.bodyGroup.add(sill);
+      for (const x of [-0.58, 0.71]) {
+        const seam = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.4, 0.012), darkTrim);
+        seam.position.set(x, 0.91, side * 0.884);
+        this.bodyGroup.add(seam);
+      }
+      const handle = new THREE.Mesh(new RoundedBoxGeometry(0.22, 0.025, 0.018, 2, 0.01), darkTrim);
+      handle.position.set(0.08, 1.01, side * 0.89);
+      this.bodyGroup.add(handle);
     }
 
-    const headlightGeometry = new THREE.BoxGeometry(0.05, 0.1, 0.36);
+    const headlightGeometry = new THREE.BoxGeometry(0.035, 0.075, 0.32);
     for (const side of [-1, 1]) {
       const light = new THREE.Mesh(headlightGeometry, this.headlightMaterial);
-      light.position.set(2.04, 0.79, side * 0.55);
+      light.position.set(2.13, 0.76, side * 0.55);
       this.bodyGroup.add(light);
     }
 
-    const tailBar = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.055, 1.32), this.tailMaterial);
-    tailBar.position.set(-2.05, 0.79, 0);
+    const tailBar = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.06, 1.2), this.tailMaterial);
+    tailBar.position.set(-2.18, 0.75, 0);
     this.bodyGroup.add(tailBar);
 
     const beacon = new THREE.Mesh(
-      new RoundedBoxGeometry(0.62, 0.06, 0.2, 2, 0.03),
+      new RoundedBoxGeometry(0.34, 0.035, 0.13, 2, 0.02),
       this.beaconMaterial,
     );
-    beacon.position.set(0.3, 1.6, 0);
+    beacon.position.set(-0.2, 1.72, 0);
     this.bodyGroup.add(beacon);
 
-    this.cabinLight = new THREE.PointLight(COLORS.hazard, 0, 3.2, 2);
-    this.cabinLight.position.set(-0.1, 1.18, 0);
-    this.bodyGroup.add(this.cabinLight);
-
-    this.accentLight = new THREE.PointLight(COLORS.nominal, 0.5, 3.4, 2);
-    this.accentLight.position.set(0, 0.2, 0);
-    this.group.add(this.accentLight);
 
     const tireMaterial = new THREE.MeshStandardMaterial({
       color: COLORS.tire,
@@ -152,7 +173,7 @@ export class CarRig {
       metalness: 0.05,
     });
     const hubMaterial = new THREE.MeshStandardMaterial({
-      color: "#AEB8BE",
+      color: COLORS.rule,
       roughness: 0.35,
       metalness: 0.7,
     });
@@ -187,30 +208,14 @@ export class CarRig {
   }
 
   update(input: CarInput): void {
-    this.targetTone.set(colorForClassification(input.classification));
-    const blend = input.reducedMotion ? 1 : 1 - Math.exp(-input.dt * 5);
-    this.accentMaterial.color.lerp(this.targetTone, blend);
-    this.accentMaterial.emissive.lerp(this.targetTone, blend);
-    this.accentLight.color.lerp(this.targetTone, blend);
-    this.accentLight.intensity = input.rest ? 0.18 : input.alarm ? 1.1 : 0.6;
-
     const speedFactor = Math.min(1.6, Math.abs(input.speedKmh) / 90);
-    const scrollFactor = input.rest ? 0 : Math.min(1.5, Math.abs(input.scrollVelocity));
+    const scrollFactor = input.rest || input.reducedMotion ? 0 : Math.min(1.5, Math.abs(input.scrollVelocity));
     const spin = speedFactor * scrollFactor * input.dt * 7;
     for (const wheel of this.wheels) {
       wheel.rotation.z -= spin;
     }
 
-    const pulse = input.reducedMotion ? 1 : 0.5 + 0.5 * Math.sin(input.elapsed * 8);
-    this.beaconMaterial.emissiveIntensity = input.alarm && !input.rest ? 0.5 + pulse * 2.2 : 0.05;
-    this.cabinLight.intensity = input.alarm && !input.rest ? (input.reducedMotion ? 1.6 : 0.8 + pulse * 1.5) : 0;
-    this.headlightMaterial.emissiveIntensity = input.rest ? 0.12 : 1.5;
-    this.tailMaterial.emissiveIntensity = input.alarm && !input.rest ? 0.7 + pulse * 1.3 : input.rest ? 0.08 : 0.55;
-
-    const bob =
-      input.reducedMotion || input.rest
-        ? 0
-        : Math.sin(input.elapsed * 7.5) * 0.004 * Math.min(1, speedFactor);
-    this.bodyGroup.position.y = bob - (input.rest ? 0.012 : 0);
+    this.headlightMaterial.color.set(COLORS.benchDeep);
+    this.bodyGroup.position.y = input.rest ? -0.012 : 0;
   }
 }

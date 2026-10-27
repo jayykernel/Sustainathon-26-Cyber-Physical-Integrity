@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { CSS2DObject } from "three/addons/renderers/CSS2DRenderer.js";
 import type { Classification } from "../sim/classifier";
 import { COLORS } from "../tokens";
 
@@ -8,13 +9,14 @@ export interface BatteryInput {
   classification: Classification;
   alarm: boolean;
   twinActive: boolean;
-  twinResponding: boolean;
+  twinProtecting: boolean;
+  channel: string;
   elapsed: number;
   dt: number;
   reducedMotion: boolean;
 }
 
-const NOMINAL = new THREE.Color(COLORS.nominal);
+const NOMINAL = new THREE.Color(COLORS.heatNeutral);
 const CAUTION = new THREE.Color(COLORS.caution);
 const HAZARD = new THREE.Color(COLORS.hazard);
 
@@ -38,13 +40,44 @@ export class BatteryRig {
   private readonly twinGroup = new THREE.Group();
   private readonly twinMaterials: (THREE.Material & { opacity: number })[] = [];
   private readonly twinBaseOpacity: number[] = [];
-  private readonly sensorMaterial: THREE.MeshStandardMaterial;
   private readonly sensorLink: THREE.Line;
-  private readonly underLight: THREE.PointLight;
   private readonly scratch = new THREE.Color();
   private readonly twinTargetScale = new THREE.Vector3(1, 1, 1);
+  private readonly labelTemperature: HTMLElement;
+  private readonly labelChannel: HTMLElement;
+  private readonly labelRoot: HTMLDivElement;
 
   constructor() {
+    const label = document.createElement("div");
+    this.labelRoot = label;
+    label.className = "scene-label";
+    label.dataset.state = "safe";
+    const labelTitle = document.createElement("strong");
+    labelTitle.className = "scene-label__title";
+    labelTitle.textContent = "BATTERY PACK";
+    const temperatureRow = document.createElement("span");
+    temperatureRow.className = "scene-label__row";
+    temperatureRow.innerHTML = '<span>CELL TEMP</span>';
+    this.labelTemperature = document.createElement("b");
+    this.labelTemperature.className = "scene-label__value";
+    temperatureRow.append(this.labelTemperature);
+    const channelRow = document.createElement("span");
+    channelRow.className = "scene-label__row";
+    channelRow.innerHTML = '<span>CHANNEL</span>';
+    this.labelChannel = document.createElement("b");
+    this.labelChannel.className = "scene-label__value";
+    channelRow.append(this.labelChannel);
+    label.append(labelTitle, temperatureRow, channelRow);
+    const labelObject = new CSS2DObject(label);
+    labelObject.position.set(1.45, 0.92, 1.42);
+    this.group.add(labelObject);
+
+    const leader = new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(1.15, 0.3, 0.65),
+      new THREE.Vector3(1.45, 0.92, 1.3),
+    ]);
+    this.group.add(new THREE.Line(leader, new THREE.LineBasicMaterial({ color: COLORS.rule })));
+
     const frameMaterial = new THREE.MeshStandardMaterial({
       color: COLORS.graphite,
       roughness: 0.5,
@@ -67,34 +100,30 @@ export class BatteryRig {
     crossBar.position.set(0, 0.22, 0);
     this.group.add(crossBar);
 
-    const cellGeometry = new THREE.CylinderGeometry(0.115, 0.115, 0.3, 18);
     for (let index = 0; index < 10; index += 1) {
       const row = index < 5 ? -1 : 1;
       const column = index % 5;
       const material = new THREE.MeshStandardMaterial({
-        color: COLORS.nominal,
-        emissive: COLORS.nominal,
-        emissiveIntensity: 0.35,
-        roughness: 0.42,
-        metalness: 0.25,
+        color: COLORS.heatNeutral,
+        roughness: 0.92,
+        metalness: 0.02,
+        flatShading: true,
       });
-      const cell = new THREE.Mesh(cellGeometry, material);
+      const cell = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.12, 0.28), material);
       cell.position.set(-1.08 + column * 0.54, 0.22, row * 0.34);
       cell.castShadow = true;
       this.cellMaterials.push(material);
       this.group.add(cell);
     }
 
-    this.sensorMaterial = new THREE.MeshStandardMaterial({
-      color: COLORS.hazard,
-      emissive: COLORS.hazard,
-      emissiveIntensity: 0.15,
-      roughness: 0.35,
-      metalness: 0.3,
+    const sensorMaterial = new THREE.MeshStandardMaterial({
+      color: COLORS.glass,
+      roughness: 0.82,
+      metalness: 0.03,
     });
     const sensorPod = new THREE.Mesh(
       new THREE.BoxGeometry(0.16, 0.1, 0.24),
-      this.sensorMaterial,
+      sensorMaterial,
     );
     sensorPod.position.set(1.52, 0.26, 0);
     this.group.add(sensorPod);
@@ -105,14 +134,10 @@ export class BatteryRig {
     ]);
     this.sensorLink = new THREE.Line(
       linkGeometry,
-      new THREE.LineBasicMaterial({ color: COLORS.hazard, transparent: true, opacity: 0.55 }),
+      new THREE.LineBasicMaterial({ color: COLORS.inkSoft, transparent: true, opacity: 0.3 }),
     );
     this.sensorLink.visible = false;
     this.group.add(this.sensorLink);
-
-    this.underLight = new THREE.PointLight(COLORS.hazard, 0, 3, 2);
-    this.underLight.position.set(0, -0.2, 0.9);
-    this.group.add(this.underLight);
 
     this.buildTwin();
   }
@@ -123,7 +148,7 @@ export class BatteryRig {
 
     const outline = new THREE.EdgesGeometry(new THREE.BoxGeometry(2.78, 0.56, 1.5));
     const outlineMaterial = new THREE.LineBasicMaterial({
-      color: COLORS.protected,
+      color: COLORS.inkSoft,
       transparent: true,
       opacity: 0.55,
     });
@@ -133,7 +158,7 @@ export class BatteryRig {
 
     const plate = new THREE.LineSegments(
       new THREE.EdgesGeometry(new THREE.BoxGeometry(2.6, 0.03, 1.34)),
-      new THREE.LineBasicMaterial({ color: COLORS.protected, transparent: true, opacity: 0.3 }),
+      new THREE.LineBasicMaterial({ color: COLORS.inkSoft, transparent: true, opacity: 0.3 }),
     );
     plate.position.y = -0.42;
     this.twinGroup.add(plate);
@@ -145,7 +170,7 @@ export class BatteryRig {
       const row = index < 5 ? -1 : 1;
       const column = index % 5;
       const material = new THREE.MeshBasicMaterial({
-        color: COLORS.protected,
+        color: COLORS.inkSoft,
         wireframe: true,
         transparent: true,
         opacity: 0.42,
@@ -160,7 +185,7 @@ export class BatteryRig {
     const halo = new THREE.Mesh(
       new THREE.TorusGeometry(1.85, 0.006, 4, 96),
       new THREE.MeshBasicMaterial({
-        color: COLORS.protected,
+        color: COLORS.inkSoft,
         transparent: true,
         opacity: 0.4,
       }),
@@ -175,27 +200,18 @@ export class BatteryRig {
   }
 
   update(input: BatteryInput): void {
-    const flicker = input.reducedMotion
-      ? 0
-      : input.alarm
-        ? 0.55 * Math.sin(input.elapsed * 2.6)
-        : 0;
-
+    this.labelTemperature.textContent = `${input.trueTempC.toFixed(1)} C`;
+    this.labelChannel.textContent = /^[A-Z0-9]{1,4}$/i.test(input.channel.trim()) ? input.channel.trim() : "A";
+    this.labelTemperature.style.color = COLORS.ink;
+    this.labelRoot.dataset.state = input.classification;
     for (let index = 0; index < this.cellMaterials.length; index += 1) {
       const material = this.cellMaterials[index];
-      const gradient = (index - 4.5) * 0.24;
-      const jitter = input.reducedMotion ? 0 : Math.sin(input.elapsed * 1.7 + index * 0.8) * 0.12;
-      temperatureColor(input.trueTempC + gradient + jitter + flicker * (index % 3 === 0 ? 1 : 0.4), this.scratch);
+      temperatureColor(input.trueTempC, this.scratch);
       material.color.copy(this.scratch);
-      material.emissive.copy(this.scratch);
-      material.emissiveIntensity = input.alarm ? 0.55 : 0.32;
     }
 
     const attack = input.classification !== "safe";
-    const sensorPulse = input.reducedMotion ? 1 : 0.55 + 0.45 * Math.sin(input.elapsed * 5.2);
-    this.sensorMaterial.emissiveIntensity = attack ? 0.7 + sensorPulse * 1.6 : 0.12;
     this.sensorLink.visible = attack;
-    this.underLight.intensity = input.alarm ? 0.9 + sensorPulse * 0.5 : 0.25;
 
     this.twinGroup.visible = input.twinActive;
     if (input.twinActive) {
@@ -205,9 +221,9 @@ export class BatteryRig {
       );
       if (!input.reducedMotion) {
         this.twinGroup.position.y = 2.02 + Math.sin(input.elapsed * 1.3) * 0.05;
-        this.twinGroup.rotation.y += input.dt * (input.twinResponding ? 0.35 : 0.08);
+        this.twinGroup.rotation.y += input.dt * (input.twinProtecting ? 0.35 : 0.08);
       }
-      const respondFactor = input.twinResponding ? 1 : 0.5;
+      const respondFactor = input.twinProtecting ? 1 : 0.5;
       for (let index = 0; index < this.twinMaterials.length; index += 1) {
         const material = this.twinMaterials[index];
         material.opacity = this.twinBaseOpacity[index] * respondFactor;
