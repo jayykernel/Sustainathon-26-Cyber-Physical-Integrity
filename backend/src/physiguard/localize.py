@@ -57,11 +57,11 @@ def classify_scores(
     scores: dict[str, float],
     alarm: bool,
     settings: LocalizationConfig | None = None,
-    command_unsafe: bool = False,
+    command_tampered: bool = False,
 ) -> LocalizationOutput:
     """Apply the configured threshold and dominance rules to channel evidence."""
     cfg = settings or LocalizationConfig()
-    if command_unsafe:
+    if command_tampered:
         return {"channel": "command", "confidence": 1.0, "evidence": dict(scores)}
     evidence = {key: float(value) for key, value in scores.items()}
     if not alarm:
@@ -113,6 +113,7 @@ class LocalizationEngine:
             name: deque(maxlen=self.window_samples)
             for name in ("V", "T", "I", "V_cross", "T_cross")
         }
+        self.residual_sums_sq = dict.fromkeys(self.residuals, 0.0)
         self.initialized = False
 
     def reset(self) -> None:
@@ -122,6 +123,7 @@ class LocalizationEngine:
         self.t_only_ekf = EKF(self.config)
         for residuals in self.residuals.values():
             residuals.clear()
+        self.residual_sums_sq = dict.fromkeys(self.residuals, 0.0)
         self.initialized = False
 
     def update(
@@ -131,7 +133,7 @@ class LocalizationEngine:
         T_rep: float,
         I_cmd: float,
         alarm: bool,
-        command_unsafe: bool = False,
+        command_tampered: bool = False,
     ) -> LocalizationOutput:
         """Update the EKF bank and classify current channel evidence."""
         values = np.asarray([V_rep, I_rep, T_rep, I_cmd], dtype=np.float64)
@@ -142,7 +144,7 @@ class LocalizationEngine:
             self.v_only_ekf.initialize(V_rep, T_rep)
             self.t_only_ekf.initialize(V_rep, T_rep)
             self.initialized = True
-            return classify_scores({}, alarm, self.settings, command_unsafe)
+            return classify_scores({}, alarm, self.settings, command_tampered)
 
         for ekf in (self.full_ekf, self.v_only_ekf, self.t_only_ekf):
             ekf.predict(I_cmd)
@@ -160,12 +162,8 @@ class LocalizationEngine:
         x_v1 = float(self.t_only_ekf.x[1])
         p = self.config.twin
         predicted_v = twin_ocv_lookup(x_v, self.config) + I_cmd * p.R0_n + x_v1
-        h_v = np.array(
-            [self.t_only_ekf._d_ocv_d_soc(x_v), 1.0, 0.0], dtype=np.float64
-        )
-        v_variance = float(
-            h_v @ self.t_only_ekf.P @ h_v.T + self.t_only_ekf.R[0, 0]
-        )
+        h_v = np.array([self.t_only_ekf._d_ocv_d_soc(x_v), 1.0, 0.0], dtype=np.float64)
+        v_variance = float(h_v @ self.t_only_ekf.P @ h_v.T + self.t_only_ekf.R[0, 0])
         v_cross = (V_rep - predicted_v) / np.sqrt(v_variance)
 
         self.v_only_ekf.update_channel("V", V_rep, I_cmd)
@@ -177,14 +175,30 @@ class LocalizationEngine:
             ("V_cross", float(v_cross)),
             ("T_cross", float(t_cross)),
         ):
-            self.residuals[name].append(residual)
+            self._append_residual(name, residual)
 
         scores = {
-            "V": self._rms(self.residuals["V"], self.residuals["V_cross"]),
-            "T": self._rms(self.residuals["T"], self.residuals["T_cross"]),
-            "I": self._rms(self.residuals["I"]),
+            "V": self._window_rms("V", "V_cross"),
+            "T": self._window_rms("T", "T_cross"),
+            "I": self._window_rms("I"),
         }
-        return classify_scores(scores, alarm, self.settings, command_unsafe)
+        return classify_scores(scores, alarm, self.settings, command_tampered)
+
+    def _append_residual(self, name: str, residual: float) -> None:
+        """Update the bounded window and its sum of squares in constant time."""
+        values = self.residuals[name]
+        if len(values) == values.maxlen:
+            oldest = values[0]
+            self.residual_sums_sq[name] -= oldest * oldest
+        values.append(residual)
+        self.residual_sums_sq[name] += residual * residual
+
+    def _window_rms(self, *names: str) -> float:
+        count = sum(len(self.residuals[name]) for name in names)
+        if count == 0:
+            return 0.0
+        sum_squares = max(0.0, sum(self.residual_sums_sq[name] for name in names))
+        return float(np.sqrt(sum_squares / count))
 
     @staticmethod
     def _rms(*series: deque[float]) -> float:
