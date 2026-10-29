@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import argparse
 import os
 import shutil
 import subprocess
@@ -16,6 +17,7 @@ BACKEND = ROOT / "backend"
 FRONTEND = ROOT / "static-website"
 BACKEND_URL = "http://127.0.0.1:8000/api/health"
 FRONTEND_URL = "http://127.0.0.1:4173/"
+PACKAGE_MANAGERS = ("auto", "bun", "npm")
 
 
 def _http_ready(url: str) -> bool:
@@ -24,6 +26,39 @@ def _http_ready(url: str) -> bool:
             return response.status == 200
     except (OSError, URLError):
         return False
+
+
+def _find_package_manager(name: str) -> str | None:
+    """Return the executable path for ``bun`` or ``npm`` (npm.cmd on Windows)."""
+    if name == "bun":
+        return shutil.which("bun")
+    return shutil.which("npm.cmd") or shutil.which("npm")
+
+
+def _resolve_package_manager(requested: str) -> str:
+    """Resolve ``auto``/``bun``/``npm`` to an available package manager name."""
+    if requested != "auto":
+        if _find_package_manager(requested) is None:
+            raise RuntimeError(f"{requested} was not found on PATH")
+        return requested
+    if _find_package_manager("bun") is not None:
+        return "bun"
+    if _find_package_manager("npm") is not None:
+        return "npm"
+    raise RuntimeError("Neither bun nor npm was found on PATH")
+
+
+def _frontend_command(package_manager: str) -> tuple[list[str] | str, bool]:
+    """Build the Vite dev command for the selected package manager.
+
+    Returns the command and whether it must run through a shell (Windows npm).
+    """
+    executable = _find_package_manager(package_manager)
+    if executable is None:
+        raise RuntimeError(f"{package_manager} was not found on PATH")
+    if package_manager == "npm" and os.name == "nt":
+        return f'"{executable}" run dev -- --host 127.0.0.1', True
+    return [executable, "run", "dev", "--", "--host", "127.0.0.1"], False
 
 
 def _stop(processes: list[subprocess.Popen[bytes]]) -> None:
@@ -44,8 +79,20 @@ def _stop(processes: list[subprocess.Popen[bytes]]) -> None:
             process.kill()
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
     """Start services, verify both local endpoints, and supervise until interrupted."""
+    env_pm = os.environ.get("PHYSIGUARD_JS_PM")
+    default_pm = env_pm if env_pm in PACKAGE_MANAGERS else "auto"
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--pm",
+        choices=PACKAGE_MANAGERS,
+        default=default_pm,
+        help="Frontend package manager: auto (bun, then npm), bun, or npm.",
+    )
+    args = parser.parse_args(argv)
+    package_manager = _resolve_package_manager(args.pm)
+
     environment = os.environ.copy()
     environment["PHYSIGUARD_DEV_CORS"] = "1"
     backend = subprocess.Popen(
@@ -55,17 +102,12 @@ def main() -> int:
     )
     processes = [backend]
 
-    if os.name == "nt":
-        npm = shutil.which("npm.cmd") or shutil.which("npm")
-        if npm is None:
-            _stop(processes)
-            raise RuntimeError("npm was not found on PATH")
-        frontend_command = f'"{npm}" run dev -- --host 127.0.0.1'
-        frontend = subprocess.Popen(frontend_command, cwd=FRONTEND, shell=True)
-    else:
-        frontend = subprocess.Popen(
-            ["npm", "run", "dev", "--", "--host", "127.0.0.1"], cwd=FRONTEND
-        )
+    try:
+        frontend_command, frontend_shell = _frontend_command(package_manager)
+    except RuntimeError:
+        _stop(processes)
+        raise
+    frontend = subprocess.Popen(frontend_command, cwd=FRONTEND, shell=frontend_shell)
     processes.append(frontend)
 
     try:
@@ -74,7 +116,10 @@ def main() -> int:
             if backend.poll() is not None or frontend.poll() is not None:
                 raise RuntimeError("A development server exited during startup")
             if _http_ready(BACKEND_URL) and _http_ready(FRONTEND_URL):
-                print("Backend API at http://localhost:8000; PhysiGuard live interface at http://localhost:4173")
+                print(
+                    "Backend API at http://localhost:8000; "
+                    f"PhysiGuard live interface at http://localhost:4173 (frontend: {package_manager})"
+                )
                 while backend.poll() is None and frontend.poll() is None:
                     time.sleep(0.25)
                 raise RuntimeError("A development server stopped unexpectedly")

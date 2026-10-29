@@ -1,3 +1,4 @@
+static-website/bun.lock
 # Python
 __pycache__/
 *.pyc
